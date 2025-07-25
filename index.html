@@ -151,236 +151,39 @@
     <script>
         // Sample PCM data (in a real app, this would come from a backend API)
         const pcmData = [
-            {
-                id: 1,
-                name: "n-Dodecane", 
-                type: "organic",
-                tempMin: -12,
-                tempMax: -12,
-                latentHeat: 216,
-                description: "Organic PCM with melting point of -12°C",
-                chemicalFormula: "C12H26"
-            },
-            {
-                id: 2,
-                name: "n-Tridecane",
-                type: "organic",
-                tempMin: -6,
-                tempMax: -6,
-                latentHeat: "NaN",
-                description: "Organic PCM with melting point of -6°C",
-                chemicalFormula: "C13H28"
-            },
-            {
-                id: 3,
-                name: "n-Tetradecane",
-                type: "organic",
-                tempMin: 4.5,
-                tempMax: 5.6,
-                latentHeat: 231,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C14H30"
-            },
-            {
-                id: 4,
-                name: "n-Pentadecane",
-                type: "organic",
-                tempMin: 10,
-                tempMax: 10,
-                latentHeat: 207,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C15H32"
-            },
-            {
-                id: 5,
-                name: "n-Hexadecane",
-                type: "organic",
-                tempMin: 18.2,
-                tempMax: 18.2,
-                latentHeat: 238,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C16H34"
-            },
-            {
-                id: 6,
-                name: "n-Heptadecane",
-                type: "organic",
-                tempMin: 22,
-                tempMax: 22,
-                latentHeat: 215,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C17H36"
-            },
-            {
-                id: 7,
-                name: "n-Octadecane",
-                type: "organic",
-                tempMin: 28.2,
-                tempMax: 28.2,
-                latentHeat: 245,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C18H38"
-            },
-            {
-                id: 8,
-                name: "n-Nonadecane",
-                type: "organic",
-                tempMin: 31.9,
-                tempMax: 31.9,
-                latentHeat: 222,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C19H40"
-            },
-            {
-                id: 9,
-                name: "n-Eicosane",
-                type: "organic",
-                tempMin: 37,
-                tempMax: 37,
-                latentHeat: 247,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C20H42"
-            },
-            {
-                id: 10,
-                name: "n-Heneicosane",
-                type: "organic",
-                tempMin: 41,
-                tempMax: 41,
-                latentHeat: 215,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C21H44"
-            },
-            {
-                id: 11,
-                name: "n-Docosane",
-                type: "organic",
-                tempMin: 44,
-                tempMax: 44,
-                latentHeat: 249,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C22H46"
-            },
-            {
-                id: 12,
-                name: "n-Tricosane",
-                type: "organic",
-                tempMin: 47,
-                tempMax: 47,
-                latentHeat: 234,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C23H48"
-            },
-            {
-                id: 13,
-                name: "n-Tetracosane",
-                type: "organic",
-                tempMin: 51,
-                tempMax: 51,
-                latentHeat: 255,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C24H50"
-            },
-            {
-                id: 14,
-                name: "n-Pentacosane",
-                type: "organic",
-                tempMin: 54,
-                tempMax: 54,
-                latentHeat: 238,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C25H52"
-            },
-            {
-                id: 15,
-                name: "n-Hexacosane",
-                type: "organic",
-                tempMin: 56,
-                tempMax: 56,
-                latentHeat: 257,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C26H54"
-            },
-            {
-                id: 16,
-                name: "n-Heptacosane",
-                type: "organic",
-                tempMin: 59,
-                tempMax: 59,
-                latentHeat: 236,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C27H56"
-            },
-            {
-                id: 17,
-                name: "n-Octacosane",
-                type: "organic",
-                tempMin: 61,
-                tempMax: 61,
-                latentHeat: 255,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C28H58"
-            },
-            {
-                id: 18,
-                name: "n-Nonacosane",
-                type: "organic",
-                tempMin: 64,
-                tempMax: 64,
-                latentHeat: 240,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C29H60"
-            },
-            {
-                id: 19,
-                name: "n-Triacontane",
-                type: "organic",
-                tempMin: 65,
-                tempMax: 65,
-                latentHeat: 252,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C30H62"
-            },
-            {
-                id: 20,
-                name: "n-Hentriacontane",
-                type: "organic",
-                tempMin: 68,
-                tempMax: 68,
-                latentHeat: 242,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C31H64"
-            },
-            {
-                id: 21,
-                name: "n-Dotricontane",
-                type: "organic",
-                tempMin: 70,
-                tempMax: 70,
-                latentHeat: 170,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C32H66"
-            },
-            {
-                id: 22,
-                name: "n-Tritricontane",
-                type: "organic",
-                tempMin: 71,
-                tempMax: 71,
-                latentHeat: 189,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C33H68"
-            },
-            {
-                id: 23,
-                name: "n-Tetratriacontane",
-                type: "organic",
-                tempMin: 75.9,
-                tempMax: 75.9,
-                latentHeat: 269,
-                description: "Organic PCM with specific thermal properties.",
-                chemicalFormula: "C34H70"
-            }
+                        type: "organic",
+            tempMin: 70,
+            tempMax: 70,
+            latentHeat: 170,
+            description: "n-Dotricontane with specific thermal properties.",
+            heatCapacity: "NaN",
+            density: "NaN",
+            chemicalFormula: "C32H66"
+        },
+        {
+            id: 30,
+            name: "n-Tritricontane",
+            type: "organic",
+            tempMin: 71,
+            tempMax: 71,
+            latentHeat: 189,
+            description: "n-Tritricontane with specific thermal properties.",
+            heatCapacity: "NaN",
+            density: "NaN",
+            chemicalFormula: "C33H68"
+        },
+        {
+            id: 31,
+            name: "n-Tetratriacontane",
+            type: "organic",
+            tempMin: 75.9,
+            tempMax: 75.9,
+            latentHeat: 269,
+            description: "n-Tetratriacontane with specific thermal properties.",
+            heatCapacity: "NaN",
+            density: "772.8(s)",
+            chemicalFormula: "C34H70"
+        }
         ];
 
         // DOM Elements
