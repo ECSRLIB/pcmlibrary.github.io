@@ -1,12 +1,3 @@
-These changes will:
-1. Show all PCM data initially (when no filters are applied)
-2. Show all PCM data when no search/filters are active
-3. Hide all data when all checkboxes are unchecked
-4. Keep the filtering/sorting functionality intact when filters are applied
-
-Would you like me to explain any of these changes in more detail?Here is the updated HTML content after applying above edits:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,22 +15,8 @@ Would you like me to explain any of these changes in more detail?Here is the upd
             height: calc(100vh - 60px);
             overflow-y: auto;
         }
-        .pcm-list-item {
-            background-color: white;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-        }
-        .pcm-list-item:hover {
-            transform: translateY(-3px);
-        }
-        /* Animation for visitor counter */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .table-container {
+            overflow-x: auto;
         }
         .visitor-counter {
             animation: pulse 2s infinite;
@@ -69,7 +46,7 @@ Would you like me to explain any of these changes in more detail?Here is the upd
         <aside class="w-64 bg-gray-800 text-white sidebar p-4">
             <div class="mb-6">
                 <h2 class="text-lg font-semibold mb-2">Search PCM</h2>
-                <input type="text" id="searchInput" placeholder="Search by name or property..." 
+                <input type="text" id="searchInput" placeholder="Search by name..." 
                        class="w-full px-3 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             
@@ -80,24 +57,24 @@ Would you like me to explain any of these changes in more detail?Here is the upd
                     <h3 class="font-medium mb-1">PCM Type</h3>
                     <div class="space-y-1">
                         <label class="flex items-center space-x-2">
-                            <input type="checkbox" class="pcm-type" value="organic" checked>
+                            <input type="checkbox" class="pcm-type" value="Organic" checked>
                             <span>Organic</span>
                         </label>
                         <label class="flex items-center space-x-2">
-                            <input type="checkbox" class="pcm-type" value="inorganic" checked>
+                            <input type="checkbox" class="pcm-type" value="Inorganic" checked>
                             <span>Inorganic</span>
                         </label>
                         <label class="flex items-center space-x-2">
-                            <input type="checkbox" class="pcm-type" value="salt" checked>
+                            <input type="checkbox" class="pcm-type" value="Salt Hydrate" checked>
                             <span>Salt Hydrate</span>
                         </label>
                         <label class="flex items-center space-x-2">
-                            <input type="checkbox" class="pcm-type" value="eutectic" checked>
+                            <input type="checkbox" class="pcm-type" value="Eutectic" checked>
                             <span>Eutectic</span>
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="mb-4">
                     <h3 class="font-medium mb-1">Temperature Range (°C)</h3>
                     <div class="flex space-x-2 mb-2">
@@ -110,8 +87,12 @@ Would you like me to explain any of these changes in more detail?Here is the upd
                 
                 <div class="mb-4">
                     <h3 class="font-medium mb-1">Latent Heat (kJ/kg)</h3>
-                    <input type="number" id="latentHeat" placeholder="Min latent heat" 
-                           class="w-full px-2 py-1 rounded bg-gray-700 text-white">
+                    <div class="flex space-x-2 mb-2">
+                        <input type="number" id="latentHeatMin" placeholder="Min latent heat" 
+                               class="w-1/2 px-2 py-1 rounded bg-gray-700 text-white">
+                        <input type="number" id="latentHeatMax" placeholder="Max latent heat" 
+                               class="w-1/2 px-2 py-1 rounded bg-gray-700 text-white">
+                    </div>
                 </div>
                 
                 <button id="applyFilters" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">
@@ -145,12 +126,30 @@ Would you like me to explain any of these changes in more detail?Here is the upd
                 </div>
             </div>
             
-            <div id="pcmContainer" class="space-y-4">
-                <!-- PCM list items will be dynamically inserted here -->
+            <div class="table-container">
+                <table class="min-w-full bg-white border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b">PCM Name</th>
+                            <th class="py-2 px-4 border-b">PCM Type</th>
+                            <th class="py-2 px-4 border-b">Temperature (°C)</th>
+                            <th class="py-2 px-4 border-b">Heat of Fusion (kJ/kg)</th>
+                            <th class="py-2 px-4 border-b">Heat Capacity (Solid) (kJ/kgK)</th>
+                            <th class="py-2 px-4 border-b">Heat Capacity (Liquid) (kJ/kgK)</th>
+                            <th class="py-2 px-4 border-b">Density (Solid) (kg/m³)</th>
+                            <th class="py-2 px-4 border-b">Density (Liquid) (kg/m³)</th>
+                            <th class="py-2 px-4 border-b">Expansivity (Solid) (x10⁻⁶ m³/m³)</th>
+                            <th class="py-2 px-4 border-b">Energy Density (kJ/m³)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pcmTableBody">
+                        <!-- PCM data will be dynamically inserted here -->
+                    </tbody>
+                </table>
             </div>
             
             <div id="noResults" class="hidden text-center py-10">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/70991187-ca97-4d5c-b304-2434854380bb.png" alt="No results found illustration with magnifying glass and document with question mark" class="mx-auto mb-4">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/70991187-ca97-4d5c-b304-2434854380bb.png" alt="No results found illustration" class="mx-auto mb-4">
                 <h3 class="text-xl font-semibold text-gray-700">No PCMs found matching your criteria</h3>
                 <p class="text-gray-500">Try adjusting your search or filters</p>
             </div>
@@ -158,2716 +157,215 @@ Would you like me to explain any of these changes in more detail?Here is the upd
     </div>
 
     <script>
-        // Sample PCM data (in a real app, this would come from a backend API)
+        // Expanded PCM data with various types
         const pcmData = [
-    {
-        id: 1,
-        name: "Paraffin Wax",
-        type: "organic",
-        tempMin: 40,
-        tempMax: 60,
-        latentHeat: 200,
-        description: "Common organic PCM with good thermal properties and stability."
-    },
-    // ... (other existing data)
-    
-    // New PCM data for paraffins
-    {
-        id: 9,
-        name: "n-Dodecane",
-        type: "organic",
-        tempMin: -12,
-        tempMax: -12,
-        latentHeat: 216,
-        description: "n-Dodecane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 750,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "0.21(s), 0.21(l)",
-        chemicalFormula: "C12H26"
-    },
-    {
-        id: 10,
-        name: "n-Tridecane",
-        type: "organic",
-        tempMin: -6,
-        tempMax: -6,
-        latentHeat: "NaN",
-        description: "n-Tridecane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 756,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C13H28"
-    },
-    {
-        id: 11,
-        name: "n-Tetradecane",
-        type: "organic",
-        tempMin: 4.5,
-        tempMax: 5.6,
-        latentHeat: 231,
-        description: "n-Tetradecane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 771,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C14H30"
-    },
-    {
-        id: 12,
-        name: "n-Pentadecane",
-        type: "organic",
-        tempMin: 10,
-        tempMax: 10,
-        latentHeat: 207,
-        description: "n-Pentadecane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 768,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "0.17",
-        chemicalFormula: "C15H32"
-    },
-    {
-        id: 13,
-        name: "n-Hexadecane",
-        type: "organic",
-        tempMin: 18.2,
-        tempMax: 18.2,
-        latentHeat: 238,
-        description: "n-Hexadecane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 774,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "0.21(s)",
-        chemicalFormula: "C16H34"
-    },
-    {
-        id: 14,
-        name: "n-Heptadecane",
-        type: "organic",
-        tempMin: 22,
-        tempMax: 22,
-        latentHeat: 215,
-        description: "n-Heptadecane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 778,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C17H36"
-    },
-    {
-        id: 15,
-        name: "n-Octadecane",
-        type: "organic",
-        tempMin: 28.2,
-        tempMax: 28.2,
-        latentHeat: 245,
-        description: "n-Octadecane with specific thermal properties.",
-        heatCapacity: "2.14(s), 2.66(l)",
-        density: "814(s), 775(l)",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "0.35(s), 0.149(l)",
-        chemicalFormula: "C18H38"
-    },
-    {
-        id: 16,
-        name: "n-Nonadecane",
-        type: "organic",
-        tempMin: 31.9,
-        tempMax: 31.9,
-        latentHeat: 222,
-        description: "n-Nonadecane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "912(s), 769(l)",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "0.21(s)",
-        chemicalFormula: "C19H40"
-    },
-    {
-        id: 17,
-        name: "n-Eicosane",
-        type: "organic",
-        tempMin: 37,
-        tempMax: 37,
-        latentHeat: 247,
-        description: "n-Eicosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C20H42"
-    },
-    {
-        id: 18,
-        name: "n-Heneicosane",
-        type: "organic",
-        tempMin: 41,
-        tempMax: 41,
-        latentHeat: 215,
-        description: "n-Heneicosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C21H44"
-    },
-    {
-        id: 19,
-        name: "n-Docosane",
-        type: "organic",
-        tempMin: 44,
-        tempMax: 44,
-        latentHeat: 249,
-        description: "n-Docosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C22H46"
-    },
-    {
-        id: 20,
-        name: "n-Tricosane",
-        type: "organic",
-        tempMin: 47,
-        tempMax: 47,
-        latentHeat: 234,
-        description: "n-Tricosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C23H48"
-    },
-    {
-        id: 21,
-        name: "n-Tetracosane",
-        type: "organic",
-        tempMin: 51,
-        tempMax: 51,
-        latentHeat: 255,
-        description: "n-Tetracosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C24H50"
-    },
-    {
-        id: 22,
-        name: "n-Pentacosane",
-        type: "organic",
-        tempMin: 54,
-        tempMax: 54,
-        latentHeat: 238,
-        description: "n-Pentacosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C25H52"
-    },
-    {
-        id: 23,
-        name: "n-Hexacosane",
-        type: "organic",
-        tempMin: 56,
-        tempMax: 56,
-        latentHeat: 257,
-        description: "n-Hexacosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 770,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "0.21(s)",
-        chemicalFormula: "C26H54"
-    },
-    {
-        id: 24,
-        name: "n-Heptacosane",
-        type: "organic",
-        tempMin: 59,
-        tempMax: 59,
-        latentHeat: 236,
-        description: "n-Heptacosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 773,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C27H56"
-    },
-    {
-        id: 25,
-        name: "n-Octacosane",
-        type: "organic",
-        tempMin: 61,
-        tempMax: 61,
-        latentHeat: 255,
-        description: "n-Octacosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "910(s), 765(l)",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C28H58"
-    },
-    {
-        id: 26,
-        name: "n-Nonacosane",
-        type: "organic",
-        tempMin: 64,
-        tempMax: 64,
-        latentHeat: 240,
-        description: "n-Nonacosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C29H60"
-    },
-    {
-        id: 27,
-        name: "n-Triacontane",
-        type: "organic",
-        tempMin: 65,
-        tempMax: 65,
-        latentHeat: 252,
-        description: "n-Triacontane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C30H62"
-    },
-    {
-        id: 28,
-        name: "n-Hentriacontane",
-        type: "organic",
-        tempMin: 68,
-        tempMax: 68,
-        latentHeat: 242,
-        description: "n-Hentriacontane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "930(s), 830(l)",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C31H64"
-    },
-    {
-        id: 29,
-        name: "n-Dotricontane",
-        type: "organic",
-        tempMin: 70,
-        tempMax: 70,
-        latentHeat: 170,
-        description: "n-Dotricontane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C32H66"
-    },
-    {
-        id: 30,
-        name: "n-Tritricontane",
-        type: "organic",
-        tempMin: 71,
-        tempMax: 71,
-        latentHeat: 189,
-        description: "n-Tritricontane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C33H68"
-    },
-    {
-        id: 31,
-        name: "n-Tetratriacontane",
-        type: "organic",
-        tempMin: 75.9,
-        tempMax: 75.9,
-        latentHeat: 269,
-        description: "n-Tetratriacontane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "772.8(s)",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "C34H70"
-    },
-    // New PCM data for non-paraffin organics
-    {
-        id: 32,
-        name: "Triethylene Glycol",
-        type: "organic",
-        tempMin: -7,
-        tempMax: -7,
-        latentHeat: 247,
-        description: "Triethylene glycol with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: -12001,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 33,
-        name: "N-Tetradecane",
-        type: "organic",
-        tempMin: 5.5,
-        tempMax: 5.5,
-        latentHeat: 226,
-        description: "N-Tetradecane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 34,
-        name: "Formic Acid",
-        type: "organic",
-        tempMin: 7.8,
-        tempMax: 7.8,
-        latentHeat: 247,
-        description: "Formic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1226.7,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 35,
-        name: "Dimethyl Adipate",
-        type: "organic",
-        tempMin: 9.7,
-        tempMax: 9.7,
-        latentHeat: 164.6,
-        description: "Dimethyl adipate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1062,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "0.358"
-    },
-    {
-        id: 36,
-        name: "Propyl Palmiate",
-        type: "organic",
-        tempMin: 10,
-        tempMax: 10,
-        latentHeat: 186,
-        description: "Propyl palmiate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 37,
-        name: "Tetrabutyl Ammonium Bromide (Type A-Type B)",
-        type: "organic",
-        tempMin: 10,
-        tempMax: 12,
-        latentHeat: "193–199",
-        description: "Tetrabutyl ammonium bromide with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 38,
-        name: "Isopropyl Palmiate",
-        type: "organic",
-        tempMin: 11,
-        tempMax: 11,
-        latentHeat: "NaN",
-        description: "Isopropyl palmiate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 863,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 39,
-        name: "Oleic Acid",
-        type: "organic",
-        tempMin: 13.5,
-        tempMax: 16.3,
-        latentHeat: "NaN",
-        description: "Oleic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 40,
-        name: "Isopropyl Stearate",
-        type: "organic",
-        tempMin: 14,
-        tempMax: 19,
-        latentHeat: "140–142",
-        description: "Isopropyl stearate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 41,
-        name: "Caprylic Acid",
-        type: "organic",
-        tempMin: 16.3,
-        tempMax: 16.3,
-        latentHeat: 148,
-        description: "Caprylic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 901,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "0.149"
-    },
-    {
-        id: 42,
-        name: "Dimethyl Sulfoxide",
-        type: "organic",
-        tempMin: 16.5,
-        tempMax: 16.5,
-        latentHeat: 85.7,
-        description: "Dimethyl sulfoxide with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: -10091,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 43,
-        name: "Acetic Acid",
-        type: "organic",
-        tempMin: 16.7,
-        tempMax: 16.7,
-        latentHeat: "187–273",
-        description: "Acetic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1050,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-                    id: 44,
-        name: "Glycerin",
-        type: "organic",
-        tempMin: 17.9,
-        tempMax: 17.9,
-        latentHeat: 198.7,
-        description: "Glycerin with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1260,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 45,
-        name: "Butyl Stearate",
-        type: "organic",
-        tempMin: 19,
-        tempMax: 19,
-        latentHeat: 140,
-        description: "Butyl stearate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 46,
-        name: "Propyl Palmitate",
-        type: "organic",
-        tempMin: 19,
-        tempMax: 19,
-        latentHeat: 186,
-        description: "Propyl palmitate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 47,
-        name: "Polyethylene Glycol 600",
-        type: "organic",
-        tempMin: 20,
-        tempMax: 25,
-        latentHeat: 146,
-        description: "Polyethylene glycol 600 with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1100,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 48,
-        name: "Lithium Chloride Ethanolate",
-        type: "organic",
-        tempMin: 21,
-        tempMax: 21,
-        latentHeat: 188,
-        description: "Lithium chloride ethanolate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 49,
-        name: "Dimethyl Sabacate",
-        type: "organic",
-        tempMin: 21,
-        tempMax: 21,
-        latentHeat: "120–135",
-        description: "Dimethyl sabacate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 50,
-        name: "Octadecyl 3-Mencaptopropylate",
-        type: "organic",
-        tempMin: 21,
-        tempMax: 21,
-        latentHeat: 143,
-        description: "Octadecyl 3-mencaptopropylate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 51,
-        name: "D-Lactic Acid",
-        type: "organic",
-        tempMin: 26,
-        tempMax: 26,
-        latentHeat: 184,
-        description: "D-Lactic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1249,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 52,
-        name: "Vinyl Stearate",
-        type: "organic",
-        tempMin: 27,
-        tempMax: 29,
-        latentHeat: 122,
-        description: "Vinyl stearate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 53,
-        name: "Acid Methyl Pentacosane",
-        type: "organic",
-        tempMin: 29,
-        tempMax: 29,
-        latentHeat: 197,
-        description: "Acid methyl pentacosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 54,
-        name: "Methyl Palmitate",
-        type: "organic",
-        tempMin: 29,
-        tempMax: 29,
-        latentHeat: 205,
-        description: "Methyl palmitate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 55,
-        name: "Capric Acid",
-        type: "organic",
-        tempMin: 32,
-        tempMax: 32,
-        latentHeat: 152.7,
-        description: "Capric acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 878,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "0.153"
-    },
-    {
-        id: 56,
-        name: "Erucic Acid",
-        type: "organic",
-        tempMin: 33,
-        tempMax: 33,
-        latentHeat: "NaN",
-        description: "Erucic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 853,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 57,
-        name: "Trimyristin",
-        type: "organic",
-        tempMin: 33,
-        tempMax: 57,
-        latentHeat: "201–213",
-        description: "Trimyristin with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 862,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 58,
-        name: "Polyethylene Glycol 900 (PEG900)",
-        type: "organic",
-        tempMin: 34,
-        tempMax: 34,
-        latentHeat: 150.5,
-        description: "Polyethylene glycol 900 with specific thermal properties.",
-        heatCapacity: "2.26",
-        density: "1100(1), 1200(s)",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "0.188"
-    },
-    {
-        id: 59,
-        name: "Camphenilone",
-        type: "organic",
-        tempMin: 39,
-        tempMax: 39,
-        latentHeat: 205,
-        description: "Camphenilone with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 60,
-        name: "Caprilone",
-        type: "organic",
-        tempMin: 40,
-        tempMax: 40,
-        latentHeat: 260,
-        description: "Caprilone with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 61,
-        name: "Docasyl Bromide",
-        type: "organic",
-        tempMin: 40,
-        tempMax: 40,
-        latentHeat: 201,
-        description: "Docasyl bromide with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 62,
-        name: "n-Henicosane",
-        type: "organic",
-        tempMin: 40.5,
-        tempMax: 40.5,
-        latentHeat: 161,
-        description: "n-Henicosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 63,
-        name: "Phenol",
-        type: "organic",
-        tempMin: 41,
-        tempMax: 41,
-        latentHeat: 120,
-        description: "Phenol with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 64,
-        name: "Heptadecanone",
-        type: "organic",
-        tempMin: 41,
-        tempMax: 41,
-        latentHeat: 201,
-        description: "Heptadecanone with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 65,
-        name: "1-Cyclohexylooctadecane",
-        type: "organic",
-        tempMin: 41,
-        tempMax: 41,
-        latentHeat: 218,
-        description: "1-Cyclohexylooctadecane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 66,
-        name: "4-Heptadacanone",
-        type: "organic",
-        tempMin: 41,
-        tempMax: 41,
-        latentHeat: 197,
-        description: "4-Heptadacanone with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 67,
-        name: "Stearic Acid",
-        type: "organic",
-        tempMin: 41,
-        tempMax: 43,
-        latentHeat: 211.6,
-        description: "Stearic acid with specific thermal properties.",
-        heatCapacity: "2.27(1) 1.76(s)",
-        density: "862(1) 1007(s)",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "1.6"
-    },
-    {
-        id: 68,
-        name: "Methyl-12-hydroxy-stearate",
-        type: "organic",
-        tempMin: 42,
-        tempMax: 43,
-        latentHeat: "120–126",
-        description: "Methyl-12-hydroxy-stearate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 69,
-        name: "Lauric Acid",
-        type: "organic",
-        tempMin: 42,
-        tempMax: 44,
-        latentHeat: 178,
-        description: "Lauric acid with specific thermal properties.",
-        heatCapacity: "2.27(1) 1.76(s)",
-        density: "1007(s), 862(1)",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "1.6"
-    },
-    {
-        id: 70,
-        name: "n-Lauric Acid",
-        type: "organic",
-        tempMin: 43,
-        tempMax: 43,
-        latentHeat: 183,
-        description: "n-Lauric acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 71,
-        name: "p-Joluidine",
-        type: "organic",
-        tempMin: 43.3,
-        tempMax: 43.3,
-        latentHeat: 167,
-        description: "p-Joluidine with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 72,
-        name: "Cyanamide",
-        type: "organic",
-        tempMin: 44,
-        tempMax: 44,
-        latentHeat: 209,
-        description: "Cyanamide with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1080,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 73,
-        name: "N-Docosane",
-        type: "organic",
-        tempMin: 44.5,
-        tempMax: 44.5,
-        latentHeat: 157,
-        description: "N-Docosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 74,
-        name: "Methyl Eicosanate",
-        type: "organic",
-        tempMin: 45,
-        tempMax: 45,
-        latentHeat: 230,
-        description: "Methyl eicosanate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 851,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 75,
-        name: "Elaidic Acid",
-        type: "organic",
-        tempMin: 47,
-        tempMax: 47,
-        latentHeat: 218,
-        description: "Elaidic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 851,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 76,
-        name: "n-Tricosane",
-        type: "organic",
-        tempMin: 47.6,
-        tempMax: 47.6,
-        latentHeat: 130,
-        description: "n-Tricosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 77,
-        name: "Pelargonic Acid",
-        type: "organic",
-        tempMin: 48,
-        tempMax: 48,
-        latentHeat: "NaN",
-        description: "Pelargonic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 78,
-        name: "3-Heptadecanone",
-        type: "organic",
-        tempMin: 48,
-        tempMax: 48,
-        latentHeat: 218,
-        description: "3-Heptadecanone with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 79,
-        name: "2-Heptadecanone",
-        type: "organic",
-        tempMin: 48,
-        tempMax: 48,
-        latentHeat: 218,
-        description: "2-Heptadecanone with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 80,
-        name: "Hydrocinnamic Acid",
-        type: "organic",
-        tempMin: 48,
-        tempMax: 48,
-        latentHeat: 118,
-        description: "Hydrocinnamic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 81,
-        name: "Cetyl Alcohol",
-        type: "organic",
-        tempMin: 49.3,
-        tempMax: 49.3,
-        latentHeat: 141,
-        description: "Cetyl alcohol with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 82,
-        name: "Camphene",
-        type: "organic",
-        tempMin: 50,
-        tempMax: 50,
-        latentHeat: 238,
-        description: "Camphene with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 842,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-        {
-                    id: 83,
-        name: "a-Nepthylamine",
-        type: "organic",
-        tempMin: 50,
-        tempMax: 50,
-        latentHeat: 93,
-        description: "a-Nepthylamine with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 84,
-        name: "O-Nitroaniline",
-        type: "organic",
-        tempMin: 50,
-        tempMax: 50,
-        latentHeat: 93,
-        description: "O-Nitroaniline with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 85,
-        name: "9-Heptadecanone",
-        type: "organic",
-        tempMin: 51,
-        tempMax: 51,
-        latentHeat: 213,
-        description: "9-Heptadecanone with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 86,
-        name: "Thymol",
-        type: "organic",
-        tempMin: 51.5,
-        tempMax: 51.5,
-        latentHeat: 115,
-        description: "Thymol with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 87,
-        name: "Methyl Behenate",
-        type: "organic",
-        tempMin: 52,
-        tempMax: 52,
-        latentHeat: 234,
-        description: "Methyl behenate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 88,
-        name: "Myristic Acid",
-        type: "organic",
-        tempMin: 52.2,
-        tempMax: 58,
-        latentHeat: "182.6–199",
-        description: "Myristic acid with specific thermal properties.",
-        heatCapacity: "862.2",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 89,
-        name: "Pentadecanoic Acid",
-        type: "organic",
-        tempMin: 52.5,
-        tempMax: 52.5,
-        latentHeat: 178,
-        description: "Pentadecanoic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 90,
-        name: "Diphenyl Amine",
-        type: "organic",
-        tempMin: 52.9,
-        tempMax: 52.9,
-        latentHeat: 107,
-        description: "Diphenyl amine with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 91,
-        name: "P-Dichlorobenzene",
-        type: "organic",
-        tempMin: 53.1,
-        tempMax: 53.1,
-        latentHeat: 121,
-        description: "P-Dichlorobenzene with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 92,
-        name: "N-Pentacosane",
-        type: "organic",
-        tempMin: 53.7,
-        tempMax: 53.7,
-        latentHeat: 164,
-        description: "N-Pentacosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 93,
-        name: "Oxolate",
-        type: "organic",
-        tempMin: 54.3,
-        tempMax: 54.3,
-        latentHeat: 178,
-        description: "Oxolate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 94,
-        name: "Tristearin",
-        type: "organic",
-        tempMin: 54.5,
-        tempMax: 54.5,
-        latentHeat: 191,
-        description: "Tristearin with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 95,
-        name: "Hypophosphoric Acid",
-        type: "organic",
-        tempMin: 55,
-        tempMax: 55,
-        latentHeat: 213,
-        description: "Hypophosphoric acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 96,
-        name: "O-Xylene Dichloride",
-        type: "organic",
-        tempMin: 55,
-        tempMax: 55,
-        latentHeat: 121,
-        description: "O-Xylene dichloride with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 97,
-        name: "Palmatic Acid",
-        type: "organic",
-        tempMin: 55,
-        tempMax: 55,
-        latentHeat: 163,
-        description: "Palmatic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 98,
-        name: "β Chloroacetic Acid",
-        type: "organic",
-        tempMin: 56,
-        tempMax: 56,
-        latentHeat: 147,
-        description: "β Chloroacetic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 99,
-        name: "Chloroacetic Acid",
-        type: "organic",
-        tempMin: 56,
-        tempMax: 56,
-        latentHeat: 130,
-        description: "Chloroacetic acid with specific thermal properties.",
-        heatCapacity: "1580",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 100,
-        name: "N-Hexacosane",
-        type: "organic",
-        tempMin: 56.3,
-        tempMax: 56.3,
-        latentHeat: 255,
-        description: "N-Hexacosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 101,
-        name: "Nitro Naphthalene",
-        type: "organic",
-        tempMin: 56.7,
-        tempMax: 56.7,
-        latentHeat: 103,
-        description: "Nitro naphthalene with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 102,
-        name: "Palmitic Acid",
-        type: "organic",
-        tempMin: 57.8,
-        tempMax: 61.8,
-        latentHeat: 185.4,
-        description: "Palmitic acid with specific thermal properties.",
-        heatCapacity: "850(1), 989 (s)",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "0.162",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 103,
-        name: "Heptaudecanoic Acid",
-        type: "organic",
-        tempMin: 60.6,
-        tempMax: 60.6,
-        latentHeat: 189,
-        description: "Heptaudecanoic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 104,
-        name: "a-Chloroacetic Acid",
-        type: "organic",
-        tempMin: 61.2,
-        tempMax: 61.2,
-        latentHeat: 130,
-        description: "a-Chloroacetic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 105,
-        name: "n-Octacosane",
-        type: "organic",
-        tempMin: 61.4,
-        tempMax: 61.4,
-        latentHeat: 134,
-        description: "n-Octacosane with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 106,
-        name: "Bee Wax",
-        type: "organic",
-        tempMin: 61.8,
-        tempMax: 61.8,
-        latentHeat: 177,
-        description: "Bee wax with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 950,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 107,
-        name: "Glycolic Acid",
-        type: "organic",
-        tempMin: 63,
-        tempMax: 63,
-        latentHeat: 109,
-        description: "Glycolic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 108,
-        name: "P-Bromophenol",
-        type: "organic",
-        tempMin: 63.5,
-        tempMax: 63.5,
-        latentHeat: 86,
-        description: "P-Bromophenol with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 109,
-        name: "Azobenzene",
-        type: "organic",
-        tempMin: 67.1,
-        tempMax: 67.1,
-        latentHeat: 121,
-        description: "Azobenzene with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 110,
-        name: "Acrylic Acid",
-        type: "organic",
-        tempMin: 68,
-        tempMax: 68,
-        latentHeat: 115,
-        description: "Acrylic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 111,
-        name: "Dintro Toluene (2,4)",
-        type: "organic",
-        tempMin: 70,
-        tempMax: 70,
-        latentHeat: 111,
-        description: "Dintro toluene (2,4) with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 112,
-        name: "Oxazoline Wax-TS 970",
-        type: "organic",
-        tempMin: 74,
-        tempMax: 74,
-        latentHeat: "NaN",
-        description: "Oxazoline wax-TS 970 with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 113,
-        name: "Arachic Acid",
-        type: "organic",
-        tempMin: 76.5,
-        tempMax: 76.5,
-        latentHeat: "NaN",
-        description: "Arachic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 114,
-        name: "Phenylacetic Acid",
-        type: "organic",
-        tempMin: 76.7,
-        tempMax: 76.7,
-        latentHeat: 102,
-        description: "Phenylacetic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 115,
-        name: "Thiosinamine",
-        type: "organic",
-        tempMin: 77,
-        tempMax: 77,
-        latentHeat: 140,
-        description: "Thiosinamine with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 116,
-        name: "Bromcamphor",
-        type: "organic",
-        tempMin: 77,
-        tempMax: 77,
-        latentHeat: 174,
-        description: "Bromcamphor with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1449,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 117,
-        name: "Benzylamine",
-        type: "organic",
-        tempMin: 78,
-        tempMax: 78,
-        latentHeat: 174,
-        description: "Benzylamine with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 118,
-        name: "Durene",
-        type: "organic",
-        tempMin: 79.3,
-        tempMax: 79.3,
-        latentHeat: 156,
-        description: "Durene with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 838,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 119,
-        name: "Acetamide",
-        type: "organic",
-        tempMin: 81,
-        tempMax: 81,
-        latentHeat: 241,
-        description: "Acetamide with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1159,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 120,
-        name: "Methyl Brombrenzoate",
-        type: "organic",
-        tempMin: 81,
-        tempMax: 81,
-        latentHeat: 126,
-        description: "Methyl brombrenzoate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 121,
-        name: "Alpha Napthol",
-        type: "organic",
-        tempMin: 96,
-        tempMax: 96,
-        latentHeat: 163,
-        description: "Alpha napthol with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1095,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-        {
-                    id: 122,
-        name: "Glutaric Acid",
-        type: "organic",
-        tempMin: 97.5,
-        tempMax: 97.5,
-        latentHeat: 156,
-        description: "Glutaric acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1429,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 123,
-        name: "p-Xylene Dichloride",
-        type: "organic",
-        tempMin: 100,
-        tempMax: 100,
-        latentHeat: 138.7,
-        description: "p-Xylene dichloride with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 124,
-        name: "Methyl Fumarate",
-        type: "organic",
-        tempMin: 102,
-        tempMax: 102,
-        latentHeat: 242,
-        description: "Methyl fumarate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1045,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 125,
-        name: "Catechol",
-        type: "organic",
-        tempMin: 104.3,
-        tempMax: 104.3,
-        latentHeat: 207,
-        description: "Catechol with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1370,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 126,
-        name: "Quinone",
-        type: "organic",
-        tempMin: 115,
-        tempMax: 115,
-        latentHeat: 171,
-        description: "Quinone with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1318,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 127,
-        name: "Acetanilide",
-        type: "organic",
-        tempMin: 115,
-        tempMax: 115,
-        latentHeat: 142,
-        description: "Acetanilide with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1210,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 128,
-        name: "Erythritol",
-        type: "organic",
-        tempMin: 117.7,
-        tempMax: 117.7,
-        latentHeat: 339.8,
-        description: "Erythritol with specific thermal properties.",
-        heatCapacity: "2.61(l), 2.25(s)",
-        density: "1300(l), 1480(s)",
-        expansivity: "NaN",
-        energyDensity: "0.326(l), 0.733(s)",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 129,
-        name: "Succinic Anhydride",
-        type: "organic",
-        tempMin: 119,
-        tempMax: 119,
-        latentHeat: 204,
-        description: "Succinic anhydride with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1104,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 130,
-        name: "Valporic Acid",
-        type: "organic",
-        tempMin: 120,
-        tempMax: 120,
-        latentHeat: "NaN",
-        description: "Valporic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 131,
-        name: "Benzoic Acid",
-        type: "organic",
-        tempMin: 121.7,
-        tempMax: 121.7,
-        latentHeat: 142.8,
-        description: "Benzoic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1266,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 132,
-        name: "Stibene",
-        type: "organic",
-        tempMin: 124,
-        tempMax: 124,
-        latentHeat: 167,
-        description: "Stibene with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1164,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 133,
-        name: "Benzamide",
-        type: "organic",
-        tempMin: 127.2,
-        tempMax: 127.2,
-        latentHeat: 169.4,
-        description: "Benzamide with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1341,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 134,
-        name: "Phenacetin",
-        type: "organic",
-        tempMin: 137,
-        tempMax: 137,
-        latentHeat: 136.7,
-        description: "Phenacetin with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 135,
-        name: "Acetyl-p-toluidene",
-        type: "organic",
-        tempMin: 146,
-        tempMax: 146,
-        latentHeat: 180,
-        description: "Acetyl-p-toluidene with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 136,
-        name: "Phenylhdrazone Benzaldehyde",
-        type: "organic",
-        tempMin: 155,
-        tempMax: 155,
-        latentHeat: 134.8,
-        description: "Phenylhdrazone benzaldehyde with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1443,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 137,
-        name: "Salicylic Acid",
-        type: "organic",
-        tempMin: 159,
-        tempMax: 159,
-        latentHeat: 199,
-        description: "Salicylic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 138,
-        name: "Benzanilide",
-        type: "organic",
-        tempMin: 161,
-        tempMax: 161,
-        latentHeat: 162,
-        description: "Benzanilide with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 139,
-        name: "O-Mannitol",
-        type: "organic",
-        tempMin: 166,
-        tempMax: 166,
-        latentHeat: 294,
-        description: "O-Mannitol with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1489,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 140,
-        name: "Hydroquinone",
-        type: "organic",
-        tempMin: 172.4,
-        tempMax: 172.4,
-        latentHeat: 258,
-        description: "Hydroquinone with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: 1358,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    {
-        id: 141,
-        name: "p-Aminobenzoic Acid",
-        type: "organic",
-        tempMin: 187,
-        tempMax: 187,
-        latentHeat: 153,
-        description: "p-Aminobenzoic acid with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN"
-    },
-    // Salt Hydrate Data
-    {
-        id: 142,
-        name: "Lithium Chlorate Trihydrate",
-        type: "salt hydrate",
-        tempMin: 8,
-        tempMax: 8,
-        latentHeat: "NaN",
-        description: "Lithium chlorate trihydrate with specific thermal properties.",
-        heatCapacity: 253,
-        density: 1720,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "LiClO₃.3H₂O"
-    },
-    {
-        id: 143,
-        name: "Zinc Chloride Trihydrate",
-        type: "salt hydrate",
-        tempMin: 10,
-        tempMax: 10,
-        latentHeat: "NaN",
-        description: "Zinc chloride trihydrate with specific thermal properties.",
-        heatCapacity: "NaN",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "ZnCl₂.3H₂O"
-    },
-    {
-        id: 144,
-        name: "Ammonium Chloride Sodium Sulphate Decahydrate",
-        type: "salt hydrate",
-        tempMin: 11,
-        tempMax: 11,
-        latentHeat: "NaN",
-        description: "Ammonium chloride sodium sulphate decahydrate with specific thermal properties.",
-        heatCapacity: 163,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "NH₄Cl.Na₂SO₄.10H₂O"
-    },
-    {
-        id: 145,
-        name: "Dipotassium Hydrogen Phosphate Hexahydrate",
-        type: "salt hydrate",
-        tempMin: 14,
-        tempMax: 14,
-        latentHeat: "NaN",
-        description: "Dipotassium hydrogen phosphate hexahydrate with specific thermal properties.",
-        heatCapacity: 109,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "K₂HPO₄.6H₂O"
-    },
-    {
-        id: 146,
-        name: "Sodium Chloride Sodium Sulphate Decahydrate",
-        type: "salt hydrate",
-        tempMin: 18,
-        tempMax: 18,
-        latentHeat: "NaN",
-        description: "Sodium chloride sodium sulphate decahydrate with specific thermal properties.",
-        heatCapacity: 286,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "NaCl.Na₂SO₄.10H₂O"
-    },
-    {
-        id: 147,
-        name: "Potassium Fluoride Tetrahydrate",
-        type: "salt hydrate",
-        tempMin: 18,
-        tempMax: 18,
-        latentHeat: "NaN",
-        description: "Potassium fluoride tetrahydrate with specific thermal properties.",
-        heatCapacity: 330,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "KF.4H₂O"
-    },
-    {
-        id: 148,
-        name: "Dipotassium Hydrogen Phosphate Tetrahydrate",
-        type: "salt hydrate",
-        tempMin: 18.5,
-        tempMax: 18.5,
-        latentHeat: "1.84(s), 2.39(l)",
-        description: "Dipotassium hydrogen phosphate tetrahydrate with specific thermal properties.",
-        heatCapacity: 231,
-        density: "1447(l), 1480(s)",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "K₂HPO₄.4H₂O"
-    },
-    {
-        id: 149,
-        name: "Iron Bromide Hexahydrate",
-        type: "salt hydrate",
-        tempMin: 21,
-        tempMax: 21,
-        latentHeat: "NaN",
-        description: "Iron bromide hexahydrate with specific thermal properties.",
-        heatCapacity: 105,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "FeBr₃.6H₂O"
-    },
-    {
-        id: 150,
-        name: "Manganese Nitrate Hexahydrate",
-        type: "salt hydrate",
-        tempMin: 25.5,
-        tempMax: 25.5,
-        latentHeat: "NaN",
-        description: "Manganese nitrate hexahydrate with specific thermal properties.",
-        heatCapacity: "125.9-148",
-        density: "1738(s), 1728(l)",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "Mn(NO₃)₂.6H₂O"
-    },
-    {
-        id: 151,
-        name: "Lithium Metaborate Octahydrate",
-        type: "salt hydrate",
-        tempMin: 25.7,
-        tempMax: 25.7,
-        latentHeat: "NaN",
-        description: "Lithium metaborate octahydrate with specific thermal properties.",
-        heatCapacity: 289,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "LiBO₂.8H₂O"
-    },
-    {
-        id: 152,
-        name: "Calcium Chloride Hexahydrate",
-        type: "salt hydrate",
-        tempMin: 29,
-        tempMax: 30,
-        latentHeat: "NaN",
-        description: "Calcium chloride hexahydrate with specific thermal properties.",
-        heatCapacity: "170-192",
-        density: "1802(s), 1562(l)",
-        expansivity: "NaN",
-        energyDensity: "1.008(s), 0.561(l)",
-        thermalConductivity: "CaCl₂.6H₂O"
-    },
-    {
-        id: 153,
-        name: "Calcium Chloride Dodecahydrate",
-        type: "salt hydrate",
-        tempMin: 29.8,
-        tempMax: 29.8,
-        latentHeat: "1.4(s), 2.2(l)",
-        description: "Calcium chloride dodecahydrate with specific thermal properties.",
-        heatCapacity: 174,
-        density: "1710(s), 1530(s)",
-        expansivity: "NaN",
-        energyDensity: "1.09(s), 0.53(l)",
-        thermalConductivity: "CaCl₂.12H₂O"
-    },
-    {
-        id: 154,
-        name: "Lithium Nitrate Trihydrate",
-        type: "salt hydrate",
-        tempMin: 30,
-        tempMax: 30,
-        latentHeat: "NaN",
-        description: "Lithium nitrate trihydrate with specific thermal properties.",
-        heatCapacity: "189-296",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "LiNO₃.3H₂O"
-    },
-    {
-        id: 155,
-        name: "Lithium Nitrate Dihydrate",
-        type: "salt hydrate",
-        tempMin: 30,
-        tempMax: 30,
-        latentHeat: "NaN",
-        description: "Lithium nitrate dihydrate with specific thermal properties.",
-        heatCapacity: 296,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "LiNO₃.2H₂O"
-    },
-    {
-        id: 156,
-        name: "Sodium Sulphate Decahydrate",
-        type: "salt hydrate",
-        tempMin: 32,
-        tempMax: 32,
-        latentHeat: 2,
-        description: "Sodium sulphate decahydrate with specific thermal properties.",
-        heatCapacity: "251-254",
-        density: "1485(s)",
-        expansivity: "NaN",
-        energyDensity: "0.544",
-        thermalConductivity: "Na₂SO₄.10H₂O"
-    },
-    {
-        id: 157,
-        name: "Sodium Carbonate Decahydrate",
-        type: "salt hydrate",
-        tempMin: 32,
-        tempMax: 32,
-        latentHeat: "1.92(s), 3.26(l)",
-        description: "Sodium carbonate decahydrate with specific thermal properties.",
-        heatCapacity: 267,
-        density: 830,
-        expansivity: "NaN",
-        energyDensity: "0.514(s), 0.224(l)",
-        thermalConductivity: "Na₂CO₃.10H₂O"
-    },
-    {
-        id: 158,
-        name: "Iron Potassium Alum",
-        type: "salt hydrate",
-        tempMin: 33,
-        tempMax: 33,
-        latentHeat: "NaN",
-        description: "Iron potassium alum with specific thermal properties.",
-        heatCapacity: 173,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaN",
-        chemicalFormula: "KFe(SO₄)₂.12H₂O"
-    },
-    {
-        id: 159,
-        name: "Calcium Bromide Hexahydrate",
-        type: "salt hydrate",
-        tempMin: 34,
-        tempMax: 34,
-        latentHeat: "NaN",
-        description: "Calcium bromide hexahydrate with specific thermal properties.",
-        heatCapacity: "115-138",
-        density: "2194(s), 1956(l)",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "CaBr₂.6H₂O"
-    },
-    {
-        id: 160,
-        name: "Lithium Bromide Dihydrate",
-        type: "salt hydrate",
-        tempMin: 34,
-        tempMax: 34,
-        latentHeat: "NaN",
-        description: "Lithium bromide dihydrate with specific thermal properties.",
-        heatCapacity: 124,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "NaBr.2H₂O"
-    },
-    {
-        id: 161,
-        name: "Dipotassium Hydrogen Phosphate Dodecahydrate",
-        type: "salt hydrate",
-        tempMin: 35,
-        tempMax: 40,
-        latentHeat: "NaN",
-        description: "Dipotassium hydrogen phosphate dodecahydrate with specific thermal properties.",
-        heatCapacity: "256-281",
-        density: 1522,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Na₂HPO₄.12H₂O"
-    },
-    {
-        id: 162,
-        name: "Zinc Nitrate Hexahydrate",
-        type: "salt hydrate",
-        tempMin: 36,
-        tempMax: 36,
-        latentHeat: "NaN",
-        description: "Zinc nitrate hexahydrate with specific thermal properties.",
-        heatCapacity: "134-147",
-        density: "1937(s), 1828(l)",
-        expansivity: "NaN",
-        energyDensity: "0.464",
-        thermalConductivity: "Zn(NO₃)₂.6H₂O"
-    },
-    {
-        id: 163,
-        name: "Manganese Nitrate Tetrahydrate",
-        type: "salt hydrate",
-        tempMin: 37,
-        tempMax: 37,
-        latentHeat: "NaN",
-        description: "Manganese nitrate tetrahydrate with specific thermal properties.",
-        heatCapacity: 115,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Mn(NO₃)₂.4H₂O"
-    },
-    {
-        id: 164,
-        name: "Iron Chloride Hexahydrate",
-        type: "salt hydrate",
-        tempMin: 37,
-        tempMax: 37,
-        latentHeat: "NaN",
-        description: "Iron chloride hexahydrate with specific thermal properties.",
-        heatCapacity: 223,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "FeCl₃.6H₂O"
-    },
-    {
-        id: 165,
-        name: "Calcium Chloride Tetrahydrate",
-        type: "salt hydrate",
-        tempMin: 39,
-        tempMax: 39,
-        latentHeat: "NaN",
-        description: "Calcium chloride tetrahydrate with specific thermal properties.",
-        heatCapacity: 158,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "CaCl₂.4H₂O"
-    },
-    {
-        id: 166,
-        name: "Copper Sulphate Heptahydrate",
-        type: "salt hydrate",
-        tempMin: 40.7,
-        tempMax: 40.7,
-        latentHeat: "NaN",
-        description: "Copper sulphate heptahydrate with specific thermal properties.",
-        heatCapacity: 171,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "CuSO₄.7H₂O"
-    },
-    {
-        id: 167,
-        name: "Potassium Fluoride Dihydrate",
-        type: "salt hydrate",
-        tempMin: 42,
-        tempMax: 42,
-        latentHeat: "NaN",
-        description: "Potassium fluoride dihydrate with specific thermal properties.",
-        heatCapacity: "162-266",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "KF.2H₂O"
-    },
-    {
-        id: 168,
-        name: "Magnesium Iodide Octahydrate",
-        type: "salt hydrate",
-        tempMin: 42,
-        tempMax: 42,
-        latentHeat: "NaN",
-        description: "Magnesium iodide octahydrate with specific thermal properties.",
-        heatCapacity: 133,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "MgI₂.8H₂O"
-    },
-    {
-        id: 169,
-        name: "Calcium Iodide Hexahydrate",
-        type: "salt hydrate",
-        tempMin: 42,
-        tempMax: 42,
-        latentHeat: "NaN",
-        description: "Calcium iodide hexahydrate with specific thermal properties.",
-        heatCapacity: 162,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "CaI₂.6H₂O"
-    },
-    {
-        id: 170,
-        name: "Calcium Nitrate Tetrahydrate",
-        type: "salt hydrate",
-        tempMin: 43,
-        tempMax: 47,
-        latentHeat: "NaN",
-        description: "Calcium nitrate tetrahydrate with specific thermal properties.",
-        heatCapacity: "106-140",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Ca(NO₃)₂.4H₂O"
-    },
-    {
-        id: 171,
-        name: "Zinc Nitrate Tetrahydrate",
-        type: "salt hydrate",
-        tempMin: 45,
-        tempMax: 45,
-        latentHeat: "NaN",
-        description: "Zinc nitrate tetrahydrate with specific thermal properties.",
-        heatCapacity: 110,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Zn(NO₃)₂.4H₂O"
-    },
-    {
-        id: 172,
-        name: "Tripotassium Phosphate Tribasic Heptahydrate",
-        type: "salt hydrate",
-        tempMin: 45,
-        tempMax: 45,
-        latentHeat: "NaN",
-        description: "Tripotassium phosphate tribasic heptahydrate with specific thermal properties.",
-        heatCapacity: 145,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "K₃PO₄.7H₂O"
-    },
-    {
-        id: 173,
-        name: "Dipotassium Hydrogen Phosphate Heptahydrate",
-        type: "salt hydrate",
-        tempMin: 45,
-        tempMax: 45,
-        latentHeat: "NaN",
-        description: "Dipotassium hydrogen phosphate heptahydrate with specific thermal properties.",
-        heatCapacity: 145,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "K₂HPO₄.7H₂O"
-    },
-    {
-        id: 174,
-        name: "Iron Nitrate Nonahydrate",
-        type: "salt hydrate",
-        tempMin: 47,
-        tempMax: 47,
-        latentHeat: "NaN",
-        description: "Iron nitrate nonahydrate with specific thermal properties.",
-        heatCapacity: "155-190",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Fe(NO₃)₃.9H₂O"
-    },
-    {
-        id: 175,
-        name: "Magnesium Nitrate Tetrahydrate",
-        type: "salt hydrate",
-        tempMin: 47,
-        tempMax: 47,
-        latentHeat: "NaN",
-        description: "Magnesium nitrate tetrahydrate with specific thermal properties.",
-        heatCapacity: 142,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Mg(NO₃)₂.4H₂O"
-    },
-    {
-        id: 176,
-        name: "Sodium Sulphite Pentahydrate",
-        type: "salt hydrate",
-        tempMin: 48,
-        tempMax: 48,
-        latentHeat: "NaN",
-        description: "Sodium sulphite pentahydrate with specific thermal properties.",
-        heatCapacity: 168,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Na₂SiO₃.5H₂O"
-    },
-    {
-        id: 177,
-        name: "Sodium Sulphite Tetrahydrate",
-        type: "salt hydrate",
-        tempMin: 48,
-        tempMax: 48,
-        latentHeat: "NaN",
-        description: "Sodium sulphite tetrahydrate with specific thermal properties.",
-        heatCapacity: 168,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Na₂SiO₃.4H₂O"
-    },
-    {
-        id: 178,
-        name: "Dipotassium Hydrogen Phosphate Heptahydrate",
-        type: "salt hydrate",
-        tempMin: 48,
-        tempMax: 48,
-        latentHeat: "NaN",
-        description: "Dipotassium hydrogen phosphate heptahydrate with specific thermal properties.",
-        heatCapacity: "135-170",
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Na₂HPO₄.7H₂O"
-    },
-    {
-        id: 179,
-        name: "Sodium Thiosulfate Pentahydrate",
-        type: "salt hydrate",
-        tempMin: 48,
-        tempMax: 48,
-        latentHeat: "NaN",
-        description: "Sodium thiosulfate pentahydrate with specific thermal properties.",
-        heatCapacity: 209,
-        density: 1600,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Na₂S₂O₃.5H₂O"
-    },
-    {
-        id: 180,
-        name: "Dipotassium Hydrogen Phosphate Trihydrate",
-        type: "salt hydrate",
-        tempMin: 48,
-        tempMax: 48,
-        latentHeat: "NaN",
-        description: "Dipotassium hydrogen phosphate trihydrate with specific thermal properties.",
-        heatCapacity: 99,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "K₂HPO₄.3H₂O"
-    },
-    {
-        id: 181,
-        name: "Magnesium Sulphate Heptahydrate",
-        type: "salt hydrate",
-        tempMin: 48.5,
-        tempMax: 48.5,
-        latentHeat: "NaN",
-        description: "Magnesium sulphate heptahydrate with specific thermal properties.",
-        heatCapacity: 202,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "MgSO₄.7H₂O"
-    },
-    {
-        id: 182,
-        name: "Calcium Nitrate Trihydrate",
-        type: "salt hydrate",
-        tempMin: 51,
-        tempMax: 51,
-        latentHeat: "NaN",
-        description: "Calcium nitrate trihydrate with specific thermal properties.",
-        heatCapacity: 104,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Ca(NO₃)₂.3H₂O"
-    },
-    {
-        id: 183,
-        name: "Sodium Nitrate Hexahydrate",
-        type: "salt hydrate",
-        tempMin: 53,
-        tempMax: 53,
-        latentHeat: "NaN",
-        description: "Sodium nitrate hexahydrate with specific thermal properties.",
-        heatCapacity: 158,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Na(NO₃)₂.6H₂O"
-    },
-    {
-        id: 184,
-        name: "Zinc Nitrate Dihydrate",
-        type: "salt hydrate",
-        tempMin: 55,
-        tempMax: 55,
-        latentHeat: "NaN",
-        description: "Zinc nitrate dihydrate with specific thermal properties.",
-        heatCapacity: 68,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Zn(NO₃)₂.2H₂O"
-    },
-    {
-        id: 185,
-        name: "Iron Chloride Dihydrate",
-        type: "salt hydrate",
-        tempMin: 56,
-        tempMax: 56,
-        latentHeat: "NaN",
-        description: "Iron chloride dihydrate with specific thermal properties.",
-        heatCapacity: 90,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "FeCl₃.2H₂O"
-    },
-    {
-        id: 186,
-        name: "Cobaltous Nitrate Hexahydrate",
-        type: "salt hydrate",
-        tempMin: 57,
-        tempMax: 57,
-        latentHeat: "NaN",
-        description: "Cobaltous nitrate hexahydrate with specific thermal properties.",
-        heatCapacity: 115,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Co(NO₃)₂.6H₂O"
-    },
-    {
-        id: 187,
-        name: "Nick Nitrate Hexahydrate",
-        type: "salt hydrate",
-        tempMin: 57,
-        tempMax: 57,
-        latentHeat: "NaN",
-        description: "Nick nitrate hexahydrate with specific thermal properties.",
-        heatCapacity: 169,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "Ni(NO₃)₂.6H₂O"
-    },
-    {
-        id: 188,
-        name: "Manganese Chloride Tetrahydrate",
-        type: "salt hydrate",
-        tempMin: 58,
-        tempMax: 58,
-        latentHeat: "NaN",
-        description: "Manganese chloride tetrahydrate with specific thermal properties.",
-        heatCapacity: 151,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "MnCl₂.4H₂O"
-    },
-    {
-        id: 189,
-        name: "Sodium Acetate Trihydrate",
-        type: "salt hydrate",
-        tempMin: 58,
-        tempMax: 58,
-        latentHeat: "NaN",
-        description: "Sodium acetate trihydrate with specific thermal properties.",
-        heatCapacity: 270-290,
-        density: 1450,
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "CH₃COONa.3H₂O"
-    },
-    {
-        id: 190,
-        name: "Lithium Acetate Dihydrate",
-        type: "salt hydrate",
-        tempMin: 58,
-        tempMax: 58,
-        latentHeat: "NaN",
-        description: "Lithium acetate dihydrate with specific thermal properties.",
-        heatCapacity: 251-377,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "LiC₂H₃O₂.2H₂O"
-    },
-    {
-        id: 191,
-        name: "Magnesium Chloride Tetrahydrate",
-        type: "salt hydrate",
-        tempMin: 58,
-        tempMax: 58,
-        latentHeat: "NaN",
-        description: "Magnesium chloride tetrahydrate with specific thermal properties.",
-        heatCapacity: 178,
-        density: "NaN",
-        expansivity: "NaN",
-        energyDensity: "NaN",
-        thermalConductivity: "MgCl₂.4H₂O"
-    },
-   
-   
+            {
+                id: 1,
+                name: "Paraffin Wax",
+                type: "Organic",
+                tempMin: 40,
+                tempMax: 60,
+                heatOfFusion: 200,
+                heatCapacitySolid: 2.1,
+                heatCapacityLiquid: 2.5,
+                densitySolid: 900,
+                densityLiquid: 800,
+                expansivity: 0.5,
+                energyDensity: 180
+            },
+            {
+                id: 2,
+                name: "Sodium Acetate Trihydrate",
+                type: "Salt Hydrate",
+                tempMin: 58,
+                tempMax: 58,
+                heatOfFusion: 264,
+                heatCapacitySolid: 2.7,
+                heatCapacityLiquid: 3.0,
+                densitySolid: 1450,
+                densityLiquid: 1200,
+                expansivity: 0.6,
+                energyDensity: 320
+            },
+            {
+                id: 3,
+                name: "Calcium Nitrate Tetrahydrate",
+                type: "Salt Hydrate",
+                tempMin: 43,
+                tempMax: 47,
+                heatOfFusion: 174,
+                heatCapacitySolid: 1.8,
+                heatCapacityLiquid: 2.2,
+                densitySolid: 1500,
+                densityLiquid: 1300,
+                expansivity: 0.4,
+                energyDensity: 250
+            },
+            {
+                id: 4,
+                name: "Magnesium Sulphate Heptahydrate",
+                type: "Salt Hydrate",
+                tempMin: 48,
+                tempMax: 48,
+                heatOfFusion: 251,
+                heatCapacitySolid: 2.0,
+                heatCapacityLiquid: 2.4,
+                densitySolid: 1500,
+                densityLiquid: 1300,
+                expansivity: 0.5,
+                energyDensity: 300
+            },
+            {
+                id: 5,
+                name: "Potassium Chloride Dihydrate",
+                type: "Salt Hydrate",
+                tempMin: 25,
+                tempMax: 25,
+                heatOfFusion: 200,
+                heatCapacitySolid: 1.5,
+                heatCapacityLiquid: 1.8,
+                densitySolid: 1700,
+                densityLiquid: 1500,
+                expansivity: 0.3,
+                energyDensity: 220
+            },
+            {
+                id: 6,
+                name: "Lithium Bromide Dihydrate",
+                type: "Salt Hydrate",
+                tempMin: 34,
+                tempMax: 34,
+                heatOfFusion: 180,
+                heatCapacitySolid: 1.6,
+                heatCapacityLiquid: 2.0,
+                densitySolid: 2000,
+                densityLiquid: 1800,
+                expansivity: 0.4,
+                energyDensity: 260
+            },
+            {
+                id: 7,
+                name: "Eutectic Mixture",
+                type: "Eutectic",
+                tempMin: 20,
+                tempMax: 30,
+                heatOfFusion: 150,
+                heatCapacitySolid: 2.0,
+                heatCapacityLiquid: 2.5,
+                densitySolid: 950,
+                densityLiquid: 850,
+                expansivity: 0.4,
+                energyDensity: 200
+            },
+            {
+                id: 8,
+                name: "Sodium Sulfate Decahydrate",
+                type: "Salt Hydrate",
+                tempMin: 32,
+                tempMax: 32,
+                heatOfFusion: 251,
+                heatCapacitySolid: 2.1,
+                heatCapacityLiquid: 2.4,
+                densitySolid: 1500,
+                densityLiquid: 1300,
+                expansivity: 0.5,
+                energyDensity: 300
+            },
+            {
+                id: 9,
+                name: "Stearic Acid",
+                type: "Organic",
+                tempMin: 50,
+                tempMax: 70,
+                heatOfFusion: 200,
+                heatCapacitySolid: 2.5,
+                heatCapacityLiquid: 2.9,
+                densitySolid: 800,
+                densityLiquid: 750,
+                expansivity: 0.6,
+                energyDensity: 180
+            },
+            {
+                id: 10,
+                name: "Sorbitol",
+                type: "Organic",
+                tempMin: 60,
+                tempMax: 80,
+                heatOfFusion: 210,
+                heatCapacitySolid: 2.3,
+                heatCapacityLiquid: 2.7,
+                densitySolid: 900,
+                densityLiquid: 850,
+                expansivity: 0.5,
+                energyDensity: 190
+            }
         ];
 
         // DOM Elements
-        const pcmContainer = document.getElementById('pcmContainer');
+        const pcmTableBody = document.getElementById('pcmTableBody');
         const searchInput = document.getElementById('searchInput');
-        const typeCheckboxes = document.querySelectorAll('.pcm-type');
         const tempMinInput = document.getElementById('tempMin');
         const tempMaxInput = document.getElementById('tempMax');
-        const latentHeatInput = document.getElementById('latentHeat');
+        const latentHeatMinInput = document.getElementById('latentHeatMin');
+        const latentHeatMaxInput = document.getElementById('latentHeatMax');
         const applyFiltersBtn = document.getElementById('applyFilters');
         const sortBy = document.getElementById('sortBy');
         const sortBtn = document.getElementById('sortBtn');
         const noResults = document.getElementById('noResults');
-        const visitorCount = document.getElementById('visitorCount');
+        const typeCheckboxes = document.querySelectorAll('.pcm-type');
+        const pcmCount = document.getElementById('pcmCount');
 
-        // Initialize visitor count (simulated)
-        let visitors = localStorage.getItem('pcmLibraryVisitors') || 0;
-        visitors = parseInt(visitors) + 1;
-        localStorage.setItem('pcmLibraryVisitors', visitors);
-        visitorCount.textContent = visitors.toLocaleString();
-
-        // Display PCM list items
-        // Display PCM list items
+        // Display PCM list items in table format
         function displayPCMs(pcms) {
-            pcmContainer.innerHTML = '';
-            const pcmCountElement = document.getElementById('pcmCount');
+            pcmTableBody.innerHTML = '';
             noResults.classList.add('hidden');
 
-            // Always show count of matched PCMs
-            pcmCountElement.textContent = `${pcms.length} PCM${pcms.length !== 1 ? 's' : ''} matched`;
-            
+            // Update the PCM count
+            pcmCount.textContent = `${pcms.length} PCMs found`;
+
             // If no PCMs matched filters or no filters are applied, show message
             if (!pcms || pcms.length === 0) {
                 noResults.classList.remove('hidden');
-                pcmContainer.innerHTML = '<div class="text-center py-20 text-gray-500">No PCMs match your filters</div>';
                 return;
             }
             
             pcms.forEach(pcm => {
-                const listItem = document.createElement('div');
-                listItem.className = 'pcm-list-item';
-                
-                listItem.innerHTML = `
-                    <h3 class="text-lg font-bold text-gray-800">${pcm.name}</h3>
-                    <span class="text-xs text-gray-500">${pcm.type.charAt(0).toUpperCase() + pcm.type.slice(1)}</span>
-                    <p class="text-gray-600 text-sm mb-2">${pcm.description}</p>
-                    <div class="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                            <span class="font-medium">Temperature:</span>
-                            <span>${pcm.tempMin}°C - ${pcm.tempMax}°C</span>
-                        </div>
-                        <div>
-                            <span class="font-medium">Latent Heat:</span>
-                            <span>${pcm.latentHeat} kJ/kg</span>
-                        </div>
-                    </div>
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="py-2 px-4 border-b">${pcm.name}</td>
+                    <td class="py-2 px-4 border-b">${pcm.type}</td>
+                    <td class="py-2 px-4 border-b">${pcm.tempMin} - ${pcm.tempMax} °C</td>
+                    <td class="py-2 px-4 border-b">${pcm.heatOfFusion} kJ/kg</td>
+                    <td class="py-2 px-4 border-b">${pcm.heatCapacitySolid} kJ/kgK</td>
+                    <td class="py-2 px-4 border-b">${pcm.heatCapacityLiquid} kJ/kgK</td>
+                    <td class="py-2 px-4 border-b">${pcm.densitySolid} kg/m³</td>
+                    <td class="py-2 px-4 border-b">${pcm.densityLiquid} kg/m³</td>
+                    <td class="py-2 px-4 border-b">${pcm.expansivity} x10⁻⁶ m³/m³</td>
+                    <td class="py-2 px-4 border-b">${pcm.energyDensity} kJ/m³</td>
                 `;
-                
-                pcmContainer.appendChild(listItem);
+                pcmTableBody.appendChild(row);
             });
         }
 
         // Filter PCMS based on search and filter criteria
         function filterPCMS() {
             const searchTerm = searchInput.value.toLowerCase();
+            const minTemp = parseFloat(tempMinInput.value) || -Infinity;
+            const maxTemp = parseFloat(tempMaxInput.value) || Infinity;
+            const minLatentHeat = parseFloat(latentHeatMinInput.value) || -Infinity;
+            const maxLatentHeat = parseFloat(latentHeatMaxInput.value) || Infinity;
+
             const selectedTypes = Array.from(typeCheckboxes)
                 .filter(checkbox => checkbox.checked)
                 .map(checkbox => checkbox.value);
-            
-            const minTemp = parseFloat(tempMinInput.value) || -Infinity;
-            const maxTemp = parseFloat(tempMaxInput.value) || Infinity;
-            const minLatentHeat = parseFloat(latentHeatInput.value) || 0;
-
-            // Show all data when no search/filters applied
-            if (selectedTypes.length === typeCheckboxes.length && 
-                searchTerm === '' && 
-                minTemp === -Infinity && 
-                maxTemp === Infinity && 
-                minLatentHeat === 0) {
-                return pcmData; 
-            }
-            
-            if (selectedTypes.length === 0) {
-                return [];
-            }
 
             return pcmData.filter(pcm => {
-                const matchesSearch = pcm.name.toLowerCase().includes(searchTerm) || 
-                                    pcm.description.toLowerCase().includes(searchTerm);
-                const matchesType = selectedTypes.includes(pcm.type);
-                const matchesTemp = (pcm.tempMin >= minTemp) && (pcm.tempMax <= maxTemp) && 
-                                 (pcm.tempMax >= minTemp) && (pcm.tempMin <= maxTemp);
-                const matchesHeat = pcm.latentHeat >= minLatentHeat;
-                
-                return matchesSearch && matchesType && matchesTemp && matchesHeat;
+                const matchesSearch = pcm.name.toLowerCase().includes(searchTerm);
+                const matchesTemp = (pcm.tempMin >= minTemp && pcm.tempMax <= maxTemp);
+                const matchesHeat = (pcm.heatOfFusion >= minLatentHeat && pcm.heatOfFusion <= maxLatentHeat);
+                const matchesType = selectedTypes.length === 0 || selectedTypes.includes(pcm.type);
+
+                return matchesSearch && matchesTemp && matchesHeat && matchesType;
             });
         }
 
@@ -2880,7 +378,7 @@ Would you like me to explain any of these changes in more detail?Here is the upd
                     case 'temp':
                         return a.tempMin - b.tempMin;
                     case 'heat':
-                        return b.latentHeat - a.latentHeat;
+                        return b.heatOfFusion - a.heatOfFusion;
                     default:
                         return 0;
                 }
@@ -2896,35 +394,11 @@ Would you like me to explain any of these changes in more detail?Here is the upd
         sortBtn.addEventListener('click', () => {
             const filtered = filterPCMS();
             const sorted = sortPCMS(filtered, sortBy.value);
-            if(sorted.length > 0) {
-                displayPCMs(sorted);
-            } else {
-                pcmContainer.innerHTML = '<div class="text-center py-20 text-gray-500">No PCMs match your filters</div>';
-                noResults.classList.remove('hidden');
-            }
-        });
-
-        // Type filter change handler
-        typeCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', () => {
-                const filtered = filterPCMS();
-                displayPCMs(sortPCMS(filtered, sortBy.value));
-            });
+            displayPCMs(sorted);
         });
 
         // Initial display 
-        pcmContainer.innerHTML = '<div class="text-center py-20 text-gray-500">Apply filters to view PCM data</div>';
-        document.getElementById('pcmCount').textContent = '0 PCMs matched';
-
-        // Search with debounce
-        let searchTimer;
-        searchInput.addEventListener('input', () => {
-            clearTimeout(searchTimer);
-            searchTimer = setTimeout(() => {
-                const filtered = filterPCMS();
-                displayPCMs(sortPCMS(filtered, sortBy.value));
-            }, 300);
-        });
+        displayPCMs(pcmData);
     </script>
 </body>
 </html>
