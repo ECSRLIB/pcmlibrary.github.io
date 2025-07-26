@@ -2,215 +2,361 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PCM Library | Sample</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PCMLib - Phase Change Material Database</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #6e46af 0%, #3a7bd5 50%, #00d2ff 100%);
+    }
+    .card-hover {
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar-link {
+      transition: all 0.3s;
+    }
+    .sidebar-link:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-left: 4px solid white;
+    }
+    #data-table {
+      min-width: 1200px;
+    }
+    .modal {
+      transition: all 0.3s ease-out;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .modal.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    #phone {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    #send-otp {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      white-space: nowrap;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 p-6">
-  <div class="max-w-7xl mx-auto">
-    <h1 class="text-3xl font-bold mb-4 text-center">Phase Change Material Library</h1>
+<body class="bg-gray-50 min-h-screen">
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      <input type="text" id="searchInput" placeholder="Search by name..." class="border p-2 rounded" />
-      <input type="number" id="tempMin" placeholder="Min Temp (°C)" class="border p-2 rounded" />
-      <input type="number" id="tempMax" placeholder="Max Temp (°C)" class="border p-2 rounded" />
-      <input type="number" id="latentHeatMin" placeholder="Min Heat (kJ/kg)" class="border p-2 rounded" />
-      <input type="number" id="latentHeatMax" placeholder="Max Heat (kJ/kg)" class="border p-2 rounded" />
-      <select id="sortBy" class="border p-2 rounded">
-        <option value="name">Sort by Name</option>
-        <option value="temp">Sort by Temperature</option>
-        <option value="heat">Sort by Heat of Fusion</option>
-      </select>
-      <button id="applyFilters" class="bg-blue-500 text-white px-4 py-2 rounded">Apply Filters</button>
-      <button id="sortBtn" class="bg-green-500 text-white px-4 py-2 rounded">Sort</button>
-    </div>
-
-    <div class="flex gap-4 mb-4">
-      <label><input type="checkbox" value="Inorganic" class="pcm-type" checked> Inorganic</label>
-      <label><input type="checkbox" value="Salt Hydrate" class="pcm-type" checked> Salt Hydrate</label>
-      <label><input type="checkbox" value="Organic" class="pcm-type" checked> Organic</label>
-      <label><input type="checkbox" value="Paraffin" class="pcm-type" checked> Paraffin</label>
-      <label><input type="checkbox" value="Eutectic" class="pcm-type" checked> Eutectic</label>
-    </div>
-
-    <p id="pcmCount" class="mb-4 font-semibold"></p>
-    <div class="overflow-x-auto">
-      <table class="table-auto w-full bg-white rounded shadow">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="px-4 py-2">Name</th>
-            <th class="px-4 py-2">Type</th>
-            <th class="px-4 py-2">Temp Range (°C)</th>
-            <th class="px-4 py-2">Latent Heat</th>
-            <th class="px-4 py-2">Cp Solid</th>
-            <th class="px-4 py-2">Cp Liquid</th>
-            <th class="px-4 py-2">Density Solid</th>
-            <th class="px-4 py-2">Density Liquid</th>
-            <th class="px-4 py-2">Expansivity</th>
-            <th class="px-4 py-2">Energy Density</th>
-          </tr>
-        </thead>
-        <tbody id="pcmTableBody"></tbody>
-      </table>
-    </div>
-    <p id="noResults" class="hidden text-red-500 mt-4">No matching PCMs found.</p>
+  <!-- Visitor Count Badge -->
+  <div
+    class="fixed bottom-4 right-4 bg-primary text-white px-4 py-2 rounded-full shadow-lg z-50 flex items-center"
+  >
+    <i class="fas fa-users mr-2"></i>
+    <span id="visitor-count">Loading...</span>
   </div>
 
-  <!-- Include Dummy PCM Data -->
-  <script>
-    let pcmData = [
-      {
-        "id": 1,
-        "name": "PCM A",
-        "type": "Inorganic",
-        "tempMin": 20,
-        "tempMax": 25,
-        "heatOfFusion": 180,
-        "heatCapacitySolid": 1.8,
-        "heatCapacityLiquid": 2.1,
-        "densitySolid": 850,
-        "densityLiquid": 790,
-        "expansivity": 0.3,
-        "energyDensity": 170
-      },
-      {
-        "id": 2,
-        "name": "PCM B",
-        "type": "Salt Hydrate",
-        "tempMin": 30,
-        "tempMax": 35,
-        "heatOfFusion": 200,
-        "heatCapacitySolid": 1.6,
-        "heatCapacityLiquid": 2.0,
-        "densitySolid": 900,
-        "densityLiquid": 840,
-        "expansivity": 0.35,
-        "energyDensity": 185
-      },
-      {
-        "id": 3,
-        "name": "PCM C",
-        "type": "Organic",
-        "tempMin": 28,
-        "tempMax": 33,
-        "heatOfFusion": 150,
-        "heatCapacitySolid": 2.0,
-        "heatCapacityLiquid": 2.3,
-        "densitySolid": 780,
-        "densityLiquid": 720,
-        "expansivity": 0.25,
-        "energyDensity": 160
-      },
-      {
-        "id": 4,
-        "name": "PCM D",
-        "type": "Paraffin",
-        "tempMin": 18,
-        "tempMax": 22,
-        "heatOfFusion": 170,
-        "heatCapacitySolid": 1.9,
-        "heatCapacityLiquid": 2.2,
-        "densitySolid": 820,
-        "densityLiquid": 770,
-        "expansivity": 0.28,
-        "energyDensity": 175
-      },
-      {
-        "id": 5,
-        "name": "PCM E",
-        "type": "Eutectic",
-        "tempMin": 24,
-        "tempMax": 29,
-        "heatOfFusion": 190,
-        "heatCapacitySolid": 1.7,
-        "heatCapacityLiquid": 2.1,
-        "densitySolid": 870,
-        "densityLiquid": 810,
-        "expansivity": 0.32,
-        "energyDensity": 180
-      }
-    ];
+  <!-- Navigation -->
+  <nav class="gradient-bg text-white shadow-md">
+    <div
+      class="container mx-auto px-4 py-3 flex justify-between items-center"
+    >
+      <div class="flex items-center">
+        <img
+          src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/00fdb38f-4222-4620-980a-ecdb62cd89a2.png"
+          alt="ECSR logo"
+          class="h-10 mr-3"
+        />
+        <h1 class="text-2xl font-bold">PCMLib</h1>
+      </div>
+      <div>
+        <button
+          id="admin-login-btn"
+          class="bg-black text-white px-4 py-2 rounded-md font-semibold hover:bg-gray-800 transition"
+        >
+          Admin Login
+        </button>
+      </div>
+    </div>
+  </nav>
 
-    const pcmTableBody = document.getElementById('pcmTableBody');
-    const searchInput = document.getElementById('searchInput');
-    const tempMinInput = document.getElementById('tempMin');
-    const tempMaxInput = document.getElementById('tempMax');
-    const latentHeatMinInput = document.getElementById('latentHeatMin');
-    const latentHeatMaxInput = document.getElementById('latentHeatMax');
-    const applyFiltersBtn = document.getElementById('applyFilters');
-    const sortBy = document.getElementById('sortBy');
-    const sortBtn = document.getElementById('sortBtn');
-    const noResults = document.getElementById('noResults');
-    const typeCheckboxes = document.querySelectorAll('.pcm-type');
-    const pcmCount = document.getElementById('pcmCount');
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-8">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div
+        class="bg-white rounded-lg shadow-md p-6 flex items-center card-hover"
+      >
+        <div class="bg-primary bg-opacity-20 p-4 rounded-full mr-4">
+          <i class="fas fa-flask text-primary text-2xl"></i>
+        </div>
+        <div>
+          <p class="text-gray-500 text-sm">PCM Materials</p>
+          <h3 class="text-2xl font-bold" id="pcm-count">Loading...</h3>
+        </div>
+      </div>
+      <div
+        class="bg-white rounded-lg shadow-md p-6 flex items-center card-hover"
+      >
+        <div class="bg-blue-500 bg-opacity-20 p-4 rounded-full mr-4">
+          <i class="fas fa-thermometer-half text-blue-500 text-2xl"></i>
+        </div>
+        <div>
+          <p class="text-gray-500 text-sm">Temperature Range</p>
+          <h3 class="text-2xl font-bold">-98°C to 893°C</h3>
+        </div>
+      </div>
+    </div>
 
-    function displayPCMs(pcms) {
-      pcmTableBody.innerHTML = '';
-      noResults.classList.add('hidden');
-      pcmCount.textContent = `${pcms.length} PCMs found`;
-      if (!pcms || pcms.length === 0) {
-        noResults.classList.remove('hidden');
-        return;
-      }
-      pcms.forEach(pcm => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td class="py-2 px-4 border-b">${pcm.name}</td>
-          <td class="py-2 px-4 border-b">${pcm.type}</td>
-          <td class="py-2 px-4 border-b">${pcm.tempMin} - ${pcm.tempMax}</td>
-          <td class="py-2 px-4 border-b">${pcm.heatOfFusion}</td>
-          <td class="py-2 px-4 border-b">${pcm.heatCapacitySolid}</td>
-          <td class="py-2 px-4 border-b">${pcm.heatCapacityLiquid}</td>
-          <td class="py-2 px-4 border-b">${pcm.densitySolid}</td>
-          <td class="py-2 px-4 border-b">${pcm.densityLiquid}</td>
-          <td class="py-2 px-4 border-b">${pcm.expansivity}</td>
-          <td class="py-2 px-4 border-b">${pcm.energyDensity}</td>
-        `;
-        pcmTableBody.appendChild(row);
-      });
-    }
+    <!-- Filters -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-xl font-bold mb-6">PCM Material Filters</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Temperature Filter -->
+        <div>
+          <label
+            class="block text-gray-700 font-medium mb-2"
+            for="temp-range"
+            >Temperature Range (°C)</label
+          >
+          <div class="flex items-center space-x-4">
+            <input
+              type="number"
+              id="temp-min"
+              placeholder="Min"
+              class="border rounded-md px-3 py-2 w-full"
+            />
+            <span>to</span>
+            <input
+              type="number"
+              id="temp-max"
+              placeholder="Max"
+              class="border rounded-md px-3 py-2 w-full"
+            />
+          </div>
+        </div>
 
-    function filterPCMS() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const minTemp = parseFloat(tempMinInput.value) || -Infinity;
-      const maxTemp = parseFloat(tempMaxInput.value) || Infinity;
-      const minLatentHeat = parseFloat(latentHeatMinInput.value) || -Infinity;
-      const maxLatentHeat = parseFloat(latentHeatMaxInput.value) || Infinity;
-      const selectedTypes = Array.from(typeCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+        <!-- Latent Heat Filter -->
+        <div>
+          <label
+            class="block text-gray-700 font-medium mb-2"
+            for="latent-range"
+            >Heat of fusion [kJ/kg]</label
+          >
+          <div class="flex items-center space-x-4">
+            <input
+              type="number"
+              id="latent-min"
+              placeholder="Min"
+              class="border rounded-md px-3 py-2 w-full"
+            />
+            <span>to</span>
+            <input
+              type="number"
+              id="latent-max"
+              placeholder="Max"
+              class="border rounded-md px-3 py-2 w-full"
+            />
+          </div>
+        </div>
 
-      return pcmData.filter(pcm => {
-        const matchesSearch = pcm.name.toLowerCase().includes(searchTerm);
-        const matchesTemp = pcm.tempMin >= minTemp && pcm.tempMax <= maxTemp;
-        const matchesHeat = pcm.heatOfFusion >= minLatentHeat && pcm.heatOfFusion <= maxLatentHeat;
-        const matchesType = selectedTypes.includes(pcm.type);
-        return matchesSearch && matchesTemp && matchesHeat && matchesType;
-      });
-    }
+        <!-- Thermal Conductivity Filter -->
+        <div>
+          <label
+            class="block text-gray-700 font-medium mb-2"
+            for="conductivity-range"
+            >Thermal Conductivity (W/m·K)</label
+          >
+          <div class="flex items-center space-x-4">
+            <input
+              type="number"
+              step="0.01"
+              id="conductivity-min"
+              placeholder="Min"
+              class="border rounded-md px-3 py-2 w-full"
+            />
+            <span>to</span>
+            <input
+              type="number"
+              step="0.01"
+              id="conductivity-max"
+              placeholder="Max"
+              class="border rounded-md px-3 py-2 w-full"
+            />
+          </div>
+        </div>
+      </div>
 
-    function sortPCMS(pcms, sortByValue) {
-      return [...pcms].sort((a, b) => {
-        switch (sortByValue) {
-          case 'name': return a.name.localeCompare(b.name);
-          case 'temp': return a.tempMin - b.tempMin;
-          case 'heat': return b.heatOfFusion - a.heatOfFusion;
-          default: return 0;
-        }
-      });
-    }
+      <div class="mt-6">
+        <label class="block text-gray-700 font-medium mb-2" for="pcm-type"
+          >PCM Type</label
+        >
+        <select
+          id="pcm-type"
+          class="border rounded-md px-3 py-2 w-full"
+        >
+          <option value="">All Types</option>
+          <option value="organic">Organic</option>
+          <option value="inorganic">Inorganic</option>
+          <option value="eutectic">Eutectic</option>
+          <!-- bio-based removed -->
+        </select>
+      </div>
 
-    applyFiltersBtn.addEventListener('click', () => {
-      const filtered = filterPCMS();
-      displayPCMs(sortPCMS(filtered, sortBy.value));
-    });
+      <div class="flex justify-end mt-6">
+        <button
+          id="apply-filter"
+          class="bg-primary text-white px-6 py-2 rounded-md font-medium hover:bg-purple-700"
+        >
+          Apply Filters
+        </button>
+        <button
+          id="reset-filter"
+          class="ml-4 border border-gray-300 px-6 py-2 rounded-md font-medium hover:bg-gray-100"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
 
-    sortBtn.addEventListener('click', () => {
-      const filtered = filterPCMS();
-      const sorted = sortPCMS(filtered, sortBy.value);
-      displayPCMs(sorted);
-    });
+    <!-- Data Table -->
+    <div class="bg-white rounded-lg shadow-md p-6 overflow-x-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold">PCM Materials Database</h2>
+        <div class="relative">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search materials..."
+            class="border rounded-md px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+        </div>
+      </div>
 
-    // Initial display
-    displayPCMs(pcmData);
-  </script>
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Name
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Type
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Temperature<br />[℃]
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Heat of fusion<br />[kJ/kg]
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Heat capacity<br />[kJ/kg·K]
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Density Solidus<br />[kg/m³]
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Density Liquidus<br />[kg/m³]
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Expansivity<br />[10⁻⁶ m³/m³]
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Energy Density<br />[kJ/m³]
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Cost<br />[$/kg]
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+              id="admin-actions-header"
+              style="display:none"
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody id="data-table" class="bg-white divide-y divide-gray-200">
+          <!-- Data rows inserted here -->
+        </tbody>
+      </table>
+
+      <div class="flex justify-between items-center mt-4">
+        <p id="results-count" class="text-gray-500">
+          Showing 0 results
+        </p>
+        <div class="flex space-x-2">
+          <button class="px-4 py-2 border rounded-md bg-primary text-white" disabled>
+            Previous
+          </button>
+          <button class="px-4 py-2 border rounded-md bg-gray-200" disabled>
+            1
+          </button>
+          <button class="px-4 py-2 border rounded-md hover:bg-gray-100" disabled>
+            2
+          </button>
+          <button class="px-4 py-2 border rounded-md hover:bg-gray-100" disabled>
+            3
+          </button>
+          <button class="px-4 py-2 border rounded-md hover:bg-gray-100" disabled>
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <section class="bg-white mt-12 py-8 border-t border-gray-300">
+    <div class="container mx-auto px-4 text-center text-gray-700">
+      <h2 class="text-xl font-semibold mb-4">About</h2>
+      <p class="mb-2">
+        <i class="fas fa-user mr-2 text-primary"></i>
+        <strong>Creator:</strong> Sonu Singh
+      </p>
+      <p>
+        <i class="fas fa-chalkboard-teacher mr-2 text-primary"></i>
+        <strong>Supervisor:</strong> Dr. Shobhana Singh
+      </p>
+    </div>
+  </section>
+
+  <!-- Your existing modals and scripts go here -->
+
 </body>
 </html>
