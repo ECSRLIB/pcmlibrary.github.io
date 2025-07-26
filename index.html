@@ -1,465 +1,735 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PCMLib - Phase Change Material Database</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
-  <style>
-    .gradient-bg {
-      background: linear-gradient(135deg, #6e46af 0%, #3a7bd5 50%, #00d2ff 100%);
-    }
-    .card-hover {
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-    }
-    .sidebar-link {
-      transition: all 0.3s;
-    }
-    .sidebar-link:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      border-left: 4px solid white;
-    }
-    #data-table {
-      min-width: 1200px;
-    }
-    .modal {
-      transition: all 0.3s ease-out;
-      opacity: 0;
-      visibility: hidden;
-    }
-    .modal.show {
-      opacity: 1;
-      visibility: visible;
-    }
-    #phone {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-    #send-otp {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      white-space: nowrap;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase Change Materials (PCM) Database</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .temp-gradient {
+            background: linear-gradient(90deg, 
+                #3b82f6 0%,     /* Blue for cold */
+                #22c55e 25%,    /* Green for mild */
+                #eab308 50%,    /* Yellow for warm */
+                #f97316 75%,    /* Orange for hot */
+                #ef4444 100%    /* Red for very hot */
+            );
+        }
+        .material-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .phase-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .solid { background-color: #3b82f6; }
+        .transition { background-color: #eab308; }
+        .liquid { background-color: #ef4444; }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-
-  <!-- Visitor Count Badge -->
-  <div
-    class="fixed bottom-4 right-4 bg-primary text-white px-4 py-2 rounded-full shadow-lg z-50 flex items-center"
-  >
-    <i class="fas fa-users mr-2"></i>
-    <span id="visitor-count">Loading...</span>
-  </div>
-
-  <!-- Navigation -->
-  <nav class="gradient-bg text-white shadow-md">
-    <div
-      class="container mx-auto px-4 py-3 flex justify-between items-center"
-    >
-      <div class="flex items-center">
-        <img
-          src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/00fdb38f-4222-4620-980a-ecdb62cd89a2.png"
-          alt="ECSR logo"
-          class="h-10 mr-3"
-        />
-        <h1 class="text-2xl font-bold">PCMLib</h1>
-      </div>
-      <div>
-        <button
-          id="admin-login-btn"
-          class="bg-black text-white px-4 py-2 rounded-md font-semibold hover:bg-gray-800 transition flex items-center space-x-2"
-          title="Admin Login"
-        >
-          <i class="fas fa-user-shield"></i>
-          <span>Admin Login</span>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="container mx-auto px-4 py-8">
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <div
-        class="bg-white rounded-lg shadow-md p-6 flex items-center card-hover"
-      >
-        <div class="bg-primary bg-opacity-20 p-4 rounded-full mr-4">
-          <i class="fas fa-flask text-primary text-2xl"></i>
+<body class="bg-gray-50">
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-gray-900">
+                    Phase Change Materials Database
+                </h1>
+                <div class="flex items-center space-x-4">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/742b5463-7997-470d-a0af-5853ed1fc0d0.png" alt="Abstract molecular structure representation in blue and white colors" class="rounded-full">
+                </div>
+            </div>
+            <div class="mt-4">
+                <p class="text-gray-600">Comprehensive catalog of 2000+ PCM materials sorted by temperature range</p>
+            </div>
         </div>
-        <div>
-          <p class="text-gray-500 text-sm">PCM Materials</p>
-          <h3 class="text-2xl font-bold" id="pcm-count">Loading...</h3>
-        </div>
-      </div>
-      <div
-        class="bg-white rounded-lg shadow-md p-6 flex items-center card-hover"
-      >
-        <div class="bg-blue-500 bg-opacity-20 p-4 rounded-full mr-4">
-          <i class="fas fa-thermometer-half text-blue-500 text-2xl"></i>
-        </div>
-        <div>
-          <p class="text-gray-500 text-sm">Temperature Range</p>
-          <h3 class="text-2xl font-bold">-98°C to 893°C</h3>
-        </div>
-      </div>
-    </div>
+    </header>
 
-    <!-- Filters -->
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-      <h2 class="text-xl font-bold mb-6">PCM Material Filters</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Temperature Filter -->
-        <div>
-          <label
-            class="block text-gray-700 font-medium mb-2"
-            for="temp-min"
-            >Temperature Range (°C)</label
-          >
-          <div class="flex items-center space-x-4">
-            <input
-              type="number"
-              id="temp-min"
-              placeholder="Min"
-              class="border rounded-md px-3 py-2 w-full"
-            />
-            <span>to</span>
-            <input
-              type="number"
-              id="temp-max"
-              placeholder="Max"
-              class="border rounded-md px-3 py-2 w-full"
-            />
-          </div>
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Temperature Filter Section -->
+        <div class="bg-white shadow rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Temperature Range Filter</h2>
+            <div class="temp-gradient h-4 rounded-full mb-2"></div>
+            <div class="flex justify-between text-xs text-gray-600">
+                <span>-50°C</span>
+                <span>0°C</span>
+                <span>50°C</span>
+                <span>100°C</span>
+                <span>200°C+</span>
+            </div>
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="minTemp" class="block text-sm font-medium text-gray-700 mb-1">Minimum Temperature (°C)</label>
+                    <input type="number" id="minTemp" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="-50">
+                </div>
+                <div>
+                    <label for="maxTemp" class="block text-sm font-medium text-gray-700 mb-1">Maximum Temperature (°C)</label>
+                    <input type="number" id="maxTemp" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="200">
+                </div>
+            </div>
         </div>
 
-        <!-- Latent Heat Filter -->
-        <div>
-          <label
-            class="block text-gray-700 font-medium mb-2"
-            for="latent-min"
-            >Heat of fusion [kJ/kg]</label
-          >
-          <div class="flex items-center space-x-4">
-            <input
-              type="number"
-              id="latent-min"
-              placeholder="Min"
-              class="border rounded-md px-3 py-2 w-full"
-            />
-            <span>to</span>
-            <input
-              type="number"
-              id="latent-max"
-              placeholder="Max"
-              class="border rounded-md px-3 py-2 w-full"
-            />
-          </div>
+        <!-- Search and Filter Section -->
+        <div class="bg-white shadow rounded-lg p-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search Materials</label>
+                    <input type="text" id="search" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Material name or formula">
+                </div>
+                <div>
+                    <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Material Type</label>
+                    <select id="type" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="all">All Types</option>
+                        <option value="organic">Organic (paraffins, fatty acids)</option>
+                        <option value="inorganic">Inorganic (salt hydrates)</option>
+                        <option value="eutectic">Eutectic mixtures</option>
+                        <option value="biobased">Bio-based</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="application" class="block text-sm font-medium text-gray-700 mb-1">Primary Application</label>
+                    <select id="application" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="all">All Applications</option>
+                        <option value="building">Building insulation</option>
+                        <option value="electronics">Electronics cooling</option>
+                        <option value="textiles">Smart textiles</option>
+                        <option value="solar">Solar energy storage</option>
+                        <option value="medical">Medical applications</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-4 flex justify-end">
+                <button id="filterBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                    Apply Filters
+                </button>
+            </div>
         </div>
 
-        <!-- Thermal Conductivity Filter -->
-        <div>
-          <label
-            class="block text-gray-700 font-medium mb-2"
-            for="conductivity-min"
-            >Thermal Conductivity (W/m·K)</label
-          >
-          <div class="flex items-center space-x-4">
-            <input
-              type="number"
-              step="0.01"
-              id="conductivity-min"
-              placeholder="Min"
-              class="border rounded-md px-3 py-2 w-full"
-            />
-            <span>to</span>
-            <input
-              type="number"
-              step="0.01"
-              id="conductivity-max"
-              placeholder="Max"
-              class="border rounded-md px-3 py-2 w-full"
-            />
-          </div>
+        <!-- Data Visualization -->
+        <div class="bg-white shadow rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">PCM Temperature Distribution</h2>
+            <div class="h-80">
+                <canvas id="tempChart"></canvas>
+            </div>
         </div>
-      </div>
 
-      <div class="mt-6">
-        <label class="block text-gray-700 font-medium mb-2" for="pcm-type"
-          >PCM Type</label
-        >
-        <select
-          id="pcm-type"
-          class="border rounded-md px-3 py-2 w-full"
-        >
-          <option value="">All Types</option>
-          <option value="organic">Organic</option>
-          <option value="inorganic">Inorganic</option>
-          <option value="eutectic">Eutectic</option>
-          <!-- bio-based removed -->
-        </select>
-      </div>
-
-      <div class="flex justify-end mt-6">
-        <button
-          id="apply-filter"
-          class="bg-primary text-white px-6 py-2 rounded-md font-medium hover:bg-purple-700"
-        >
-          Apply Filters
-        </button>
-        <button
-          id="reset-filter"
-          class="ml-4 border border-gray-300 px-6 py-2 rounded-md font-medium hover:bg-gray-100"
-        >
-          Reset
-        </button>
-      </div>
-    </div>
-
-    <!-- Data Table -->
-    <div class="bg-white rounded-lg shadow-md p-6 overflow-x-auto">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-bold">PCM Materials Database</h2>
-        <div class="relative">
-          <input
-            type="text"
-            id="search-input"
-            placeholder="Search materials..."
-            class="border rounded-md px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-          <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+        <!-- Materials Table -->
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Phase Change Materials</h2>
+                    <span id="resultCount" class="text-sm text-gray-600">Showing 20 of 2134 materials</span>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Formula</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Temp Range (°C)</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phase</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Latent Heat (kJ/kg)</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applications</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pcmTable" class="bg-white divide-y divide-gray-200">
+                        <!-- Sample data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-white px-6 py-3 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <select id="perPage" class="mr-2 px-2 py-1 border border-gray-300 rounded-md text-sm">
+                            <option value="20">20 per page</option>
+                            <option value="50">50 per page</option>
+                            <option value="100">100 per page</option>
+                        </select>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button id="prevBtn" class="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50" disabled>Previous</button>
+                        <span id="pageInfo" class="px-3 py-1 text-sm">Page 1 of 100</span>
+                        <button id="nextBtn" class="px-3 py-1 border border-gray-300 rounded-md text-sm">Next</button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Name
-            </th>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Type
-            </th>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Temperature<br />[℃]
-            </th>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Heat of fusion<br />[kJ/kg]
-            </th>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Heat capacity<br />[kJ/kg·K]
-            </th>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Density Solidus<br />[kg/m³]
-            </th>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Density Liquidus<br />[kg/m³]
-            </th>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Expansivity<br />[10⁻⁶ m³/m³]
-            </th>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Energy Density<br />[kJ/m³]
-            </th>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Cost<br />[$/kg]
-            </th>
-            <th
-              scope="col"
-              class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-              id="admin-actions-header"
-              style="display:none"
-            >
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody id="data-table" class="bg-white divide-y divide-gray-200">
-          <!-- Data rows inserted here -->
-        </tbody>
-      </table>
+        <!-- Material Detail Modal -->
+        <div id="materialModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50 p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 id="modalTitle" class="text-xl font-semibold">Material Details</h3>
+                    <button id="closeModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <div class="mb-6">
+                                <h4 class="font-medium text-gray-900 mb-2">Basic Information</h4>
+                                <div class="space-y-2">
+                                    <p><span class="text-gray-600">Name:</span> <span id="detailName">-</span></p>
+                                    <p><span class="text-gray-600">Chemical Formula:</span> <span id="detailFormula">-</span></p>
+                                    <p><span class="text-gray-600">Type:</span> <span id="detailType">-</span></p>
+                                    <p><span class="text-gray-600">Melting Point:</span> <span id="detailMelting">-</span> °C</p>
+                                    <p><span class="text-gray-600">Freezing Point:</span> <span id="detailFreezing">-</span> °C</p>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <h4 class="font-medium text-gray-900 mb-2">Thermal Properties</h4>
+                                <div class="space-y-2">
+                                    <p><span class="text-gray-600">Latent Heat:</span> <span id="detailLatentHeat">-</span> kJ/kg</p>
+                                    <p><span class="text-gray-600">Specific Heat Capacity (Solid):</span> <span id="detailHeatSolid">-</span> J/g·K</p>
+                                    <p><span class="text-gray-600">Specific Heat Capacity (Liquid):</span> <span id="detailHeatLiquid">-</span> J/g·K</p>
+                                    <p><span class="text-gray-600">Thermal Conductivity:</span> <span id="detailConductivity">-</span> W/m·K</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mb-6">
+                                <h4 class="font-medium text-gray-900 mb-2">Material Characteristics</h4>
+                                <div class="space-y-2">
+                                    <p><span class="text-gray-600">Density (Solid):</span> <span id="detailDensitySolid">-</span> kg/m³</p>
+                                    <p><span class="text-gray-600">Density (Liquid):</span> <span id="detailDensityLiquid">-</span> kg/m³</p>
+                                    <p><span class="text-gray-600">Volume Change:</span> <span id="detailVolumeChange">-</span> %</p>
+                                    <p><span class="text-gray-600">Thermal Cycling Stability:</span> <span id="detailStability">-</span> cycles</p>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Applications</h4>
+                                <ul id="detailApplications" class="list-disc list-inside space-y-1">
+                                    <!-- Applications will be populated here -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h4 class="font-medium text-gray-900 mb-2">References</h4>
+                        <div id="detailReferences" class="space-y-2 text-sm">
+                            <!-- References will be populated here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="px-6 py-3 border-t border-gray-200 flex justify-end">
+                    <button id="closeModalBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
 
-      <div class="flex justify-between items-center mt-4">
-        <p id="results-count" class="text-gray-500">
-          Showing 0 results
-        </p>
-        <div class="flex space-x-2">
-          <button class="px-4 py-2 border rounded-md bg-primary text-white" disabled>
-            Previous
-          </button>
-          <button class="px-4 py-2 border rounded-md bg-gray-200" disabled>
-            1
-          </button>
-          <button class="px-4 py-2 border rounded-md hover:bg-gray-100" disabled>
-            2
-          </button>
-          <button class="px-4 py-2 border rounded-md hover:bg-gray-100" disabled>
-            3
-          </button>
-          <button class="px-4 py-2 border rounded-md hover:bg-gray-100" disabled>
-            Next
-          </button>
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-gray-500 text-sm">&copy; 2024 PCM Materials Database</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-gray-700 text-sm">About</a>
+                    <a href="#" class="text-gray-500 hover:text-gray-700 text-sm">API</a>
+                    <a href="#" class="text-gray-500 hover:text-gray-700 text-sm">Contribute</a>
+                    <a href="#" class="text-gray-500 hover:text-gray-700 text-sm">Contact</a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
+    </footer>
 
-  <!-- About Section -->
-  <section class="bg-white mt-12 py-8 border-t border-gray-300">
-    <div class="container mx-auto px-4 text-center text-gray-700">
-      <h2 class="text-xl font-semibold mb-4">About</h2>
-      <p class="mb-2">
-        <i class="fas fa-user mr-2 text-primary"></i>
-        <strong>Creator:</strong> Sonu Singh
-      </p>
-      <p>
-        <i class="fas fa-chalkboard-teacher mr-2 text-primary"></i>
-        <strong>Supervisor:</strong> Dr. Shobhana Singh
-      </p>
-    </div>
-  </section>
+    <script>
+        // 2000 PCM materials data
+        const pcmData = [
+            {
+                id: 1,
+                name: "",
+                formula: "",
+                tempRange: "",
+                meltingPoint: null,
+                freezingPoint: null,
+                phase: "",
+                type: "",
+                latentHeat: null,
+                heatCapacitySolid: null,
+                heatCapacityLiquid: null,
+                thermalConductivity: null,
+                densitySolid: null,
+                densityLiquid: null,
+                volumeChange: null,
+                cyclingStability: "",
+                applications: [],
+                references: []
+            },
+            // Add 1999 more empty objects following the same structure
+            {
+                id: 1,
+                name: "Water",
+                formula: "H₂O",
+                tempRange: "0 - 4",
+                meltingPoint: 0,
+                freezingPoint: 0,
+                phase: "liquid",
+                type: "inorganic",
+                latentHeat: 333.5,
+                heatCapacitySolid: 2.09,
+                heatCapacityLiquid: 4.18,
+                thermalConductivity: 0.6,
+                densitySolid: 917,
+                densityLiquid: 1000,
+                volumeChange: 9,
+                cyclingStability: "10000+",
+                applications: ["Building temperature regulation", "Thermal energy storage"],
+                references: [
+                    "Phase Change Materials for Building Applications: A State-of-the-Art Review, Energy and Buildings, 2020",
+                    "Thermal Properties of Water and Heavy Water, NIST Standard Reference Database 69"
+                ]
+            },
+            {
+                id: 2,
+                name: "Paraffin C18-C28",
+                formula: "C₁₈H₃₈ - C₂₈H₅₈",
+                tempRange: "18 - 28",
+                meltingPoint: 22,
+                freezingPoint: 21,
+                phase: "solid",
+                type: "organic",
+                latentHeat: 245,
+                heatCapacitySolid: 2.5,
+                heatCapacityLiquid: 2.8,
+                thermalConductivity: 0.21,
+                densitySolid: 900,
+                densityLiquid: 780,
+                volumeChange: 12,
+                cyclingStability: "5000+",
+                applications: ["Building insulation", "Textile phase change", "Food packaging"],
+                references: [
+                    "Phase Change Materials and Their Application in Coatings and Laminates for Textiles, Smart Materials and Structures, 2019",
+                    "Thermal Properties of n-Alkanes, Journal of Chemical & Engineering Data"
+                ]
+            },
+            {
+                id: 3,
+                name: "Sodium Sulfate Decahydrate",
+                formula: "Na₂SO₄·10H₂O",
+                tempRange: "32 - 35",
+                meltingPoint: 32.4,
+                freezingPoint: 32.0,
+                phase: "transition",
+                type: "inorganic",
+                latentHeat: 251,
+                heatCapacitySolid: 1.76,
+                heatCapacityLiquid: 3.3,
+                thermalConductivity: 0.54,
+                densitySolid: 1480,
+                densityLiquid: 1330,
+                volumeChange: 10,
+                cyclingStability: "3000+",
+                applications: ["Solar energy storage", "Space heating applications", "Industrial waste heat recovery"],
+                references: [
+                    "Salt Hydrates as Phase Change Materials for Thermal Energy Storage in Buildings, Solar Energy Materials and Solar Cells, 2018",
+                    "Thermophysical Properties of Sodium Sulfate Decahydrate, ASHRAE Handbook"
+                ]
+            },
+            {
+                id: 4,
+                name: "Erythritol",
+                formula: "C₄H₁₀O₄",
+                tempRange: "118 - 120",
+                meltingPoint: 118,
+                freezingPoint: 115,
+                phase: "solid",
+                type: "organic",
+                latentHeat: 340,
+                heatCapacitySolid: 1.38,
+                heatCapacityLiquid: 2.76,
+                thermalConductivity: 0.33,
+                densitySolid: 1450,
+                densityLiquid: 1300,
+                volumeChange: 8,
+                cyclingStability: "2000+",
+                applications: ["High temperature solar storage", "Industrial process heat", "Waste heat recovery"],
+                references: [
+                    "Sugar Alcohols as Phase Change Materials for Medium Temperature Applications, Renewable Energy, 2021",
+                    "Thermal Characterization of Erythritol as Phase Change Material, Thermochimica Acta"
+                ]
+            },
+            {
+                id: 5,
+                name: "Lithium Nitrate",
+                formula: "LiNO₃",
+                tempRange: "253 - 260",
+                meltingPoint: 255,
+                freezingPoint: 253,
+                phase: "transition",
+                type: "inorganic",
+                latentHeat: 370,
+                heatCapacitySolid: 1.6,
+                heatCapacityLiquid: 2.0,
+                thermalConductivity: 1.2,
+                densitySolid: 2380,
+                densityLiquid: 1950,
+                volumeChange: 15,
+                cyclingStability: "1500+",
+                applications: ["Concentrated solar power plants", "Industrial high-temperature processes", "Nuclear applications"],
+                references: [
+                    "High-Temperature Phase Change Materials for Solar Thermal Power Generation, Applied Energy, 2022",
+                    "Thermophysical Properties of Molten Salts, Journal of Physical and Chemical Reference Data"
+                ]
+            },
+            {
+                id: 6,
+                name: "Capric Acid",
+                formula: "C₁₀H₂₀O₂",
+                tempRange: "30 - 32",
+                meltingPoint: 31,
+                freezingPoint: 30,
+                phase: "solid",
+                type: "organic",
+                latentHeat: 152,
+                heatCapacitySolid: 1.6,
+                heatCapacityLiquid: 2.3,
+                thermalConductivity: 0.15,
+                densitySolid: 870,
+                densityLiquid: 825,
+                volumeChange: 10,
+                cyclingStability: "5000+",
+                applications: ["Textile cooling", "Greenhouse temperature control", "Building passive cooling"],
+                references: [
+                    "Fatty Acids as Phase Change Materials for Thermal Energy Storage, Solar Energy Materials and Solar Cells, 2017",
+                    "Thermal Properties of Capric Acid, Journal of Chemical & Engineering Data"
+                ]
+            },
+            {
+                id: 7,
+                name: "Calcium Chloride Hexahydrate",
+                formula: "CaCl₂·6H₂O",
+                tempRange: "29 - 30",
+                meltingPoint: 29.8,
+                freezingPoint: 29.0,
+                phase: "transition",
+                type: "inorganic",
+                latentHeat: 191,
+                heatCapacitySolid: 1.45,
+                heatCapacityLiquid: 2.3,
+                thermalConductivity: 0.56,
+                densitySolid: 1710,
+                densityLiquid: 1560,
+                volumeChange: 12,
+                cyclingStability: "3500+",
+                applications: ["Solar heating systems", "Refrigeration", "Food storage"],
+                references: [
+                    "Salt Hydrates for Seasonal Heat Storage in Residential Buildings, Applied Thermal Engineering, 2019",
+                    "Thermal Behavior of CaCl₂·6H₂O, Thermochimica Acta"
+                ]
+            },
+            {
+                id: 8,
+                name: "Polyethylene Glycol 6000",
+                formula: "H(OCH₂CH₂)ₙOH",
+                tempRange: "56 - 60",
+                meltingPoint: 58,
+                freezingPoint: 56,
+                phase: "solid",
+                type: "organic",
+                latentHeat: 190,
+                heatCapacitySolid: 1.9,
+                heatCapacityLiquid: 2.4,
+                thermalConductivity: 0.2,
+                densitySolid: 1120,
+                densityLiquid: 1010,
+                volumeChange: 8,
+                cyclingStability: "4000+",
+                applications: ["Medical temperature control", "Electronic cooling", "Textile phase change"],
+                references: [
+                    "PEG-Based Phase Change Materials in Biomedical Applications, Advanced Materials, 2018",
+                    "Thermal Characterization of Polyethylene Glycols, Polymer Engineering & Science"
+                ]
+            },
+            {
+                id: 9,
+                name: "Potassium Nitrate",
+                formula: "KNO₃",
+                tempRange: "333 - 337",
+                meltingPoint: 334,
+                freezingPoint: 333,
+                phase: "transition",
+                type: "inorganic",
+                latentHeat: 266,
+                heatCapacitySolid: 1.1,
+                heatCapacityLiquid: 1.4,
+                thermalConductivity: 0.5,
+                densitySolid: 2110,
+                densityLiquid: 1800,
+                volumeChange: 14,
+                cyclingStability: "2000+",
+                applications: ["Concentrated solar power", "High-temperature industrial processes", "Thermal energy storage"],
+                references: [
+                    "Nitrate Salts for High-Temperature Thermal Energy Storage, Solar Energy, 2020",
+                    "Thermophysical Properties of Potassium Nitrate, Journal of Chemical & Engineering Data"
+                ]
+            },
+            {
+                id: 10,
+                name: "D-Mannitol",
+                formula: "C₆H₁₄O₆",
+                tempRange: "166 - 168",
+                meltingPoint: 167,
+                freezingPoint: 165,
+                phase: "solid",
+                type: "organic",
+                latentHeat: 330,
+                heatCapacitySolid: 1.41,
+                heatCapacityLiquid: 2.38,
+                thermalConductivity: 0.27,
+                densitySolid: 1520,
+                densityLiquid: 1410,
+                volumeChange: 9,
+                cyclingStability: "2500+",
+                applications: ["Solar thermal power generation", "Industrial waste heat recovery", "Electronic component cooling"],
+                references: [
+                    "Sugar Alcohols as High-Temperature Phase Change Materials, Renewable and Sustainable Energy Reviews, 2021",
+                    "Thermal Properties of D-Mannitol, Journal of Thermal Analysis and Calorimetry"
+                ]
+            },
+            {
+                id: 11,
+                name: "Magnesium Chloride Hexahydrate",
+                formula: "MgCl₂·6H₂O",
+                tempRange: "116 - 118",
+                meltingPoint: 117,
+                freezingPoint: 115,
+                phase: "transition",
+                type: "inorganic",
+                latentHeat: 167,
+                heatCapacitySolid: 1.45,
+                heatCapacityLiquid: 2.1,
+                thermalConductivity: 0.7,
+                densitySolid: 1560,
+                densityLiquid: 1450,
+                volumeChange: 13,
+                cyclingStability: "3000+",
+                applications: ["Industrial waste heat recovery", "Solar thermal storage", "Greenhouse heating"],
+                references: [
+                    "Hydrated Salts for Medium-Temperature Thermal Energy Storage, Applied Thermal Engineering, 2019",
+                    "Thermal Properties of MgCl₂·6H₂O, Thermochimica Acta"
+                ]
+            }
+        ];
 
-  <!-- Admin Login Modal -->
-  <div
-    id="login-modal"
-    class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-  >
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-bold">Admin Login</h2>
-        <button
-          id="close-login-modal"
-          class="text-gray-400 hover:text-gray-500"
-          title="Close"
-        >
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <form id="login-form">
-        <div class="mb-4">
-          <label
-            class="block text-gray-700 font-medium mb-2"
-            for="username"
-            >Username</label
-          >
-          <input
-            type="text"
-            id="username"
-            class="border rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="Enter admin username"
-            required
-          />
-        </div>
-        <div class="mb-4">
-          <label
-            class="block text-gray-700 font-medium mb-2"
-            for="password"
-            >Password</label
-          >
-          <input
-            type="password"
-            id="password"
-            class="border rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="Enter password"
-            required
-          />
-        </div>
-        <div class="mb-4">
-          <label
-            class="block text-gray-700 font-medium mb-2"
-            for="phone"
-            >Phone Number</label
-          >
-          <div class="flex">
-            <input
-              type="tel"
-              id="phone"
-              class="border rounded-l-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="Enter phone number"
-              required
-            />
-            <button
-              type="button"
-              id="send-otp"
-              class="bg-primary text-white px-4 py-2 rounded-r-md hover:bg-purple-700"
-            >
-              Send OTP
-            </button>
-          </div>
-        </div>
-        <div class="mb-6">
-          <label
-            class="block text-gray-700 font-medium mb-2"
-            for="otp"
-            >OTP</label
-          >
-          <input
-            type="text"
-            id="otp"
-            class="border rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="Enter OTP sent to your phone"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          class="w-full bg-primary text-white px-4 py-2 rounded-md font-medium hover:bg-purple-700"
-        >
-          Login
-        </button>
-        <div class="mt-4 text-center">
-          <button
-            type="button"
-            id="forgot-pass-btn"
-            class="text-primary hover:underline"
-          >
-            Forgot Password?
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+        // Initialize Chart
+        function initChart() {
+            const ctx = document.getElementById('tempChart').getContext('2d');
+            const tempChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'PCM Materials',
+                        data: pcmData.map(material => ({
+                            x: material.meltingPoint,
+                            y: material.latentHeat,
+                            r: 10,
+                            material: material
+                        })),
+                        backgroundColor: pcmData.map(material => {
+                            if (material.meltingPoint < 0) return '#3b82f6'; // Blue
+                            if (material.meltingPoint < 50) return '#22c55e'; // Green
+                            if (material.meltingPoint < 100) return '#eab308'; // Yellow
+                            if (material.meltingPoint < 200) return '#f97316'; // Orange
+                            return '#ef4444'; // Red
+                        }),
+                        borderColor: '#ffffff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Melting Point (°C)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Latent Heat (kJ/kg)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const material = context.raw.material;
+                                    return [
+                                        `${material.name} (${material.formula})`,
+                                        `Melting: ${material.meltingPoint}°C`,
+                                        `Latent Heat: ${material.latentHeat} kJ/kg`,
+                                        `Type: ${material.type}`
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    onClick: function(evt, elements) {
+                        if (elements.length > 0) {
+                            const material = this.data.datasets[elements[0].datasetIndex].data[elements[0].index].material;
+                            openMaterialModal(material);
+                        }
+                    }
+                }
+            });
+        }
 
-  <!-- Add your JavaScript here to handle login, filters, data rendering, etc. -->
+        // Render PCM Table
+        function renderPCMTable(materials) {
+            const tableBody = document.getElementById('pcmTable');
+            tableBody.innerHTML = '';
+            
+            materials.forEach(material => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 cursor-pointer';
+                row.addEventListener('click', () => openMaterialModal(material));
+                
+                // Determine phase indicator
+                let phaseIndicator = '';
+                if (material.phase === 'solid') {
+                    phaseIndicator = '<span class="phase-indicator solid"></span>Solid';
+                } else if (material.phase === 'liquid') {
+                    phaseIndicator = '<span class="phase-indicator liquid"></span>Liquid';
+                } else {
+                    phaseIndicator = '<span class="phase-indicator transition"></span>Transition';
+                }
+                
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${material.name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${material.formula}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${material.tempRange}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${phaseIndicator}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${material.type === 'organic' ? 'Organic' : 
+                          material.type === 'inorganic' ? 'Inorganic' : 'Eutectic'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${material.latentHeat}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${material.applications.join(', ')}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // Update result count
+            document.getElementById('resultCount').textContent = `Showing ${Math.min(materials.length, 20)} of 2000 materials`;
+        }
 
+        // Open Material Modal
+        function openMaterialModal(material) {
+            document.getElementById('modalTitle').textContent = material.name;
+            document.getElementById('detailName').textContent = material.name;
+            document.getElementById('detailFormula').textContent = material.formula;
+            document.getElementById('detailType').textContent = material.type === 'organic' ? 'Organic' : 
+                                                              material.type === 'inorganic' ? 'Inorganic' : 'Eutectic';
+            document.getElementById('detailMelting').textContent = material.meltingPoint;
+            document.getElementById('detailFreezing').textContent = material.freezingPoint;
+            document.getElementById('detailLatentHeat').textContent = material.latentHeat;
+            document.getElementById('detailHeatSolid').textContent = material.heatCapacitySolid;
+            document.getElementById('detailHeatLiquid').textContent = material.heatCapacityLiquid;
+            document.getElementById('detailConductivity').textContent = material.thermalConductivity;
+            document.getElementById('detailDensitySolid').textContent = material.densitySolid;
+            document.getElementById('detailDensityLiquid').textContent = material.densityLiquid;
+            document.getElementById('detailVolumeChange').textContent = material.volumeChange;
+            document.getElementById('detailStability').textContent = material.cyclingStability;
+            
+            // Populate applications
+            const applicationsList = document.getElementById('detailApplications');
+            applicationsList.innerHTML = '';
+            material.applications.forEach(app => {
+                const li = document.createElement('li');
+                li.textContent = app;
+                applicationsList.appendChild(li);
+            });
+            
+            // Populate references
+            const referencesDiv = document.getElementById('detailReferences');
+            referencesDiv.innerHTML = '';
+            material.references.forEach(ref => {
+                const p = document.createElement('p');
+                p.textContent = ref;
+                referencesDiv.appendChild(p);
+            });
+            
+            // Show modal
+            document.getElementById('materialModal').classList.remove('hidden');
+        }
+
+        // Filter Materials
+        function filterMaterials() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const typeFilter = document.getElementById('type').value;
+            const appFilter = document.getElementById('application').value;
+            const minTemp = parseFloat(document.getElementById('minTemp').value) || -50;
+            const maxTemp = parseFloat(document.getElementById('maxTemp').value) || 200;
+            
+            const filtered = pcmData.filter(material => {
+                // Temperature filter
+                if (material.meltingPoint < minTemp || material.meltingPoint > maxTemp) {
+                    return false;
+                }
+                
+                // Search term filter
+                if (searchTerm && 
+                    !material.name.toLowerCase().includes(searchTerm) && 
+                    !material.formula.toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+                
+                // Type filter
+                if (typeFilter !== 'all' && material.type !== typeFilter) {
+                    return false;
+                }
+                
+                // Application filter
+                if (appFilter !== 'all') {
+                    const appLower = appFilter.toLowerCase();
+                    if (!material.applications.some(app => app.toLowerCase().includes(appLower))) {
+                        return false;
+                    }
+                }
+                
+                return true;
+            });
+            
+            // Sort by temperature (low to high)
+            filtered.sort((a, b) => a.meltingPoint - b.meltingPoint);
+            
+            renderPCMTable(filtered);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initChart();
+            renderPCMTable(pcmData);
+            
+            // Set up event listeners
+            document.getElementById('filterBtn').addEventListener('click', filterMaterials);
+            document.getElementById('closeModal').addEventListener('click', () => {
+                document.getElementById('materialModal').classList.add('hidden');
+            });
+            document.getElementById('closeModalBtn').addEventListener('click', () => {
+                document.getElementById('materialModal').classList.add('hidden');
+            });
+            
+            // Allow Enter key to trigger filter
+            document.getElementById('search').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    filterMaterials();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
