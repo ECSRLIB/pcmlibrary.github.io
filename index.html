@@ -56,10 +56,10 @@
             <div class="temp-gradient h-4 rounded-full mb-2"></div>
             <div class="flex justify-between text-xs text-gray-600">
                 <span>-50°C</span>
-                <span>0°C</span>
-                <span>50°C</span>
-                <span>100°C</span>
-                <span>200°C+</span>
+                <span>0°C</span> 
+                <span>200°C</span>
+                <span>800°C</span>
+                <span>2000°C+</span>
             </div>
             <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -68,7 +68,7 @@
                 </div>
                 <div>
                     <label for="maxTemp" class="block text-sm font-medium text-gray-700 mb-1">Maximum Temperature (°C)</label>
-                    <input type="number" id="maxTemp" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="200">
+                    <input type="number" id="maxTemp" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="2000">
                 </div>
             </div>
         </div>
@@ -136,6 +136,7 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Latent Heat (kJ/kg)</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applications</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Add New Property</th>
                         </tr>
                     </thead>
                     <tbody id="pcmTable" class="bg-white divide-y divide-gray-200">
@@ -203,6 +204,18 @@
                             </div>
                             <div>
                                 <h4 class="font-medium text-gray-900 mb-2">Applications</h4>
+                                <h4 class="font-medium text-gray-900 mb-2">Custom Properties</h4>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-bold mb-1" for="newProperty">
+                                        New Property
+                                    </label>
+                                    <input class="w-full px-3 py-2 border rounded text-gray-700" 
+                                           id="newProperty" 
+                                           type="text" 
+                                           placeholder="Add new property" 
+                                           value="${material.newProperty || ''}">
+                                </div>
+                                <h4 class="font-medium text-gray-900 mb-2">Applications</h4>
                                 <ul id="detailApplications" class="list-disc list-inside space-y-1">
                                     <!-- Applications will be populated here -->
                                 </ul>
@@ -216,7 +229,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="px-6 py-3 border-t border-gray-200 flex justify-end">
+                <div class="px-6 py-3 border-t border-gray-200 flex justify-between">
+                    <button id="savePropertyBtn" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+                        Save Property
+                    </button>
                     <button id="closeModalBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
                         Close
                     </button>
@@ -247,26 +263,6 @@
             {
                 id: 1,
                 name: "",
-                formula: "",
-                tempRange: "",
-                meltingPoint: null,
-                freezingPoint: null,
-                phase: "",
-                type: "",
-                latentHeat: null,
-                heatCapacitySolid: null,
-                heatCapacityLiquid: null,
-                thermalConductivity: null,
-                densitySolid: null,
-                densityLiquid: null,
-                volumeChange: null,
-                cyclingStability: "",
-                applications: [],
-                references: []
-            },
-            {
-                id: 1,
-                name: "sonu",
                 formula: "",
                 tempRange: "",
                 meltingPoint: null,
@@ -538,10 +534,10 @@
                     "Thermal Properties of MgCl₂·6H₂O, Thermochimica Acta"
                 ]
             }
-            {
+             {
                 id: 12,
                 name: "sonu",
-                formula: "sonu",
+                formula: "MgCl₂·6H₂O",
                 tempRange: "116 - 118",
                 meltingPoint: 117,
                 freezingPoint: 115,
@@ -579,9 +575,9 @@
                         })),
                         backgroundColor: pcmData.map(material => {
                             if (material.meltingPoint < 0) return '#3b82f6'; // Blue
-                            if (material.meltingPoint < 50) return '#22c55e'; // Green
-                            if (material.meltingPoint < 100) return '#eab308'; // Yellow
-                            if (material.meltingPoint < 200) return '#f97316'; // Orange
+                            if (material.meltingPoint < 200) return '#22c55e'; // Green
+                            if (material.meltingPoint < 800) return '#eab308'; // Yellow
+                            if (material.meltingPoint < 2000) return '#f97316'; // Orange
                             return '#ef4444'; // Red
                         }),
                         borderColor: '#ffffff',
@@ -661,6 +657,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${material.latentHeat}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${material.applications.join(', ')}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${material.newProperty || ''}</td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -707,6 +704,14 @@
             
             // Show modal
             document.getElementById('materialModal').classList.remove('hidden');
+
+            // Handle save property button
+            document.getElementById('savePropertyBtn').addEventListener('click', () => {
+                const propValue = document.getElementById('newProperty').value;
+                material.newProperty = propValue;
+                renderPCMTable(pcmData);
+                document.getElementById('materialModal').classList.add('hidden');
+            });
         }
 
         // Filter Materials
@@ -715,7 +720,7 @@
             const typeFilter = document.getElementById('type').value;
             const appFilter = document.getElementById('application').value;
             const minTemp = parseFloat(document.getElementById('minTemp').value) || -50;
-            const maxTemp = parseFloat(document.getElementById('maxTemp').value) || 200;
+            const maxTemp = parseFloat(document.getElementById('maxTemp').value) || 2000;
             
             const filtered = pcmData.filter(material => {
                 // Temperature filter
