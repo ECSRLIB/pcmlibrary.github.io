@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -108,6 +107,7 @@
                 <h2 class="text-2xl font-semibold text-gray-800">Phase Change Materials</h2>
                 <div class="flex items-center">
                     <span id="result-count" class="text-gray-600 mr-3">2000+ materials available</span>
+                    <span id="visitor-count" class="text-gray-600 mr-3">0 visitors online</span>
                     <div id="loading" class="flex items-center">
                         <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
                         <span class="ml-2 text-gray-600">Loading...</span>
@@ -225,6 +225,13 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Pagination Controls -->
+            <div class="flex justify-between items-center mt-4">
+                <button id="prev-page" class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded" disabled>Previous</button>
+                <span id="page-info" class="text-gray-600">Page 1 of 1</span>
+                <button id="next-page" class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded">Next</button>
+            </div>
         </section>
     </main>
 
@@ -235,6 +242,7 @@
                 <p class="text-gray-300">Thermal energy storage solutions database</p>
                 <p class="text-gray-400 text-sm">Developed by Sonu Singh (M.Tech) at ECSR Lab</p>
                 <p class="text-gray-400 text-sm">Supervised by Dr. Shobhana Singh</p>
+                <p class="text-gray-400 text-sm">Creator: Your Name Here</p> <!-- Add your name here -->
             </div>
             <div class="mt-4 pt-4 border-t border-gray-700 text-center text-gray-400 text-sm">
                 <p>© 2025 PCM Library. All rights reserved.</p>
@@ -243,66 +251,17 @@
     </footer>
 
     <script>
+        // Visitor counter
+        let visitorCount = 0;
+
+        // Function to update visitor count
+        function updateVisitorCount() {
+            visitorCount++;
+            document.getElementById('visitor-count').textContent = `${visitorCount} visitors online`;
+        }
+
+        // Call the function to update the visitor count on page load
+        updateVisitorCount();
+
         // Active filtering functionality
         document.getElementById('filter-btn').addEventListener('click', function() {
-            document.getElementById('loading').style.display = 'flex';
-            
-            const typeFilter = document.getElementById('type-filter').value;
-            const tempMin = parseFloat(document.getElementById('temp-min').value) || -Infinity;
-            const tempMax = parseFloat(document.getElementById('temp-max').value) || Infinity;
-            const heatMin = parseFloat(document.getElementById('heat-min').value) || -Infinity;
-            const heatMax = parseFloat(document.getElementById('heat-max').value) || Infinity;
-            const conductMin = parseFloat(document.getElementById('conduct-min').value) || -Infinity;
-            const conductMax = parseFloat(document.getElementById('conduct-max').value) || Infinity;
-            const costMin = parseFloat(document.getElementById('cost-min').value) || -Infinity;
-            const costMax = parseFloat(document.getElementById('cost-max').value) || Infinity;
-
-            const rows = document.querySelectorAll('.material-row');
-            let visibleCount = 0;
-
-            rows.forEach(row => {
-                const rowType = row.dataset.type;
-                const rowTemp = parseFloat(row.dataset.temp);
-                const rowHeat = parseFloat(row.dataset.heat);
-                const rowConduct = parseFloat(row.dataset.conduct);
-                const rowCost = parseFloat(row.dataset.cost);
-
-                const typeMatch = typeFilter === 'all' || rowType === typeFilter;
-                const tempMatch = rowTemp >= tempMin && rowTemp <= tempMax;
-                const heatMatch = rowHeat >= heatMin && rowHeat <= heatMax;
-                const conductMatch = rowConduct >= conductMin && rowConduct <= conductMax;
-                const costMatch = rowCost >= costMin && rowCost <= costMax;
-
-                const shouldShow = typeMatch && tempMatch && heatMatch && conductMatch && costMatch;
-                row.style.display = shouldShow ? 'table-row' : 'none';
-                if (shouldShow) visibleCount++;
-                // Ensure all rows are visible when filters are reset
-                const allRows = document.querySelectorAll('#materials-list tr');
-                if (typeFilter === 'all' && isNaN(tempMin) && isNaN(tempMax) && isNaN(heatMin) && isNaN(heatMax) && isNaN(conductMin) && isNaN(conductMax) && isNaN(costMin) && isNaN(costMax)) {
-                    allRows.forEach(r => r.style.display = '');
-                    visibleCount = allRows.length;
-                }
-            });
-
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('result-count').textContent = `${visibleCount} materials found (${rows.length} total)`;
-        });
-        
-        document.getElementById('reset-btn').addEventListener('click', function() {
-            document.getElementById('type-filter').value = 'all';
-            document.getElementById('temp-min').value = '';
-            document.getElementById('temp-max').value = '';
-            document.getElementById('heat-min').value = '';
-            document.getElementById('heat-max').value = '';
-            document.getElementById('conduct-min').value = '';
-            document.getElementById('conduct-max').value = '';
-            document.getElementById('cost-min').value = '';
-            document.getElementById('cost-max').value = '';
-            // Show all rows when resetting
-            const allRows = document.querySelectorAll('#materials-list tr');
-            allRows.forEach(r => r.style.display = 'table-row');
-            document.getElementById('result-count').textContent = `${allRows.length} materials available`;
-        });
-    </script>
-</body>
-</html>
