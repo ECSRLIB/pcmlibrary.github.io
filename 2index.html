@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCM Library Database</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .filter-section {
+            transition: all 0.3s ease;
+        }
+        #loading {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-800 text-white">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold mb-2">Advanced PCM Database</h1>
+                    <p class="text-blue-100">2000+ Organic/Inorganic Salt Hydrates & Eutectics</p>
+                    <p class="text-blue-100 text-sm mt-1">Complete property details including thermal conductivity and cost</p>
+                </div>
+                <img src="WhatsApp Image 2025-07-27 at 14.54.26.jpeg" alt="Stylized representation of Phase Change Materials" class="mt-4 md:mt-0 rounded-lg shadow-lg">
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="mb-6">
+            <div class="bg-white p-5 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-3 text-gray-800">About This Database</h2>
+                <p class="text-gray-600 mb-3">
+                    Comprehensive database of 2000+ phase change materials including organic compounds,
+                    inorganic salt hydrates, and eutectic mixtures. Includes detailed thermophysical properties
+                    and market pricing data. Use the advanced filters to find materials matching your exact
+                    thermal, physical and economic requirements.
+                </p>
+                <div class="bg-blue-50 p-4 rounded border border-blue-100">
+                    <p class="text-blue-800 text-sm">Note: All material properties are based on experimental data
+                    from peer-reviewed sources. Future updates will include additional materials and properties.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-md filter-section">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Filter Materials</h2>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Material Type</label>
+                        <select id="type-filter" class="w-full p-2 border border-gray-300 rounded">
+                            <option value="all">All Types</option>
+                            <option value="organic">Organic</option>
+                            <option value="inorganic">Inorganic</option>
+                            <option value="eutectic">Eutectic</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Temp Min (°C)</label>
+                        <input type="number" id="temp-min" class="w-full p-2 border border-gray-300 rounded" placeholder="-50">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Temp Max (°C)</label>
+                        <input type="number" id="temp-max" class="w-full p-2 border border-gray-300 rounded" placeholder="150">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Latent Heat Min (kJ/kg)</label>
+                        <input type="number" id="heat-min" class="w-full p-2 border border-gray-300 rounded" placeholder="0">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Latent Heat Max (kJ/kg)</label>
+                        <input type="number" id="heat-max" class="w-full p-2 border border-gray-300 rounded" placeholder="400">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Thermal Conduct. Min (W/m·K)</label>
+                        <input type="number" id="conduct-min" class="w-full p-2 border border-gray-300 rounded" placeholder="0.1" step="0.01">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Thermal Conduct. Max (W/m·K)</label>
+                        <input type="number" id="conduct-max" class="w-full p-2 border border-gray-300 rounded" placeholder="5.0" step="0.01">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Cost Min ($/kg)</label>
+                        <input type="number" id="cost-min" class="w-full p-2 border border-gray-300 rounded" placeholder="0" step="0.01">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Cost Max ($/kg)</label>
+                        <input type="number" id="cost-max" class="w-full p-2 border border-gray-300 rounded" placeholder="50" step="0.01">
+                    </div>
+                </div>
+                <button id="filter-btn" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                    Apply Filters
+                </button>
+                <button id="reset-btn" class="mt-4 ml-2 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded">
+                    Reset Filters
+                </button>
+                   <button id="clear-all-btn" class="mt-4 ml-2 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+                    Clear All
+                </button>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-semibold text-gray-800">Phase Change Materials</h2>
+                <div class="flex items-center">
+                    <span id="result-count" class="text-gray-600 mr-3">2000+ materials available</span>
+                    <div id="loading" class="flex items-center">
+                        <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+                        <span class="ml-2 text-gray-600">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-3 px-4 text-left">Name</th>
+                            <th class="py-3 px-4 text-left">Type</th>
+                            <th class="py-3 px-4 text-left">Temperature [°C]</th>
+                            <th class="py-3 px-4 text-left">Latent Heat [kJ/kg]</th>
+                            <th class="py-3 px-4 text-left">Specific Heat (Solid/Liquid) [kJ/kg·K]</th>
+                            <th class="py-3 px-4 text-left">Density (Solid/Liquid) [kg/m³]</th>
+                            <th class="py-3 px-4 text-left">Expansivity [x10⁻⁶]</th>
+                            <th class="py-3 px-4 text-left">Energy Density [kJ/m³]</th>
+                            <th class="py-3 px-4 text-left">Cost [$]</th>
+                        </tr>
+                    </thead>
+                    <tbody id="materials-list" class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="-12" data-heat="216" data-conduct="0.23" data-cost="0.23">
+                            <td class="py-3 px-4 font-medium">n-Dodecane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">-12</td>
+                            <td class="py-3 px-4">216</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">750 / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">0.23(s)</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="-6" data-heat="NaN" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Tridecane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">-6</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="4.5-5.6" data-heat="201" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Tetradecane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">4.5-5.6</td>
+                            <td class="py-3 px-4">201</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">772 / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="10" data-heat="207" data-conduct="0.17" data-cost="0.17">
+                            <td class="py-3 px-4 font-medium">n-Pentadecane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">10</td>
+                            <td class="py-3 px-4">207</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">768 / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">0.17</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="18.2" data-heat="208" data-conduct="0.21" data-cost="0.21">
+                            <td class="py-3 px-4 font-medium">n-Hexadecane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">18.2</td>
+                            <td class="py-3 px-4">208</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">774 / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">0.21(s)</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="22" data-heat="215" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Heptadecane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">22</td>
+                            <td class="py-3 px-4">215</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">778 / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="28.2" data-heat="245" data-conduct="0.35" data-cost="0.35">
+                            <td class="py-3 px-4 font-medium">n-Octadecane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">28.2</td>
+                            <td class="py-3 px-4">245</td>
+                            <td class="py-3 px-4">2.14(s) / 2.66(l)</td>
+                            <td class="py-3 px-4">814(s) / 775(l)</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">0.35(s), 0.149(l)</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="31.9" data-heat="222" data-conduct="0.21" data-cost="0.21">
+                            <td class="py-3 px-4 font-medium">n-Nonadecane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">31.9</td>
+                            <td class="py-3 px-4">222</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">823(s) / 769(l)</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">0.21(s)</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="37" data-heat="247" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Eicosane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">37</td>
+                            <td class="py-3 px-4">247</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="41" data-heat="215" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Heneicosane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">41</td>
+                            <td class="py-3 px-4">215</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="44" data-heat="249" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Docosane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">44</td>
+                            <td class="py-3 px-4">249</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="47" data-heat="204" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Tricosane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">47</td>
+                            <td class="py-3 px-4">204</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="51" data-heat="255" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Tetracosane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">51</td>
+                            <td class="py-3 px-4">255</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="54" data-heat="208" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Pentacosane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">54</td>
+                            <td class="py-3 px-4">208</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="56" data-heat="257" data-conduct="0.21" data-cost="0.21">
+                            <td class="py-3 px-4 font-medium">n-Hexacosane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">56</td>
+                            <td class="py-3 px-4">257</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">770 / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">0.21(s)</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="59" data-heat="206" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Heptacosane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">59</td>
+                            <td class="py-3 px-4">206</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">773 / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="61" data-heat="255" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Octacosane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">61</td>
+                            <td class="py-3 px-4">255</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">820(s) / 765(l)</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="64" data-heat="240" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Nonacosane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">64</td>
+                            <td class="py-3 px-4">240</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="65" data-heat="252" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Triacontane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">65</td>
+                            <td class="py-3 px-4">252</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="68" data-heat="242" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Hentriacontane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">68</td>
+                            <td class="py-3 px-4">242</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">830(s) / 800(l)</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="70" data-heat="170" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Ditriacontane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">70</td>
+                            <td class="py-3 px-4">170</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="71" data-heat="189" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Tritriacontane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">71</td>
+                            <td class="py-3 px-4">189</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="75.9" data-heat="269" data-conduct="NaN" data-cost="NaN">
+                            <td class="py-3 px-4 font-medium">n-Tetratriacontane</td>
+                            <td class="py-3 px-4">Organic</td>
+                            <td class="py-3 px-4">75.9</td>
+                            <td class="py-3 px-4">269</td>
+                            <td class="py-3 px-4">NaN / NaN</td>
+                            <td class="py-3 px-4">772.8(s) / NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                            <td class="py-3 px-4">NaN</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 material-row" data-type="inorganic" data-temp="29" data-heat="191" data-conduct="0.35" data-cost="1.20">
+                            <td class="py-3 px-4 font-medium">Calcium Chloride Hexahydrate</td>
+                            <td class="py-3 px-4">Inorganic</td>
+                            <td class="py-3 px-4">29</td>
+                            <td class="py-3 px-4">191</td>
+                            <td class="py-3 px-4">1.4 / 2.1</td>
+                            <td class="py-3 px-4">1710 / 1560</td>
+                            <td class="py-3 px-4">18</td>
+                            <td class="py-3 px-4">326,600</td>
+                            <td class="py-3 px-4">1.20</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="pagination-controls" class="flex justify-center mt-6 space-x-2">
+                <button id="prev-page" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
+                <div id="page-numbers" class="flex space-x-2">
+                    </div>
+                <button id="next-page" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="text-center space-y-1">
+                <h3 class="text-lg font-semibold">PCM Library</h3>
+                <p class="text-gray-300">Thermal energy storage solutions database</p>
+                <p class="text-gray-400 text-sm">Developed by Sonu Singh (M.Tech) at ECSR Lab</p>
+                <p class="text-gray-400 text-sm">Supervised by Dr. Shobhana Singh</p>
+            </div>
+            <div class="mt-4 pt-4 border-t border-gray-700 text-center text-gray-400 text-sm">
+                <p>© 2025 PCM Library. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const materialsList = document.getElementById('materials-list');
+        const resultCountSpan = document.getElementById('result-count');
+        const loadingDiv = document.getElementById('loading');
+        const filterBtn = document.getElementById('filter-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const clearAllBtn = document.getElementById('clear-all-btn');
+
+        const typeFilter = document.getElementById('type-filter');
+        const tempMinInput = document.getElementById('temp-min');
+        const tempMaxInput = document.getElementById('temp-max');
+        const heatMinInput = document.getElementById('heat-min');
+        const heatMaxInput = document.getElementById('heat-max');
+        const conductMinInput = document.getElementById('conduct-min');
+        const conductMaxInput = document.getElementById('conduct-max');
+        const costMinInput = document.getElementById('cost-min');
+        const costMaxInput = document.getElementById('cost-max');
+
+        // Pagination elements
+        const paginationControls = document.getElementById('pagination-controls');
+        const prevPageBtn = document.getElementById('prev-page');
+        const nextPageBtn = document.getElementById('next-page');
+        const pageNumbersDiv = document.getElementById('page-numbers');
+
+        // REVERTED THIS LINE: Display 10 items per page
+        const itemsPerPage = 10;
+        let currentPage = 1;
+        let allMaterialRows = [];
+        let filteredMaterialRows = [];
+
+        function parseTemperature(tempStr) {
+            if (typeof tempStr !== 'string') return parseFloat(tempStr);
+            const parts = tempStr.split('-');
+            if (parts.length === 2) {
+                return (parseFloat(parts[0]) + parseFloat(parts[1])) / 2;
+            }
+            return parseFloat(tempStr);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            allMaterialRows = Array.from(document.querySelectorAll('.material-row'));
+            applyFiltersAndPaginate();
+        });
+
+        function applyFiltersAndPaginate() {
+            loadingDiv.style.display = 'flex';
+
+            setTimeout(() => {
+                const typeFilterValue = typeFilter.value;
+                const tempMin = parseFloat(tempMinInput.value) || -Infinity;
+                const tempMax = parseFloat(tempMaxInput.value) || Infinity;
+                const heatMin = parseFloat(heatMinInput.value) || -Infinity;
+                const heatMax = parseFloat(heatMaxInput.value) || Infinity;
+                const conductMin = parseFloat(conductMinInput.value) || -Infinity;
+                const conductMax = parseFloat(conductMaxInput.value) || Infinity;
+                const costMin = parseFloat(costMinInput.value) || -Infinity;
+                const costMax = parseFloat(costMaxInput.value) || Infinity;
+
+                filteredMaterialRows = allMaterialRows.filter(row => {
+                    const rowType = row.dataset.type;
+                    const rowTemp = parseTemperature(row.dataset.temp);
+                    const rowHeat = parseFloat(row.dataset.heat);
+                    const rowConduct = parseFloat(row.dataset.conduct);
+                    const rowCost = parseFloat(row.dataset.cost);
+
+                    const typeMatch = typeFilterValue === 'all' || rowType === typeFilterValue;
+                    const tempMatch = rowTemp >= tempMin && rowTemp <= tempMax;
+                    const heatMatch = (isNaN(rowHeat) && heatMin === -Infinity && heatMax === Infinity) || (rowHeat >= heatMin && rowHeat <= heatMax);
+                    const conductMatch = (isNaN(rowConduct) && conductMin === -Infinity && conductMax === Infinity) || (rowConduct >= conductMin && rowConduct <= conductMax);
+                    const costMatch = (isNaN(rowCost) && costMin === -Infinity && costMax === Infinity) || (rowCost >= costMin && rowCost <= costMax);
+
+                    return typeMatch && tempMatch && heatMatch && conductMatch && costMatch;
+                });
+
+                currentPage = 1;
+                renderMaterials();
+                renderPaginationControls();
+                loadingDiv.style.display = 'none';
+            }, 100);
+        }
+
+        function renderMaterials() {
+            materialsList.innerHTML = '';
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const materialsToDisplay = filteredMaterialRows.slice(startIndex, endIndex);
+
+            materialsToDisplay.forEach(row => {
+                materialsList.appendChild(row.cloneNode(true));
+            });
+
+            resultCountSpan.textContent = `${filteredMaterialRows.length} materials found`;
+        }
+
+        function renderPaginationControls() {
+            const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
+            pageNumbersDiv.innerHTML = '';
+
+            // Logic to show/hide pagination controls based on totalPages
+            if (totalPages <= 1) {
+                paginationControls.style.display = 'none'; // Hide if only one page or no data
+            } else {
+                paginationControls.style.display = 'flex'; // Show if more than one page
+            }
+
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === totalPages;
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.classList.add('px-3', 'py-1', 'rounded', 'hover:bg-blue-100');
+                if (i === currentPage) {
+                    pageButton.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-600');
+                } else {
+                    pageButton.classList.add('bg-gray-200', 'text-gray-800');
+                }
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    renderMaterials();
+                    renderPaginationControls();
+                });
+                pageNumbersDiv.appendChild(pageButton);
+            }
+        }
+
+        function resetFilters() {
+            typeFilter.value = 'all';
+            tempMinInput.value = '';
+            tempMaxInput.value = '';
+            heatMinInput.value = '';
+            heatMaxInput.value = '';
+            conductMinInput.value = '';
+            conductMaxInput.value = '';
+            costMinInput.value = '';
+            costMaxInput.value = '';
+            applyFiltersAndPaginate();
+        }
+
+        function clearAllFilters() {
+            resetFilters();
+        }
+
+        filterBtn.addEventListener('click', applyFiltersAndPaginate);
+        resetBtn.addEventListener('click', resetFilters);
+        clearAllBtn.addEventListener('click', clearAllFilters);
+
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderMaterials();
+                renderPaginationControls();
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderMaterials();
+                renderPaginationControls();
+            }
+        });
+    </script>
+</body>
+</html>
