@@ -255,17 +255,17 @@
 
         // Function to update visitor count
         function updateVisitorCount() {
-            visitorCount++;
-            document.getElementById('visitor-count').textContent = `${visitorCount} visitors online`;
+            fetch('/api/visitor-count')
+                .then(response => response.json())
+                .then(data => {
+                    visitorCount = data.count;
+                    document.getElementById('visitor-count').textContent = `${visitorCount} visitors online`;
+                })
+                .catch(error => console.error('Error fetching visitor count:', error));
         }
 
         // Call the function to update the visitor count on page load
         updateVisitorCount();
-
-        // Active filtering functionality
-        document.getElementById('filter-btn').addEventListener('click', function() {
-            // Filtering logic here
-        });
     </script>
 </body>
 </html>
