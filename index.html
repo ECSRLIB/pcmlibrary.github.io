@@ -21,7 +21,7 @@
                 <div>
                     <h1 class="text-3xl md:text-4xl font-bold mb-2">Advanced PCM Database</h1>
                     <p class="text-blue-100">2000+ Organic/Inorganic Salt Hydrates & Eutectics</p>
-                    <p class="text-100 text-sm mt-1">Complete property details including thermal conductivity and cost</p>
+                    <p class="text-blue-100 text-sm mt-1">Complete property details including thermal conductivity and cost</p>
                 </div>
                 <img src="Gemini_Generated_Image_jx3np3jx3np3jx3n.png" alt="Stylized representation of Phase Change Materials" class="mt-4 md:mt-0 rounded-lg shadow-lg">
             </div>
@@ -430,7 +430,7 @@
         const loadingDiv = document.getElementById('loading');
         const filterBtn = document.getElementById('filter-btn');
         const resetBtn = document.getElementById('reset-btn');
-        const clearAllBtn = document.getElementById('clear-all-btn'); // New Clear All button
+        const clearAllBtn = document.getElementById('clear-all-btn');
 
         const typeFilter = document.getElementById('type-filter');
         const tempMinInput = document.getElementById('temp-min');
@@ -450,35 +450,28 @@
 
         const itemsPerPage = 10; // Number of items to display per page
         let currentPage = 1;
-        let allMaterialRows = []; // Store all original rows
-        let filteredMaterialRows = []; // Store rows after filtering
+        let allMaterialRows = [];
+        let filteredMaterialRows = [];
 
-        // Function to parse temperature ranges like "4.5-5.6"
         function parseTemperature(tempStr) {
             if (typeof tempStr !== 'string') return parseFloat(tempStr);
             const parts = tempStr.split('-');
             if (parts.length === 2) {
-                // Return average for range for filtering purposes
                 return (parseFloat(parts[0]) + parseFloat(parts[1])) / 2;
             }
-            // If it's a single number or invalid, parse as float
             return parseFloat(tempStr);
         }
 
-        // Initialize and store all rows when the page loads
         document.addEventListener('DOMContentLoaded', () => {
-            // Retrieve all rows *initially present* in the HTML
             allMaterialRows = Array.from(document.querySelectorAll('.material-row'));
-            applyFiltersAndPaginate(); // Initial display
+            applyFiltersAndPaginate();
         });
 
         function applyFiltersAndPaginate() {
-            loadingDiv.style.display = 'flex'; // Show loading indicator
+            loadingDiv.style.display = 'flex';
 
-            // Small delay to allow UI to update before heavy processing
             setTimeout(() => {
                 const typeFilterValue = typeFilter.value;
-                // Parse float values, defaulting to -Infinity or Infinity if input is empty
                 const tempMin = parseFloat(tempMinInput.value) || -Infinity;
                 const tempMax = parseFloat(tempMaxInput.value) || Infinity;
                 const heatMin = parseFloat(heatMinInput.value) || -Infinity;
@@ -497,30 +490,28 @@
 
                     const typeMatch = typeFilterValue === 'all' || rowType === typeFilterValue;
                     const tempMatch = rowTemp >= tempMin && rowTemp <= tempMax;
-
-                    // Handle NaN values in data for ranges (if min/max are not set, NaN passes)
                     const heatMatch = (isNaN(rowHeat) && heatMin === -Infinity && heatMax === Infinity) || (rowHeat >= heatMin && rowHeat <= heatMax);
-                    const conductMatch = (isNaN(rowConduct) && conductMin === -Infinity && conductMax === Infinity) || (rowConduct >= conductMin && rowConduct <= conductMatch);
+                    const conductMatch = (isNaN(rowConduct) && conductMin === -Infinity && conductMax === Infinity) || (rowConduct >= conductMin && rowConduct <= conductMax);
                     const costMatch = (isNaN(rowCost) && costMin === -Infinity && costMax === Infinity) || (rowCost >= costMin && rowCost <= costMax);
 
                     return typeMatch && tempMatch && heatMatch && conductMatch && costMatch;
                 });
 
-                currentPage = 1; // Reset to first page after filtering
+                currentPage = 1;
                 renderMaterials();
                 renderPaginationControls();
-                loadingDiv.style.display = 'none'; // Hide loading indicator
-            }, 100); // Short delay for UX
+                loadingDiv.style.display = 'none';
+            }, 100);
         }
 
         function renderMaterials() {
-            materialsList.innerHTML = ''; // Clear current materials
+            materialsList.innerHTML = '';
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
             const materialsToDisplay = filteredMaterialRows.slice(startIndex, endIndex);
 
             materialsToDisplay.forEach(row => {
-                materialsList.appendChild(row.cloneNode(true)); // Append a clone to avoid moving original elements
+                materialsList.appendChild(row.cloneNode(true));
             });
 
             resultCountSpan.textContent = `${filteredMaterialRows.length} materials found`;
@@ -528,10 +519,17 @@
 
         function renderPaginationControls() {
             const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
-            pageNumbersDiv.innerHTML = ''; // Clear previous page numbers
+            pageNumbersDiv.innerHTML = '';
+
+            // NEW: Hide/Show pagination controls based on totalPages
+            if (totalPages <= 1) {
+                paginationControls.style.display = 'none'; // Hide if only one page or no data
+            } else {
+                paginationControls.style.display = 'flex'; // Show if more than one page
+            }
 
             prevPageBtn.disabled = currentPage === 1;
-            nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+            nextPageBtn.disabled = currentPage === totalPages; // No need for || totalPages === 0 as we hide the div
 
             for (let i = 1; i <= totalPages; i++) {
                 const pageButton = document.createElement('button');
@@ -565,14 +563,12 @@
         }
 
         function clearAllFilters() {
-            resetFilters(); // Clear all filter inputs
-            // No need to re-apply if resetFilters already calls applyFiltersAndPaginate
+            resetFilters();
         }
 
-        // Event Listeners
         filterBtn.addEventListener('click', applyFiltersAndPaginate);
         resetBtn.addEventListener('click', resetFilters);
-        clearAllBtn.addEventListener('click', clearAllFilters); // Event listener for Clear All
+        clearAllBtn.addEventListener('click', clearAllFilters);
 
         prevPageBtn.addEventListener('click', () => {
             if (currentPage > 1) {
