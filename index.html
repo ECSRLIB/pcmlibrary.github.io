@@ -21,9 +21,9 @@
                 <div>
                     <h1 class="text-3xl md:text-4xl font-bold mb-2">Advanced PCM Database</h1>
                     <p class="text-blue-100">2000+ Organic/Inorganic Salt Hydrates & Eutectics</p>
-                    <p class="text-blue-100 text-sm mt-1">Complete property details including thermal conductivity and cost</p>
+                    <p class="text-100 text-sm mt-1">Complete property details including thermal conductivity and cost</p>
                 </div>
-                <img src="http://googleusercontent.com/image_generation_content/0" alt="Stylized representation of Phase Change Materials" class="mt-4 md:mt-0 rounded-lg shadow-lg">
+                <img src="Gemini_Generated_Image_jx3np3jx3np3jx3n.png" alt="Stylized representation of Phase Change Materials" class="mt-4 md:mt-0 rounded-lg shadow-lg">
             </div>
         </div>
     </header>
@@ -500,7 +500,7 @@
 
                     // Handle NaN values in data for ranges (if min/max are not set, NaN passes)
                     const heatMatch = (isNaN(rowHeat) && heatMin === -Infinity && heatMax === Infinity) || (rowHeat >= heatMin && rowHeat <= heatMax);
-                    const conductMatch = (isNaN(rowConduct) && conductMin === -Infinity && conductMax === Infinity) || (rowConduct >= conductMin && rowConduct <= conductMax);
+                    const conductMatch = (isNaN(rowConduct) && conductMin === -Infinity && conductMax === Infinity) || (rowConduct >= conductMin && rowConduct <= conductMatch);
                     const costMatch = (isNaN(rowCost) && costMin === -Infinity && costMax === Infinity) || (rowCost >= costMin && rowCost <= costMax);
 
                     return typeMatch && tempMatch && heatMatch && conductMatch && costMatch;
