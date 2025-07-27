@@ -522,11 +522,10 @@
             const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
             pageNumbersDiv.innerHTML = '';
 
-            // Logic to show/hide pagination controls based on totalPages
             if (totalPages <= 1) {
-                paginationControls.style.display = 'none'; // Hide if only one page or no data
+                paginationControls.style.display = 'none';
             } else {
-                paginationControls.style.display = 'flex'; // Show if more than one page
+                paginationControls.style.display = 'flex';
             }
 
             prevPageBtn.disabled = currentPage === 1;
@@ -561,32 +560,3 @@
             costMinInput.value = '';
             costMaxInput.value = '';
             applyFiltersAndPaginate();
-        }
-
-        function clearAllFilters() {
-            resetFilters();
-        }
-
-        filterBtn.addEventListener('click', applyFiltersAndPaginate);
-        resetBtn.addEventListener('click', resetFilters);
-        clearAllBtn.addEventListener('click', clearAllFilters);
-
-        prevPageBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderMaterials();
-                renderPaginationControls();
-            }
-        });
-
-        nextPageBtn.addEventListener('click', () => {
-            const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderMaterials();
-                renderPaginationControls();
-            }
-        });
-    </script>
-</body>
-</html>
