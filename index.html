@@ -23,7 +23,7 @@
                     <p class="text-blue-100">2000+ Organic/Inorganic Salt Hydrates & Eutectics</p>
                     <p class="text-blue-100 text-sm mt-1">Complete property details including thermal conductivity and cost</p>
                 </div>
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/dd3bf3f0-fbf4-49aa-86f1-2a93ccde5887.png" alt="Visual representation of phase change materials" class="mt-4 md:mt-0 rounded-lg shadow-lg">
+                <img src="image_220b3c.png" alt="Visual representation of phase change materials" class="mt-4 md:mt-0 rounded-lg shadow-lg">
             </div>
         </div>
     </header>
@@ -99,7 +99,7 @@
                 <button id="reset-btn" class="mt-4 ml-2 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded">
                     Reset Filters
                 </button>
-                 <button id="clear-all-btn" class="mt-4 ml-2 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+                   <button id="clear-all-btn" class="mt-4 ml-2 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
                     Clear All
                 </button>
             </div>
@@ -506,79 +506,52 @@
                     return typeMatch && tempMatch && heatMatch && conductMatch && costMatch;
                 });
 
-                currentPage = 1; // Always reset to the first page after applying new filters
-                displayPage(currentPage);
+                currentPage = 1; // Reset to first page after filtering
+                renderMaterials();
+                renderPaginationControls();
                 loadingDiv.style.display = 'none'; // Hide loading indicator
-            }, 100); // Short delay for user experience
+            }, 100); // Short delay for UX
         }
 
-        function displayPage(page) {
-            materialsList.innerHTML = ''; // Clear current table content
-            pageNumbersDiv.innerHTML = ''; // Clear current page numbers
-
-            const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
-
-            // Adjust currentPage if it's out of bounds after filtering or navigation
-            if (page > totalPages && totalPages > 0) {
-                currentPage = totalPages;
-            } else if (page < 1 && totalPages > 0) {
-                currentPage = 1;
-            } else if (totalPages === 0) {
-                currentPage = 0; // No pages if no results
-            } else {
-                currentPage = page;
-            }
-
+        function renderMaterials() {
+            materialsList.innerHTML = ''; // Clear current materials
             const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = Math.min(startIndex + itemsPerPage, filteredMaterialRows.length);
+            const endIndex = startIndex + itemsPerPage;
+            const materialsToDisplay = filteredMaterialRows.slice(startIndex, endIndex);
 
-            const itemsToShow = filteredMaterialRows.slice(startIndex, endIndex);
+            materialsToDisplay.forEach(row => {
+                materialsList.appendChild(row.cloneNode(true)); // Append a clone to avoid moving original elements
+            });
 
-            // Display "No materials found" message if no items match filters or are available
-            if (itemsToShow.length === 0 && filteredMaterialRows.length === 0) {
-                materialsList.innerHTML = '<tr><td colspan="9" class="py-4 text-center text-gray-500">No materials found matching your criteria.</td></tr>';
-                paginationControls.style.display = 'none'; // Hide pagination controls
-                resultCountSpan.textContent = '0 materials found';
-            } else {
-                paginationControls.style.display = 'flex'; // Show pagination controls
-                itemsToShow.forEach(row => {
-                    materialsList.appendChild(row);
-                });
-                resultCountSpan.textContent = `${filteredMaterialRows.length} materials found`;
-            }
+            resultCountSpan.textContent = `${filteredMaterialRows.length} materials found`;
+        }
 
-            // Update pagination buttons state
-            prevPageBtn.disabled = currentPage <= 1; // Disable if on first page
-            nextPageBtn.disabled = currentPage >= totalPages; // Disable if on last page or no pages
+        function renderPaginationControls() {
+            const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
+            pageNumbersDiv.innerHTML = ''; // Clear previous page numbers
 
-            // Render page numbers
-            const maxPageNumbersToShow = 5; // e.g., 1 2 [3] 4 5
-            let startPage = Math.max(1, currentPage - Math.floor(maxPageNumbersToShow / 2));
-            let endPage = Math.min(totalPages, startPage + maxPageNumbersToShow - 1);
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
 
-            // Adjust startPage if not enough pages to fill maxPageNumbersToShow from end
-            if (endPage - startPage + 1 < maxPageNumbersToShow && totalPages > maxPageNumbersToShow) {
-                startPage = Math.max(1, totalPages - maxPageNumbersToShow + 1);
-            }
-
-            for (let i = startPage; i <= endPage; i++) {
+            for (let i = 1; i <= totalPages; i++) {
                 const pageButton = document.createElement('button');
                 pageButton.textContent = i;
-                pageButton.classList.add('px-3', 'py-1', 'rounded', 'border', 'border-gray-300');
+                pageButton.classList.add('px-3', 'py-1', 'rounded', 'hover:bg-blue-100');
                 if (i === currentPage) {
-                    pageButton.classList.add('bg-blue-600', 'text-white');
+                    pageButton.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-600');
                 } else {
-                    pageButton.classList.add('bg-white', 'text-gray-700', 'hover:bg-gray-100');
+                    pageButton.classList.add('bg-gray-200', 'text-gray-800');
                 }
-                pageButton.addEventListener('click', () => displayPage(i));
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    renderMaterials();
+                    renderPaginationControls();
+                });
                 pageNumbersDiv.appendChild(pageButton);
             }
         }
 
-        // Event Listeners for Filters
-        filterBtn.addEventListener('click', applyFiltersAndPaginate);
-
-        resetBtn.addEventListener('click', () => {
+        function resetFilters() {
             typeFilter.value = 'all';
             tempMinInput.value = '';
             tempMaxInput.value = '';
@@ -588,27 +561,34 @@
             conductMaxInput.value = '';
             costMinInput.value = '';
             costMaxInput.value = '';
-            applyFiltersAndPaginate(); // Re-apply filters with reset values
-        });
+            applyFiltersAndPaginate();
+        }
 
-        // Clear All functionality for the table
-        clearAllBtn.addEventListener('click', () => {
-            if (confirm("Are you sure you want to clear all data from the table? This action cannot be undone.")) {
-                materialsList.innerHTML = '<tr><td colspan="9" class="py-4 text-center text-gray-500">No materials available.</td></tr>';
-                allMaterialRows = []; // Clear the stored data
-                filteredMaterialRows = [];
-                resultCountSpan.textContent = '0 materials available';
-                paginationControls.style.display = 'none'; // Hide pagination
+        function clearAllFilters() {
+            resetFilters(); // Clear all filter inputs
+            // No need to re-apply if resetFilters already calls applyFiltersAndPaginate
+        }
+
+        // Event Listeners
+        filterBtn.addEventListener('click', applyFiltersAndPaginate);
+        resetBtn.addEventListener('click', resetFilters);
+        clearAllBtn.addEventListener('click', clearAllFilters); // Event listener for Clear All
+
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderMaterials();
+                renderPaginationControls();
             }
         });
 
-        // Event Listeners for Pagination
-        prevPageBtn.addEventListener('click', () => {
-            displayPage(currentPage - 1); // displayPage handles boundary checks
-        });
-
         nextPageBtn.addEventListener('click', () => {
-            displayPage(currentPage + 1); // displayPage handles boundary checks
+            const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderMaterials();
+                renderPaginationControls();
+            }
         });
     </script>
 </body>
