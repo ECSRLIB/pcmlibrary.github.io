@@ -448,7 +448,8 @@
         const nextPageBtn = document.getElementById('next-page');
         const pageNumbersDiv = document.getElementById('page-numbers');
 
-        const itemsPerPage = 10; // Number of items to display per page
+        // REVERTED THIS LINE: Display 10 items per page
+        const itemsPerPage = 10;
         let currentPage = 1;
         let allMaterialRows = [];
         let filteredMaterialRows = [];
@@ -521,7 +522,7 @@
             const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
             pageNumbersDiv.innerHTML = '';
 
-            // NEW: Hide/Show pagination controls based on totalPages
+            // Logic to show/hide pagination controls based on totalPages
             if (totalPages <= 1) {
                 paginationControls.style.display = 'none'; // Hide if only one page or no data
             } else {
@@ -529,7 +530,7 @@
             }
 
             prevPageBtn.disabled = currentPage === 1;
-            nextPageBtn.disabled = currentPage === totalPages; // No need for || totalPages === 0 as we hide the div
+            nextPageBtn.disabled = currentPage === totalPages;
 
             for (let i = 1; i <= totalPages; i++) {
                 const pageButton = document.createElement('button');
