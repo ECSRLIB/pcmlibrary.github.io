@@ -23,7 +23,7 @@
                     <p class="text-blue-100">2000+ Organic/Inorganic Salt Hydrates & Eutectics</p>
                     <p class="text-blue-100 text-sm mt-1">Complete property details including thermal conductivity and cost</p>
                 </div>
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/dd3bf3f0-fbf4-49aa-8b61-b8ff2c67f940.png" alt="Visual representation of phase change materials" class="mt-4 md:mt-0 rounded-lg shadow-lg">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/dd3bf3f0-fbf4-49aa-86f1-2a93ccde5887.png" alt="Visual representation of phase change materials" class="mt-4 md:mt-0 rounded-lg shadow-lg">
             </div>
         </div>
     </header>
@@ -458,13 +458,16 @@
             if (typeof tempStr !== 'string') return parseFloat(tempStr);
             const parts = tempStr.split('-');
             if (parts.length === 2) {
-                return (parseFloat(parts[0]) + parseFloat(parts[1])) / 2; // Return average for range
+                // Return average for range for filtering purposes
+                return (parseFloat(parts[0]) + parseFloat(parts[1])) / 2;
             }
+            // If it's a single number or invalid, parse as float
             return parseFloat(tempStr);
         }
 
         // Initialize and store all rows when the page loads
         document.addEventListener('DOMContentLoaded', () => {
+            // Retrieve all rows *initially present* in the HTML
             allMaterialRows = Array.from(document.querySelectorAll('.material-row'));
             applyFiltersAndPaginate(); // Initial display
         });
@@ -472,9 +475,10 @@
         function applyFiltersAndPaginate() {
             loadingDiv.style.display = 'flex'; // Show loading indicator
 
-            // Allow UI to update before heavy processing
+            // Small delay to allow UI to update before heavy processing
             setTimeout(() => {
                 const typeFilterValue = typeFilter.value;
+                // Parse float values, defaulting to -Infinity or Infinity if input is empty
                 const tempMin = parseFloat(tempMinInput.value) || -Infinity;
                 const tempMax = parseFloat(tempMaxInput.value) || Infinity;
                 const heatMin = parseFloat(heatMinInput.value) || -Infinity;
@@ -486,13 +490,15 @@
 
                 filteredMaterialRows = allMaterialRows.filter(row => {
                     const rowType = row.dataset.type;
-                    const rowTemp = parseTemperature(row.dataset.temp); // Use parsed temperature
+                    const rowTemp = parseTemperature(row.dataset.temp);
                     const rowHeat = parseFloat(row.dataset.heat);
                     const rowConduct = parseFloat(row.dataset.conduct);
                     const rowCost = parseFloat(row.dataset.cost);
 
                     const typeMatch = typeFilterValue === 'all' || rowType === typeFilterValue;
                     const tempMatch = rowTemp >= tempMin && rowTemp <= tempMax;
+
+                    // Handle NaN values in data for ranges (if min/max are not set, NaN passes)
                     const heatMatch = (isNaN(rowHeat) && heatMin === -Infinity && heatMax === Infinity) || (rowHeat >= heatMin && rowHeat <= heatMax);
                     const conductMatch = (isNaN(rowConduct) && conductMin === -Infinity && conductMax === Infinity) || (rowConduct >= conductMin && rowConduct <= conductMax);
                     const costMatch = (isNaN(rowCost) && costMin === -Infinity && costMax === Infinity) || (rowCost >= costMin && rowCost <= costMax);
@@ -500,10 +506,10 @@
                     return typeMatch && tempMatch && heatMatch && conductMatch && costMatch;
                 });
 
-                currentPage = 1; // Reset to first page after applying filters
+                currentPage = 1; // Always reset to the first page after applying new filters
                 displayPage(currentPage);
                 loadingDiv.style.display = 'none'; // Hide loading indicator
-            }, 100); // Small delay for UI feedback
+            }, 100); // Short delay for user experience
         }
 
         function displayPage(page) {
@@ -511,12 +517,11 @@
             pageNumbersDiv.innerHTML = ''; // Clear current page numbers
 
             const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
-            resultCountSpan.textContent = `${filteredMaterialRows.length} materials found`;
 
-            // Adjust currentPage if it goes out of bounds after filtering
+            // Adjust currentPage if it's out of bounds after filtering or navigation
             if (page > totalPages && totalPages > 0) {
                 currentPage = totalPages;
-            } else if (page <= 0 && totalPages > 0) {
+            } else if (page < 1 && totalPages > 0) {
                 currentPage = 1;
             } else if (totalPages === 0) {
                 currentPage = 0; // No pages if no results
@@ -524,41 +529,37 @@
                 currentPage = page;
             }
 
-
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = Math.min(startIndex + itemsPerPage, filteredMaterialRows.length);
 
             const itemsToShow = filteredMaterialRows.slice(startIndex, endIndex);
 
-            if (itemsToShow.length === 0 && filteredMaterialRows.length > 0) {
-                 // This handles the case where filtering results in no items on the current page,
-                 // but there are items on previous pages. It will go back to page 1.
-                 currentPage = 1;
-                 const newStartIndex = (currentPage - 1) * itemsPerPage;
-                 const newEndIndex = Math.min(newStartIndex + itemsPerPage, filteredMaterialRows.length);
-                 itemsToShow.push(...filteredMaterialRows.slice(newStartIndex, newEndIndex));
-            } else if (itemsToShow.length === 0 && filteredMaterialRows.length === 0) {
+            // Display "No materials found" message if no items match filters or are available
+            if (itemsToShow.length === 0 && filteredMaterialRows.length === 0) {
                 materialsList.innerHTML = '<tr><td colspan="9" class="py-4 text-center text-gray-500">No materials found matching your criteria.</td></tr>';
+                paginationControls.style.display = 'none'; // Hide pagination controls
+                resultCountSpan.textContent = '0 materials found';
+            } else {
+                paginationControls.style.display = 'flex'; // Show pagination controls
+                itemsToShow.forEach(row => {
+                    materialsList.appendChild(row);
+                });
+                resultCountSpan.textContent = `${filteredMaterialRows.length} materials found`;
             }
 
-
-            itemsToShow.forEach(row => {
-                materialsList.appendChild(row);
-            });
-
             // Update pagination buttons state
-            prevPageBtn.disabled = currentPage === 1 || totalPages === 0;
-            nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+            prevPageBtn.disabled = currentPage <= 1; // Disable if on first page
+            nextPageBtn.disabled = currentPage >= totalPages; // Disable if on last page or no pages
 
             // Render page numbers
             const maxPageNumbersToShow = 5; // e.g., 1 2 [3] 4 5
             let startPage = Math.max(1, currentPage - Math.floor(maxPageNumbersToShow / 2));
             let endPage = Math.min(totalPages, startPage + maxPageNumbersToShow - 1);
 
-            if (endPage - startPage + 1 < maxPageNumbersToShow) {
-                startPage = Math.max(1, endPage - maxPageNumbersToShow + 1);
+            // Adjust startPage if not enough pages to fill maxPageNumbersToShow from end
+            if (endPage - startPage + 1 < maxPageNumbersToShow && totalPages > maxPageNumbersToShow) {
+                startPage = Math.max(1, totalPages - maxPageNumbersToShow + 1);
             }
-
 
             for (let i = startPage; i <= endPage; i++) {
                 const pageButton = document.createElement('button');
@@ -589,11 +590,11 @@
             costMaxInput.value = '';
             applyFiltersAndPaginate(); // Re-apply filters with reset values
         });
-        
-        // New Clear All functionality for the table
+
+        // Clear All functionality for the table
         clearAllBtn.addEventListener('click', () => {
             if (confirm("Are you sure you want to clear all data from the table? This action cannot be undone.")) {
-                materialsList.innerHTML = '<tr><td colspan="9" class="py-4 text-center text-gray-500">No materials available. Use the "Add Data" feature to populate the table.</td></tr>';
+                materialsList.innerHTML = '<tr><td colspan="9" class="py-4 text-center text-gray-500">No materials available.</td></tr>';
                 allMaterialRows = []; // Clear the stored data
                 filteredMaterialRows = [];
                 resultCountSpan.textContent = '0 materials available';
@@ -601,19 +602,13 @@
             }
         });
 
-
         // Event Listeners for Pagination
         prevPageBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                displayPage(currentPage - 1);
-            }
+            displayPage(currentPage - 1); // displayPage handles boundary checks
         });
 
         nextPageBtn.addEventListener('click', () => {
-            const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
-            if (currentPage < totalPages) {
-                displayPage(currentPage + 1);
-            }
+            displayPage(currentPage + 1); // displayPage handles boundary checks
         });
     </script>
 </body>
