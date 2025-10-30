@@ -4347,17 +4347,21 @@
     prevPageBtn.disabled = currentPage === 1;
     nextPageBtn.disabled = currentPage === totalPages;
 
-    const maxVisiblePages = 8; // first 8 pages
+    const maxVisiblePages = 8; // pages per block
     let pagesToShow = [];
 
-    if (totalPages <= maxVisiblePages + 1) {
-        // If total pages are small, show all
-        for (let i = 1; i <= totalPages; i++) pagesToShow.push(i);
-    } else {
-        // Always show first 8 pages
-        for (let i = 1; i <= maxVisiblePages; i++) pagesToShow.push(i);
-        pagesToShow.push('...');      // Ellipsis
-        pagesToShow.push(totalPages); // Last page
+    // Determine current block of pages
+    const currentBlock = Math.floor((currentPage - 1) / maxVisiblePages);
+    const startPage = currentBlock * maxVisiblePages + 1;
+    let endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
+
+    // Add pages of the current block
+    for (let i = startPage; i <= endPage; i++) pagesToShow.push(i);
+
+    // Add ellipsis and last page if needed
+    if (endPage < totalPages) {
+        pagesToShow.push('...');
+        pagesToShow.push(totalPages);
     }
 
     // Render page buttons
