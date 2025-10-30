@@ -4333,37 +4333,49 @@
             resultCountSpan.textContent = `${filteredMaterialRows.length} materials found`;
         }
 
-        function renderPaginationControls() {
-            const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
-            pageNumbersDiv.innerHTML = '';
+       function renderPaginationControls() {
+    const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
+    pageNumbersDiv.innerHTML = '';
 
-            // Logic to show/hide pagination controls based on totalPages
-            if (totalPages <= 1) {
-                paginationControls.style.display = 'none'; // Hide if only one page or no data
-            } else {
-                paginationControls.style.display = 'flex'; // Show if more than one page
-            }
+    // Show/hide pagination controls
+    if (totalPages <= 1) {
+        paginationControls.style.display = 'none';
+        return;
+    } else {
+        paginationControls.style.display = 'flex';
+    }
 
-            prevPageBtn.disabled = currentPage === 1;
-            nextPageBtn.disabled = currentPage === totalPages;
+    // Disable prev/next buttons at boundaries
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === totalPages;
 
-            for (let i = 1; i <= totalPages; i++) {
-                const pageButton = document.createElement('button');
-                pageButton.textContent = i;
-                pageButton.classList.add('px-3', 'py-1', 'rounded', 'hover:bg-blue-100');
-                if (i === currentPage) {
-                    pageButton.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-600');
-                } else {
-                    pageButton.classList.add('bg-gray-200', 'text-gray-800');
-                }
-                pageButton.addEventListener('click', () => {
-                    currentPage = i;
-                    renderMaterials();
-                    renderPaginationControls();
-                });
-                pageNumbersDiv.appendChild(pageButton);
-            }
+    // Sliding window logic: show max 10 pages at a time
+    const maxVisiblePages = 10;
+    let startPage = Math.floor((currentPage - 1) / maxVisiblePages) * maxVisiblePages + 1;
+    let endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
+
+    // Create page number buttons
+    for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.classList.add('px-3', 'py-1', 'rounded', 'hover:bg-blue-100');
+
+        if (i === currentPage) {
+            pageButton.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-600');
+        } else {
+            pageButton.classList.add('bg-gray-200', 'text-gray-800');
         }
+
+        pageButton.addEventListener('click', () => {
+            currentPage = i;
+            renderMaterials();
+            renderPaginationControls();
+        });
+
+        pageNumbersDiv.appendChild(pageButton);
+    }
+}
+
 
         function resetFilters() {
             typeFilter.value = 'all';
