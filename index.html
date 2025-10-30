@@ -4337,7 +4337,6 @@
     const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
     pageNumbersDiv.innerHTML = '';
 
-    // Show/hide pagination controls
     if (totalPages <= 1) {
         paginationControls.style.display = 'none';
         return;
@@ -4345,36 +4344,46 @@
         paginationControls.style.display = 'flex';
     }
 
-    // Disable prev/next buttons at boundaries
     prevPageBtn.disabled = currentPage === 1;
     nextPageBtn.disabled = currentPage === totalPages;
 
-    // Sliding window logic: show max 10 pages at a time
-    const maxVisiblePages = 10;
-    let startPage = Math.floor((currentPage - 1) / maxVisiblePages) * maxVisiblePages + 1;
-    let endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
+    const maxVisiblePages = 8; // first 8 pages
+    let pagesToShow = [];
 
-    // Create page number buttons
-    for (let i = startPage; i <= endPage; i++) {
+    if (totalPages <= maxVisiblePages + 1) {
+        // If total pages are small, show all
+        for (let i = 1; i <= totalPages; i++) pagesToShow.push(i);
+    } else {
+        // Always show first 8 pages
+        for (let i = 1; i <= maxVisiblePages; i++) pagesToShow.push(i);
+        pagesToShow.push('...');      // Ellipsis
+        pagesToShow.push(totalPages); // Last page
+    }
+
+    // Render page buttons
+    pagesToShow.forEach(p => {
         const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        pageButton.classList.add('px-3', 'py-1', 'rounded', 'hover:bg-blue-100');
+        pageButton.textContent = p;
+        pageButton.classList.add('px-3', 'py-1', 'rounded');
 
-        if (i === currentPage) {
+        if (p === '...') {
+            pageButton.disabled = true;
+            pageButton.classList.add('bg-gray-100', 'text-gray-500', 'cursor-default');
+        } else if (p === currentPage) {
             pageButton.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-600');
         } else {
-            pageButton.classList.add('bg-gray-200', 'text-gray-800');
+            pageButton.classList.add('bg-gray-200', 'text-gray-800', 'hover:bg-blue-100');
+            pageButton.addEventListener('click', () => {
+                currentPage = p;
+                renderMaterials();
+                renderPaginationControls();
+            });
         }
 
-        pageButton.addEventListener('click', () => {
-            currentPage = i;
-            renderMaterials();
-            renderPaginationControls();
-        });
-
         pageNumbersDiv.appendChild(pageButton);
-    }
+    });
 }
+
 
 
         function resetFilters() {
