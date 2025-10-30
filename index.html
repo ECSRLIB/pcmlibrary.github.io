@@ -130,1412 +130,12 @@
                             <th class="py-3 px-4 text-left">Specific Heat (Solid/Liquid) [kJ/kg·K]</th>
                             <th class="py-3 px-4 text-left">Thermal conductivity (Solid/Liquid) [w/m·K]</th>
                             <th class="py-3 px-4 text-left">Density (Solid/Liquid) [kg/m³]</th>
-                            <th class="py-3 px-4 text-left">Energy Density [kJ/m³]</th>
-                            <th class="py-3 px-4 text-left">Cost [$]</th>
+                            
                             
                         </tr>
                     </thead>
                     <tbody id="materials-list" class="divide-y divide-gray-200">
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="-12" data-heat="216" data-conduct="0.23" data-cost="0.23">
-                            <td class="py-3 px-4 font-medium">n-Dodecane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">-12</td>
-                            <td class="py-3 px-4">216</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">750 / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">0.23(s)</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="-6" data-heat="NaN" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Tridecane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">-6</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="4.5-5.6" data-heat="201" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Tetradecane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">4.5-5.6</td>
-                            <td class="py-3 px-4">201</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">772 / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="10" data-heat="207" data-conduct="0.17" data-cost="0.17">
-                            <td class="py-3 px-4 font-medium">n-Pentadecane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">10</td>
-                            <td class="py-3 px-4">207</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">768 / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">0.17</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="18.2" data-heat="208" data-conduct="0.21" data-cost="0.21">
-                            <td class="py-3 px-4 font-medium">n-Hexadecane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">18.2</td>
-                            <td class="py-3 px-4">208</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">774 / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">0.21(s)</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="22" data-heat="215" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Heptadecane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">22</td>
-                            <td class="py-3 px-4">215</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">778 / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="28.2" data-heat="245" data-conduct="0.35" data-cost="0.35">
-                            <td class="py-3 px-4 font-medium">n-Octadecane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">28.2</td>
-                            <td class="py-3 px-4">245</td>
-                            <td class="py-3 px-4">2.14(s) / 2.66(l)</td>
-                            <td class="py-3 px-4">814(s) / 775(l)</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">0.35(s), 0.149(l)</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="31.9" data-heat="222" data-conduct="0.21" data-cost="0.21">
-                            <td class="py-3 px-4 font-medium">n-Nonadecane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">31.9</td>
-                            <td class="py-3 px-4">222</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">823(s) / 769(l)</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">0.21(s)</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="37" data-heat="247" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Eicosane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">37</td>
-                            <td class="py-3 px-4">247</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="41" data-heat="215" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Heneicosane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">41</td>
-                            <td class="py-3 px-4">215</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="44" data-heat="249" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Docosane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">44</td>
-                            <td class="py-3 px-4">249</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="47" data-heat="204" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Tricosane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">47</td>
-                            <td class="py-3 px-4">204</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="51" data-heat="255" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Tetracosane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">51</td>
-                            <td class="py-3 px-4">255</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="54" data-heat="208" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Pentacosane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">54</td>
-                            <td class="py-3 px-4">208</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="56" data-heat="257" data-conduct="0.21" data-cost="0.21">
-                            <td class="py-3 px-4 font-medium">n-Hexacosane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">56</td>
-                            <td class="py-3 px-4">257</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">770 / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">0.21(s)</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="59" data-heat="206" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Heptacosane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">59</td>
-                            <td class="py-3 px-4">206</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">773 / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="61" data-heat="255" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Octacosane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">61</td>
-                            <td class="py-3 px-4">255</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">820(s) / 765(l)</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="64" data-heat="240" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Nonacosane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">64</td>
-                            <td class="py-3 px-4">240</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="65" data-heat="252" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Triacontane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">65</td>
-                            <td class="py-3 px-4">252</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="68" data-heat="242" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Hentriacontane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">68</td>
-                            <td class="py-3 px-4">242</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">830(s) / 800(l)</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="70" data-heat="170" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Ditriacontane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">70</td>
-                            <td class="py-3 px-4">170</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="71" data-heat="189" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Tritriacontane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">71</td>
-                            <td class="py-3 px-4">189</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="organic" data-temp="75.9" data-heat="269" data-conduct="NaN" data-cost="NaN">
-                            <td class="py-3 px-4 font-medium">n-Tetratriacontane</td>
-                            <td class="py-3 px-4">Organic</td>
-                            <td class="py-3 px-4">75.9</td>
-                            <td class="py-3 px-4">269</td>
-                            <td class="py-3 px-4">NaN / NaN</td>
-                            <td class="py-3 px-4">772.8(s) / NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                            <td class="py-3 px-4">NaN</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 material-row" data-type="inorganic" data-temp="29" data-heat="191" data-conduct="0.35" data-cost="1.20">
-                            <td class="py-3 px-4 font-medium">Calcium Chloride Hexahydrate</td>
-                            <td class="py-3 px-4">Inorganic</td>
-                            <td class="py-3 px-4">29</td>
-                            <td class="py-3 px-4">191</td>
-                            <td class="py-3 px-4">1.4 / 2.1</td>
-                            <td class="py-3 px-4">1710 / 1560</td>
-                            <td class="py-3 px-4">18</td>
-                            <td class="py-3 px-4">326,600</td>
-                            <td class="py-3 px-4">1.20</td>
-                        </tr>
-
-                        <tr class="hover:bg-gray-50 material-row" data-type="inorganic" data-temp="29" data-heat="191" data-conduct="0.35" data-cost="1.20">
-                            <td class="py-3 px-4 font-medium">sonu singh</td>
-                            <td class="py-3 px-4">Inorganic</td>
-                            <td class="py-3 px-4">29</td>
-                            <td class="py-3 px-4">191</td>
-                            <td class="py-3 px-4">1.4 / 2.1</td>
-                            <td class="py-3 px-4">1710 / 1560</td>
-                            <td class="py-3 px-4">18</td>
-                            <td class="py-3 px-4">326,600</td>
-                            <td class="py-3 px-4">1.20</td>
-                        </tr>
-
-   <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="198" data-heat="77" data-conduct="NAN" data-cost="528913">
-    <td class="py-3 px-4 font-medium">Al 0.4% Sn 91.5% Zn 8.1%</td>
-    <td class="py-3 px-4">Eutectic</td>
-    <td class="py-3 px-4">198</td>
-    <td class="py-3 px-4">77</td>
-    <td class="py-3 px-4">0.26</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6869</td>
-    <td class="py-3 px-4">528913</td>
-    <td class="py-3 px-4">17.6</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="199" data-heat="75" data-conduct="NAN" data-cost="518925">
-    <td class="py-3 px-4 font-medium">Sn 92.1% Zn 7.9%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">199</td>
-    <td class="py-3 px-4">75</td>
-    <td class="py-3 px-4">0.25</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6919</td>
-    <td class="py-3 px-4">518925</td>
-    <td class="py-3 px-4">17.7</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="204" data-heat="70" data-conduct="NAN" data-cost="456470">
-    <td class="py-3 px-4 font-medium">Mg 2.0% Sn 98.0%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">204</td>
-    <td class="py-3 px-4">70</td>
-    <td class="py-3 px-4">0.28</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6521</td>
-    <td class="py-3 px-4">456470</td>
-    <td class="py-3 px-4">18.66</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="229" data-heat="61" data-conduct="NAN" data-cost="420473">
-    <td class="py-3 px-4 font-medium">Al 0.4% Sn 99.6%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">229</td>
-    <td class="py-3 px-4">61</td>
-    <td class="py-3 px-4">0.25</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6893</td>
-    <td class="py-3 px-4">420473</td>
-    <td class="py-3 px-4">18.93</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="232" data-heat="59" data-conduct="NAN" data-cost="409873">
-    <td class="py-3 px-4 font-medium">Sn</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">232</td>
-    <td class="py-3 px-4">59</td>
-    <td class="py-3 px-4">0.25</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6947</td>
-    <td class="py-3 px-4">409873</td>
-    <td class="py-3 px-4">19</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="347" data-heat="171" data-conduct="NAN" data-cost="454860">
-    <td class="py-3 px-4 font-medium">Mg 46.9% Zn 53.1%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">347</td>
-    <td class="py-3 px-4">171</td>
-    <td class="py-3 px-4">1.05</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2660</td>
-    <td class="py-3 px-4">454860</td>
-    <td class="py-3 px-4">2.27</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="367" data-heat="119" data-conduct="NAN" data-cost="713762">
-    <td class="py-3 px-4 font-medium">Mg 2.7% Zn 97.3%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">367</td>
-    <td class="py-3 px-4">119</td>
-    <td class="py-3 px-4">0.53</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5998</td>
-    <td class="py-3 px-4">713762</td>
-    <td class="py-3 px-4">2.49</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="381" data-heat="113" data-conduct="NAN" data-cost="678791">
-    <td class="py-3 px-4 font-medium">Al 5.3% Cu 2.3% Zn 92.5%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">381</td>
-    <td class="py-3 px-4">113</td>
-    <td class="py-3 px-4">0.51</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6007</td>
-    <td class="py-3 px-4">678791</td>
-    <td class="py-3 px-4">2.54</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="381" data-heat="121" data-conduct="NAN" data-cost="724669">
-    <td class="py-3 px-4 font-medium">Al 5.2% Zn 94.8%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">381</td>
-    <td class="py-3 px-4">121</td>
-    <td class="py-3 px-4">0.5</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5989</td>
-    <td class="py-3 px-4">724669</td>
-    <td class="py-3 px-4">2.46</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="414" data-heat="115" data-conduct="NAN" data-cost="747155">
-    <td class="py-3 px-4 font-medium">Mn 0.8% Zn 99.2%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">414</td>
-    <td class="py-3 px-4">115</td>
-    <td class="py-3 px-4">0.48</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6497</td>
-    <td class="py-3 px-4">747155</td>
-    <td class="py-3 px-4">2.5</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="419" data-heat="264" data-conduct="NAN" data-cost="514272">
-    <td class="py-3 px-4 font-medium">Al 27.6% Mg 60.8% Sn 11.6%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">419</td>
-    <td class="py-3 px-4">264</td>
-    <td class="py-3 px-4">1.08</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">1948</td>
-    <td class="py-3 px-4">514272</td>
-    <td class="py-3 px-4">3.89</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="420" data-heat="112" data-conduct="NAN" data-cost="727216">
-    <td class="py-3 px-4 font-medium">Zn</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">420</td>
-    <td class="py-3 px-4">112</td>
-    <td class="py-3 px-4">0.48</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6493</td>
-    <td class="py-3 px-4">727216</td>
-    <td class="py-3 px-4">2.5</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="432" data-heat="294" data-conduct="NAN" data-cost="634158">
-    <td class="py-3 px-4 font-medium">Al 49.1% Mg 38.5% Sn 12.4%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">432</td>
-    <td class="py-3 px-4">294</td>
-    <td class="py-3 px-4">1.05</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2157</td>
-    <td class="py-3 px-4">634158</td>
-    <td class="py-3 px-4">3.96</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="433" data-heat="294" data-conduct="NAN" data-cost="634158">
-    <td class="py-3 px-4 font-medium">Al 54.5% Mg 32.7% Sn 12.8%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">433</td>
-    <td class="py-3 px-4">294</td>
-    <td class="py-3 px-4">1.05</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2157</td>
-    <td class="py-3 px-4">634158</td>
-    <td class="py-3 px-4">4.01</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="436" data-heat="305" data-conduct="NAN" data-cost="677710">
-    <td class="py-3 px-4 font-medium">Al 33.3% Mg 66.7%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">436</td>
-    <td class="py-3 px-4">305</td>
-    <td class="py-3 px-4">1.04</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2222</td>
-    <td class="py-3 px-4">677710</td>
-    <td class="py-3 px-4">1.9</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="446" data-heat="260" data-conduct="NAN" data-cost="466180">
-    <td class="py-3 px-4 font-medium">Al 56.2% Mg 29.1% Zn 14.7%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">446</td>
-    <td class="py-3 px-4">260</td>
-    <td class="py-3 px-4">1.18</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">1793</td>
-    <td class="py-3 px-4">466180</td>
-    <td class="py-3 px-4">1.9</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="450" data-heat="307" data-conduct="NAN" data-cost="700574">
-    <td class="py-3 px-4 font-medium">Al 60.1% Mg 39.9%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">450</td>
-    <td class="py-3 px-4">307</td>
-    <td class="py-3 px-4">1.07</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2282</td>
-    <td class="py-3 px-4">700574</td>
-    <td class="py-3 px-4">1.82</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="450" data-heat="290" data-conduct="NAN" data-cost="636260">
-    <td class="py-3 px-4 font-medium">Al 47.3% Mg 37.6% Zn 15.1%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">450</td>
-    <td class="py-3 px-4">290</td>
-    <td class="py-3 px-4">1.15</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2194</td>
-    <td class="py-3 px-4">636260</td>
-    <td class="py-3 px-4">1.93</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="451" data-heat="299" data-conduct="NAN" data-cost="598299">
-    <td class="py-3 px-4 font-medium">Al 65.9% Mg 34.1%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">451</td>
-    <td class="py-3 px-4">299</td>
-    <td class="py-3 px-4">1.09</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2001</td>
-    <td class="py-3 px-4">598299</td>
-    <td class="py-3 px-4">1.8</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="465" data-heat="313" data-conduct="NAN" data-cost="642276">
-    <td class="py-3 px-4 font-medium">Mg 56.0% Mn 14.7% Ni 29.3%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">465</td>
-    <td class="py-3 px-4">313</td>
-    <td class="py-3 px-4">1.14</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2052</td>
-    <td class="py-3 px-4">642276</td>
-    <td class="py-3 px-4">4.93</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="486" data-heat="240" data-conduct="NAN" data-cost="586080">
-    <td class="py-3 px-4 font-medium">Mg 67.2% Ni 17.4% Sn 15.4%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">486</td>
-    <td class="py-3 px-4">240</td>
-    <td class="py-3 px-4">0.94</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2442</td>
-    <td class="py-3 px-4">586080</td>
-    <td class="py-3 px-4">6.35</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="487" data-heat="260" data-conduct="NAN" data-cost="557180">
-    <td class="py-3 px-4 font-medium">Cu 33.5% Mg 66.5%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">487</td>
-    <td class="py-3 px-4">260</td>
-    <td class="py-3 px-4">1</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2143</td>
-    <td class="py-3 px-4">557180</td>
-    <td class="py-3 px-4">3.34</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="508" data-heat="306" data-conduct="NAN" data-cost="665244">
-    <td class="py-3 px-4 font-medium">Al 62.4% Cu 30.8% Mg 6.9%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">508</td>
-    <td class="py-3 px-4">306</td>
-    <td class="py-3 px-4">0.99</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2174</td>
-    <td class="py-3 px-4">665244</td>
-    <td class="py-3 px-4">3.04</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="508" data-heat="407" data-conduct="NAN" data-cost="1200243">
-    <td class="py-3 px-4 font-medium">Mg 76.9% Ni 23.1%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">508</td>
-    <td class="py-3 px-4">407</td>
-    <td class="py-3 px-4">0.89</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2949</td>
-    <td class="py-3 px-4">1200243</td>
-    <td class="py-3 px-4">4.31</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="522" data-heat="267" data-conduct="NAN" data-cost="521184">
-    <td class="py-3 px-4 font-medium">Al 68.5% Cu 25.4% Si 6.1%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">522</td>
-    <td class="py-3 px-4">267</td>
-    <td class="py-3 px-4">1.11</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">1952</td>
-    <td class="py-3 px-4">521184</td>
-    <td class="py-3 px-4">2.81</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="544" data-heat="460" data-conduct="NAN" data-cost="1366200">
-    <td class="py-3 px-4 font-medium">Al 66.4% Cu 32.3% Mn 1.3%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">544</td>
-    <td class="py-3 px-4">460</td>
-    <td class="py-3 px-4">0.91</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2970</td>
-    <td class="py-3 px-4">1366200</td>
-    <td class="py-3 px-4">3.09</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="548" data-heat="373" data-conduct="NAN" data-cost="1176442">
-    <td class="py-3 px-4 font-medium">Al 66.7% Cu 33.3%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">548</td>
-    <td class="py-3 px-4">373</td>
-    <td class="py-3 px-4">0.87</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3154</td>
-    <td class="py-3 px-4">1176442</td>
-    <td class="py-3 px-4">3.13</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="552" data-heat="381" data-conduct="NAN" data-cost="1199769">
-    <td class="py-3 px-4 font-medium">Cu 64.0% Mg 36.0%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">552</td>
-    <td class="py-3 px-4">381</td>
-    <td class="py-3 px-4">0.87</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3149</td>
-    <td class="py-3 px-4">1199769</td>
-    <td class="py-3 px-4">4.56</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="561" data-heat="283" data-conduct="NAN" data-cost="925976">
-    <td class="py-3 px-4 font-medium">Mg 61.1% Mn 1.0% Sn 37.8%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">561</td>
-    <td class="py-3 px-4">283</td>
-    <td class="py-3 px-4">0.76</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3272</td>
-    <td class="py-3 px-4">925976</td>
-    <td class="py-3 px-4">8.43</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="563" data-heat="267" data-conduct="NAN" data-cost="602886">
-    <td class="py-3 px-4 font-medium">Mg 62.2% Sn 37.8%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">563</td>
-    <td class="py-3 px-4">267</td>
-    <td class="py-3 px-4">0.96</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2258</td>
-    <td class="py-3 px-4">602886</td>
-    <td class="py-3 px-4">8.43</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="574" data-heat="267" data-conduct="NAN" data-cost="596478">
-    <td class="py-3 px-4 font-medium">Al 86.2% Ni 1.9% Si 11.9%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">574</td>
-    <td class="py-3 px-4">267</td>
-    <td class="py-3 px-4">0.97</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2234</td>
-    <td class="py-3 px-4">596478</td>
-    <td class="py-3 px-4">1.93</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="577" data-heat="509" data-conduct="NAN" data-cost="1265374">
-    <td class="py-3 px-4 font-medium">Al 87.5% Si 12.5%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">577</td>
-    <td class="py-3 px-4">509</td>
-    <td class="py-3 px-4">1.1</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2486</td>
-    <td class="py-3 px-4">1265374</td>
-    <td class="py-3 px-4">1.74</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="624" data-heat="504" data-conduct="NAN" data-cost="1228248">
-    <td class="py-3 px-4 font-medium">Mg 34.3% Ni 28.1% Sn 37.6%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">624</td>
-    <td class="py-3 px-4">504</td>
-    <td class="py-3 px-4">1.11</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2437</td>
-    <td class="py-3 px-4">1228248</td>
-    <td class="py-3 px-4">11.2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="639" data-heat="344" data-conduct="NAN" data-cost="1118344">
-    <td class="py-3 px-4 font-medium">Mg 98.5% Si 1.5%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">639</td>
-    <td class="py-3 px-4">344</td>
-    <td class="py-3 px-4">0.75</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3251</td>
-    <td class="py-3 px-4">1118344</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="644" data-heat="372" data-conduct="NAN" data-cost="591480">
-    <td class="py-3 px-4 font-medium">Al 93.8% Mn 1.8% Ni 4.4%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">644</td>
-    <td class="py-3 px-4">372</td>
-    <td class="py-3 px-4">1.4</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">1590</td>
-    <td class="py-3 px-4">591480</td>
-    <td class="py-3 px-4">2.16</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="646" data-heat="404" data-conduct="NAN" data-cost="1001920">
-    <td class="py-3 px-4 font-medium">Al 95.1% Ni 4.9%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">646</td>
-    <td class="py-3 px-4">404</td>
-    <td class="py-3 px-4">1.14</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2480</td>
-    <td class="py-3 px-4">1001920</td>
-    <td class="py-3 px-4">2.2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="647" data-heat="416" data-conduct="NAN" data-cost="1051232">
-    <td class="py-3 px-4 font-medium">Al 95.7% Fe 1.3% Ni 2.9%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">647</td>
-    <td class="py-3 px-4">416</td>
-    <td class="py-3 px-4">1.14</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2527</td>
-    <td class="py-3 px-4">1051232</td>
-    <td class="py-3 px-4">1.99</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="648" data-heat="420" data-conduct="NAN" data-cost="1054200">
-    <td class="py-3 px-4 font-medium">Mg 23.4% Ni 29.2% Sn 47.4%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">648</td>
-    <td class="py-3 px-4">420</td>
-    <td class="py-3 px-4">1.15</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2510</td>
-    <td class="py-3 px-4">1054200</td>
-    <td class="py-3 px-4">12.98</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="650" data-heat="349" data-conduct="NAN" data-cost="551420">
-    <td class="py-3 px-4 font-medium">Mg</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">650</td>
-    <td class="py-3 px-4">349</td>
-    <td class="py-3 px-4">1.41</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">1580</td>
-    <td class="py-3 px-4">551420</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="654" data-heat="404" data-conduct="NAN" data-cost="1047572">
-    <td class="py-3 px-4 font-medium">Al 98.3% Fe 1.7%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">654</td>
-    <td class="py-3 px-4">404</td>
-    <td class="py-3 px-4">1.08</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2593</td>
-    <td class="py-3 px-4">1047572</td>
-    <td class="py-3 px-4">1.68</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="657" data-heat="393" data-conduct="NAN" data-cost="1017477">
-    <td class="py-3 px-4 font-medium">Al 97.8% Mn 2.2%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">657</td>
-    <td class="py-3 px-4">393</td>
-    <td class="py-3 px-4">1.11</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2589</td>
-    <td class="py-3 px-4">1017477</td>
-    <td class="py-3 px-4">1.71</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="660" data-heat="397" data-conduct="NAN" data-cost="943272">
-    <td class="py-3 px-4 font-medium">Al</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">660</td>
-    <td class="py-3 px-4">397</td>
-    <td class="py-3 px-4">1.18</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2376</td>
-    <td class="py-3 px-4">943272</td>
-    <td class="py-3 px-4">1.7</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="700" data-heat="151" data-conduct="NAN" data-cost="923969">
-    <td class="py-3 px-4 font-medium">Cu 57.2% Mg 5.5% Zn 37.3%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">700</td>
-    <td class="py-3 px-4">151</td>
-    <td class="py-3 px-4">0.66</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6119</td>
-    <td class="py-3 px-4">923969</td>
-    <td class="py-3 px-4">4.48</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="709" data-heat="246" data-conduct="NAN" data-cost="1516590">
-    <td class="py-3 px-4 font-medium">Cu 72.5% Mg 11.4% Mn 16.1%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">709</td>
-    <td class="py-3 px-4">246</td>
-    <td class="py-3 px-4">0.64</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6165</td>
-    <td class="py-3 px-4">1516590</td>
-    <td class="py-3 px-4">4.9</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="726" data-heat="200" data-conduct="NAN" data-cost="1296800">
-    <td class="py-3 px-4 font-medium">Cu 90.8% Mg 9.2%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">726</td>
-    <td class="py-3 px-4">200</td>
-    <td class="py-3 px-4">0.53</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6484</td>
-    <td class="py-3 px-4">1296800</td>
-    <td class="py-3 px-4">5.63</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="744" data-heat="146" data-conduct="NAN" data-cost="1176176">
-    <td class="py-3 px-4 font-medium">Cu 65.5% Ni 1.0% Sn 33.5%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">744</td>
-    <td class="py-3 px-4">146</td>
-    <td class="py-3 px-4">0.66</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">8056</td>
-    <td class="py-3 px-4">1176176</td>
-    <td class="py-3 px-4">10.41</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="803" data-heat="231" data-conduct="NAN" data-cost="1346730">
-    <td class="py-3 px-4 font-medium">Cu 83.6% Si 16.4%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">803</td>
-    <td class="py-3 px-4">231</td>
-    <td class="py-3 px-4">0.51</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5830</td>
-    <td class="py-3 px-4">1346730</td>
-    <td class="py-3 px-4">5.34</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="812" data-heat="188" data-conduct="NAN" data-cost="1148116">
-    <td class="py-3 px-4 font-medium">Al 12.2% Cu 79.9% Mg 7.9%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">812</td>
-    <td class="py-3 px-4">188</td>
-    <td class="py-3 px-4">1.03</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6107</td>
-    <td class="py-3 px-4">1148116</td>
-    <td class="py-3 px-4">5.16</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="820" data-heat="100" data-conduct="NAN" data-cost="619600">
-    <td class="py-3 px-4 font-medium">Cu 90.5% Si 9.5%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">820</td>
-    <td class="py-3 px-4">100</td>
-    <td class="py-3 px-4">0.49</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6196</td>
-    <td class="py-3 px-4">619600</td>
-    <td class="py-3 px-4">5.62</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="836" data-heat="170" data-conduct="NAN" data-cost="1332120">
-    <td class="py-3 px-4 font-medium">Cu 40.3% Zn 59.7%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">836</td>
-    <td class="py-3 px-4">170</td>
-    <td class="py-3 px-4">0.45</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">7836</td>
-    <td class="py-3 px-4">1332120</td>
-    <td class="py-3 px-4">3.91</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="864" data-heat="150" data-conduct="NAN" data-cost="1045650">
-    <td class="py-3 px-4 font-medium">Cr 1.1% Cu 63.9% Mn 35.0%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">864</td>
-    <td class="py-3 px-4">150</td>
-    <td class="py-3 px-4">0.64</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6971</td>
-    <td class="py-3 px-4">1045650</td>
-    <td class="py-3 px-4">4.56</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="881" data-heat="271" data-conduct="NAN" data-cost="1849304">
-    <td class="py-3 px-4 font-medium">Ni 27.8% Zn 72.2%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">881</td>
-    <td class="py-3 px-4">271</td>
-    <td class="py-3 px-4">0.51</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6824</td>
-    <td class="py-3 px-4">1849304</td>
-    <td class="py-3 px-4">5.14</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="900" data-heat="154" data-conduct="NAN" data-cost="1115114">
-    <td class="py-3 px-4 font-medium">Cu 58.6% Fe 1.2% Zn 40.1%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">900</td>
-    <td class="py-3 px-4">154</td>
-    <td class="py-3 px-4">0.64</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">7241</td>
-    <td class="py-3 px-4">1115114</td>
-    <td class="py-3 px-4">4.53</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="903" data-heat="157" data-conduct="NAN" data-cost="1142332">
-    <td class="py-3 px-4 font-medium">Cu 60.9% Zn 39.1%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">903</td>
-    <td class="py-3 px-4">157</td>
-    <td class="py-3 px-4">0.64</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">7276</td>
-    <td class="py-3 px-4">1142332</td>
-    <td class="py-3 px-4">4.63</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="945" data-heat="1132" data-conduct="NAN" data-cost="2319468">
-    <td class="py-3 px-4 font-medium">Mg 42.4% Si 57.6%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">945</td>
-    <td class="py-3 px-4">1132</td>
-    <td class="py-3 px-4">1.15</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2049</td>
-    <td class="py-3 px-4">2319468</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="948" data-heat="595" data-conduct="NAN" data-cost="3023195">
-    <td class="py-3 px-4 font-medium">Ni 61.6% Si 38.4%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">948</td>
-    <td class="py-3 px-4">595</td>
-    <td class="py-3 px-4">0.73</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5081</td>
-    <td class="py-3 px-4">3023195</td>
-    <td class="py-3 px-4">8.16</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="954" data-heat="274" data-conduct="NAN" data-cost="1574678">
-    <td class="py-3 px-4 font-medium">Mn 77.0% Si 6.9% Zn 16.2%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">954</td>
-    <td class="py-3 px-4">274</td>
-    <td class="py-3 px-4">0.74</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5747</td>
-    <td class="py-3 px-4">1574678</td>
-    <td class="py-3 px-4">2.08</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="966" data-heat="391" data-conduct="NAN" data-cost="2267800">
-    <td class="py-3 px-4 font-medium">Ni 71.1% Si 28.9%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">966</td>
-    <td class="py-3 px-4">391</td>
-    <td class="py-3 px-4">0.7</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5800</td>
-    <td class="py-3 px-4">2267800</td>
-    <td class="py-3 px-4">9.11</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="984" data-heat="250" data-conduct="NAN" data-cost="1546500">
-    <td class="py-3 px-4 font-medium">Mn 59.5% Sn 40.5%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">984</td>
-    <td class="py-3 px-4">250</td>
-    <td class="py-3 px-4">0.56</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6186</td>
-    <td class="py-3 px-4">1546500</td>
-    <td class="py-3 px-4">8.88</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1036" data-heat="288" data-conduct="NAN" data-cost="1554912">
-    <td class="py-3 px-4 font-medium">Al 8.7% Cu 91.3%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1036</td>
-    <td class="py-3 px-4">288</td>
-    <td class="py-3 px-4">0.56</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5399</td>
-    <td class="py-3 px-4">1554912</td>
-    <td class="py-3 px-4">5.63</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1040" data-heat="184" data-conduct="NAN" data-cost="1203360">
-    <td class="py-3 px-4 font-medium">Mn 89.2% Si 10.8%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1040</td>
-    <td class="py-3 px-4">184</td>
-    <td class="py-3 px-4">0.82</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6540</td>
-    <td class="py-3 px-4">1203360</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1075" data-heat="212" data-conduct="NAN" data-cost="1671196">
-    <td class="py-3 px-4 font-medium">Cr 1.5% Cu 98.5%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1075</td>
-    <td class="py-3 px-4">212</td>
-    <td class="py-3 px-4">0.5</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">7883</td>
-    <td class="py-3 px-4">1671196</td>
-    <td class="py-3 px-4">5.94</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1085" data-heat="209" data-conduct="NAN" data-cost="1650473">
-    <td class="py-3 px-4 font-medium">Cu</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1085</td>
-    <td class="py-3 px-4">209</td>
-    <td class="py-3 px-4">0.49</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">7897</td>
-    <td class="py-3 px-4">1650473</td>
-    <td class="py-3 px-4">6</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1095" data-heat="371" data-conduct="NAN" data-cost="2125088">
-    <td class="py-3 px-4 font-medium">Mg 9.6% Ni 90.4%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1095</td>
-    <td class="py-3 px-4">371</td>
-    <td class="py-3 px-4">0.7</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5728</td>
-    <td class="py-3 px-4">2125088</td>
-    <td class="py-3 px-4">11.04</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1124" data-heat="229" data-conduct="NAN" data-cost="1723225">
-    <td class="py-3 px-4 font-medium">Ni 69.2% Sn 30.8%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1124</td>
-    <td class="py-3 px-4">229</td>
-    <td class="py-3 px-4">0.57</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">7525</td>
-    <td class="py-3 px-4">1723225</td>
-    <td class="py-3 px-4">14.16</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1134" data-heat="500" data-conduct="NAN" data-cost="3218000">
-    <td class="py-3 px-4 font-medium">Mn 10.5% Ni 73.5% Si 16.0%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1134</td>
-    <td class="py-3 px-4">500</td>
-    <td class="py-3 px-4">0.71</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6436</td>
-    <td class="py-3 px-4">3218000</td>
-    <td class="py-3 px-4">9.35</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1144" data-heat="974" data-conduct="NAN" data-cost="3490816">
-    <td class="py-3 px-4 font-medium">Mn 48.6% Si 51.4%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1144</td>
-    <td class="py-3 px-4">974</td>
-    <td class="py-3 px-4">0.91</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3584</td>
-    <td class="py-3 px-4">3490816</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1151" data-heat="277" data-conduct="NAN" data-cost="1984705">
-    <td class="py-3 px-4 font-medium">Ni 88.6% Si 11.4%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1151</td>
-    <td class="py-3 px-4">277</td>
-    <td class="py-3 px-4">0.68</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">7165</td>
-    <td class="py-3 px-4">1984705</td>
-    <td class="py-3 px-4">10.86</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1155" data-heat="545" data-conduct="NAN" data-cost="1855725">
-    <td class="py-3 px-4 font-medium">Al 51.4% Fe 48.6%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1155</td>
-    <td class="py-3 px-4">545</td>
-    <td class="py-3 px-4">0.94</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3405</td>
-    <td class="py-3 px-4">1855725</td>
-    <td class="py-3 px-4">1.17</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1155" data-heat="711" data-conduct="NAN" data-cost="2261691">
-    <td class="py-3 px-4 font-medium">Al 58.1% Fe 41.9%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1155</td>
-    <td class="py-3 px-4">711</td>
-    <td class="py-3 px-4">0.97</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3181</td>
-    <td class="py-3 px-4">2261691</td>
-    <td class="py-3 px-4">1.24</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1167" data-heat="277" data-conduct="NAN" data-cost="2004649">
-    <td class="py-3 px-4 font-medium">Ni 56.7% Sn 43.3%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1167</td>
-    <td class="py-3 px-4">277</td>
-    <td class="py-3 px-4">0.53</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">7237</td>
-    <td class="py-3 px-4">2004649</td>
-    <td class="py-3 px-4">15.03</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1179" data-heat="374" data-conduct="NAN" data-cost="2514402">
-    <td class="py-3 px-4 font-medium">Al 3.2% Ni 85.2% Si 11.6%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1179</td>
-    <td class="py-3 px-4">374</td>
-    <td class="py-3 px-4">0.7</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6723</td>
-    <td class="py-3 px-4">2514402</td>
-    <td class="py-3 px-4">10.51</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1186" data-heat="731" data-conduct="NAN" data-cost="2650606">
-    <td class="py-3 px-4 font-medium">Cr 4.0% Fe 39.4% Si 56.7%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1186</td>
-    <td class="py-3 px-4">731</td>
-    <td class="py-3 px-4">0.86</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3626</td>
-    <td class="py-3 px-4">2650606</td>
-    <td class="py-3 px-4">1.45</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1196" data-heat="284" data-conduct="NAN" data-cost="1970960">
-    <td class="py-3 px-4 font-medium">Mn 93.3% Ni 5.0% Si 1.7%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1196</td>
-    <td class="py-3 px-4">284</td>
-    <td class="py-3 px-4">1.03</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6940</td>
-    <td class="py-3 px-4">1970960</td>
-    <td class="py-3 px-4">2.5</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1198" data-heat="282" data-conduct="NAN" data-cost="1681002">
-    <td class="py-3 px-4 font-medium">Fe 81.9% Si 18.1%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1198</td>
-    <td class="py-3 px-4">282</td>
-    <td class="py-3 px-4">0.85</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5961</td>
-    <td class="py-3 px-4">1681002</td>
-    <td class="py-3 px-4">0.85</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1203" data-heat="294" data-conduct="NAN" data-cost="1537914">
-    <td class="py-3 px-4 font-medium">Fe 78.2% Si 21.8%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1203</td>
-    <td class="py-3 px-4">294</td>
-    <td class="py-3 px-4">0.76</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5231</td>
-    <td class="py-3 px-4">1537914</td>
-    <td class="py-3 px-4">0.91</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1204" data-heat="623" data-conduct="NAN" data-cost="2384844">
-    <td class="py-3 px-4 font-medium">Fe 49.3% Si 50.7%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1204</td>
-    <td class="py-3 px-4">623</td>
-    <td class="py-3 px-4">0.84</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3828</td>
-    <td class="py-3 px-4">2384844</td>
-    <td class="py-3 px-4">1.31</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1205" data-heat="682" data-conduct="NAN" data-cost="2464748">
-    <td class="py-3 px-4 font-medium">Fe 42.9% Si 57.1%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1205</td>
-    <td class="py-3 px-4">682</td>
-    <td class="py-3 px-4">0.86</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3614</td>
-    <td class="py-3 px-4">2464748</td>
-    <td class="py-3 px-4">1.4</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1234" data-heat="280" data-conduct="NAN" data-cost="2043160">
-    <td class="py-3 px-4 font-medium">Fe 12.7% Mn 87.3%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1234</td>
-    <td class="py-3 px-4">280</td>
-    <td class="py-3 px-4">0.85</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">7297</td>
-    <td class="py-3 px-4">2043160</td>
-    <td class="py-3 px-4">1.82</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1235" data-heat="235" data-conduct="NAN" data-cost="1434440">
-    <td class="py-3 px-4 font-medium">Cr 28.8% Cu 33.8% Ni 37.4%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1235</td>
-    <td class="py-3 px-4">235</td>
-    <td class="py-3 px-4">0.64</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6104</td>
-    <td class="py-3 px-4">1434440</td>
-    <td class="py-3 px-4">7.1</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1240" data-heat="386" data-conduct="NAN" data-cost="2502824">
-    <td class="py-3 px-4 font-medium">Ni 83.2% Si 16.8%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1240</td>
-    <td class="py-3 px-4">386</td>
-    <td class="py-3 px-4">0.72</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6484</td>
-    <td class="py-3 px-4">2502824</td>
-    <td class="py-3 px-4">10.32</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1240" data-heat="587" data-conduct="NAN" data-cost="2510012">
-    <td class="py-3 px-4 font-medium">Mn 71.4% Si 28.6%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1240</td>
-    <td class="py-3 px-4">587</td>
-    <td class="py-3 px-4">0.9</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">4276</td>
-    <td class="py-3 px-4">2510012</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1246" data-heat="235" data-conduct="NAN" data-cost="1397545">
-    <td class="py-3 px-4 font-medium">Mn</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1246</td>
-    <td class="py-3 px-4">235</td>
-    <td class="py-3 px-4">0.87</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5947</td>
-    <td class="py-3 px-4">1397545</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1280" data-heat="315" data-conduct="NAN" data-cost="1376550">
-    <td class="py-3 px-4 font-medium">Al 19.3% Mn 80.7%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1280</td>
-    <td class="py-3 px-4">315</td>
-    <td class="py-3 px-4">0.93</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">4370</td>
-    <td class="py-3 px-4">1376550</td>
-    <td class="py-3 px-4">1.94</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1323" data-heat="1458" data-conduct="NAN" data-cost="4430862">
-    <td class="py-3 px-4 font-medium">Cr 24.1% Si 75.9%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1323</td>
-    <td class="py-3 px-4">1458</td>
-    <td class="py-3 px-4">0.93</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3039</td>
-    <td class="py-3 px-4">4430862</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1345" data-heat="263" data-conduct="NAN" data-cost="1769201">
-    <td class="py-3 px-4 font-medium">Cr 50.9% Ni 49.1%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1345</td>
-    <td class="py-3 px-4">263</td>
-    <td class="py-3 px-4">0.76</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6727</td>
-    <td class="py-3 px-4">1769201</td>
-    <td class="py-3 px-4">6.91</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1368" data-heat="393" data-conduct="NAN" data-cost="2609913">
-    <td class="py-3 px-4 font-medium">Al 13.5% Ni 86.5%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1368</td>
-    <td class="py-3 px-4">393</td>
-    <td class="py-3 px-4">0.77</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">6641</td>
-    <td class="py-3 px-4">2609913</td>
-    <td class="py-3 px-4">10.61</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1407" data-heat="1020" data-conduct="NAN" data-cost="4027980">
-    <td class="py-3 px-4 font-medium">Cr 57.7% Si 42.3%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1407</td>
-    <td class="py-3 px-4">1020</td>
-    <td class="py-3 px-4">0.89</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">3949</td>
-    <td class="py-3 px-4">4027980</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1414" data-heat="1788" data-conduct="NAN" data-cost="4611252">
-    <td class="py-3 px-4 font-medium">Si</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1414</td>
-    <td class="py-3 px-4">1788</td>
-    <td class="py-3 px-4">0.97</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">2579</td>
-    <td class="py-3 px-4">4611252</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1455" data-heat="298" data-conduct="NAN" data-cost="2353008">
-    <td class="py-3 px-4 font-medium">Ni</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1455</td>
-    <td class="py-3 px-4">298</td>
-    <td class="py-3 px-4">0.73</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">7896</td>
-    <td class="py-3 px-4">2353008</td>
-    <td class="py-3 px-4">12</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1538" data-heat="247" data-conduct="NAN" data-cost="1734434">
-    <td class="py-3 px-4 font-medium">Fe</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1538</td>
-    <td class="py-3 px-4">247</td>
-    <td class="py-3 px-4">0.82</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">7022</td>
-    <td class="py-3 px-4">1734434</td>
-    <td class="py-3 px-4">0.6</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1699" data-heat="408" data-conduct="NAN" data-cost="2227272">
-    <td class="py-3 px-4 font-medium">Cr 90.0% Si 10.0%</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1699</td>
-    <td class="py-3 px-4">408</td>
-    <td class="py-3 px-4">0.93</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">5459</td>
-    <td class="py-3 px-4">2227272</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-<tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1907" data-heat="404" data-conduct="NAN" data-cost="2478944">
-    <td class="py-3 px-4 font-medium">Cr</td>
-    <td class="py-3 px-4">eutectic</td>
-    <td class="py-3 px-4">1907</td>
-    <td class="py-3 px-4">404</td>
-    <td class="py-3 px-4">0.96</td>
-    <td class="py-3 px-4">---</td>
-    <td class="py-3 px-4">6136</td>
-    <td class="py-3 px-4">2478944</td>
-    <td class="py-3 px-4">2</td>
-</tr>
-
-
-
-
-
-
-
-
+                        
 
 
 
@@ -1553,8 +153,6 @@
     <td class="py-3 px-4">0.29/0.26</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7216/6869</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="199" data-heat="75" data-conduct="NAN" data-cost="NAN">
@@ -1565,8 +163,6 @@
     <td class="py-3 px-4">0.27/0.25</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7257/6919</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="204" data-heat="70" data-conduct="NAN" data-cost="NAN">
@@ -1577,8 +173,6 @@
     <td class="py-3 px-4">0.27/0.28</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7018/6521</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="229" data-heat="61" data-conduct="NAN" data-cost="NAN">
@@ -1589,8 +183,6 @@
     <td class="py-3 px-4">0.27/0.25</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7225/6893</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="232" data-heat="59" data-conduct="NAN" data-cost="NAN">
@@ -1601,8 +193,6 @@
     <td class="py-3 px-4">0.25/0.25</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7264/6947</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="347" data-heat="171" data-conduct="NAN" data-cost="NAN">
@@ -1613,8 +203,6 @@
     <td class="py-3 px-4">1.65/1.05</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">3311/2660</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="367" data-heat="119" data-conduct="NAN" data-cost="NAN">
@@ -1625,8 +213,6 @@
     <td class="py-3 px-4">0.45/0.53</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6509/5998</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="381" data-heat="113" data-conduct="NAN" data-cost="NAN">
@@ -1637,8 +223,6 @@
     <td class="py-3 px-4">0.6/0.51</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6341/6007</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="381" data-heat="121" data-conduct="NAN" data-cost="NAN">
@@ -1649,8 +233,6 @@
     <td class="py-3 px-4">0.55/0.5</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6327/5989</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="414" data-heat="115" data-conduct="NAN" data-cost="NAN">
@@ -1661,8 +243,6 @@
     <td class="py-3 px-4">0.43/0.48</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6901/6497</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="419" data-heat="264" data-conduct="NAN" data-cost="NAN">
@@ -1673,8 +253,6 @@
     <td class="py-3 px-4">1.14/1.08</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2160/1948</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="420" data-heat="112" data-conduct="NAN" data-cost="NAN">
@@ -1685,8 +263,6 @@
     <td class="py-3 px-4">0.43/0.48</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6870/6493</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="432" data-heat="294" data-conduct="NAN" data-cost="NAN">
@@ -1697,8 +273,6 @@
     <td class="py-3 px-4">1.02/1.05</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2964/2157</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="433" data-heat="305" data-conduct="NAN" data-cost="NAN">
@@ -1709,8 +283,6 @@
     <td class="py-3 px-4">0.99/1.05</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">3462/2222</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="436" data-heat="260" data-conduct="NAN" data-cost="NAN">
@@ -1721,8 +293,6 @@
     <td class="py-3 px-4">1.26/1.18</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">1955/1793</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="446" data-heat="307" data-conduct="NAN" data-cost="NAN">
@@ -1733,8 +303,6 @@
     <td class="py-3 px-4">1.08/1.07</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">3096/2282</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="450" data-heat="290" data-conduct="NAN" data-cost="NAN">
@@ -1745,8 +313,6 @@
     <td class="py-3 px-4">1.13/1.15</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2598/2194</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="450" data-heat="299" data-conduct="NAN" data-cost="NAN">
@@ -1757,8 +323,6 @@
     <td class="py-3 px-4">2.02/1.09</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2812/2001</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="451" data-heat="313" data-conduct="NAN" data-cost="NAN">
@@ -1769,8 +333,6 @@
     <td class="py-3 px-4">1.1/1.14</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">3283/2052</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="465" data-heat="240" data-conduct="NAN" data-cost="NAN">
@@ -1781,8 +343,6 @@
     <td class="py-3 px-4">0.96/0.94</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2623/2442</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="486" data-heat="260" data-conduct="NAN" data-cost="NAN">
@@ -1793,8 +353,6 @@
     <td class="py-3 px-4">0.94/1</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2369/2143</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="487" data-heat="306" data-conduct="NAN" data-cost="NAN">
@@ -1805,8 +363,6 @@
     <td class="py-3 px-4">0.91/0.99</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2349/2174</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="508" data-heat="407" data-conduct="NAN" data-cost="NAN">
@@ -1817,8 +373,6 @@
     <td class="py-3 px-4">0.91/0.89</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">3239/2949</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="508" data-heat="267" data-conduct="NAN" data-cost="NAN">
@@ -1829,8 +383,6 @@
     <td class="py-3 px-4">0.98/1.11</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2117/1952</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="522" data-heat="460" data-conduct="NAN" data-cost="NAN">
@@ -1841,8 +393,6 @@
     <td class="py-3 px-4">0.95/0.91</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">3169/2970</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="544" data-heat="373" data-conduct="NAN" data-cost="NAN">
@@ -1853,8 +403,6 @@
     <td class="py-3 px-4">0.91/0.87</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">3439/3154</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="548" data-heat="381" data-conduct="NAN" data-cost="NAN">
@@ -1865,8 +413,6 @@
     <td class="py-3 px-4">0.89/0.87</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">3430/3149</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="552" data-heat="283" data-conduct="NAN" data-cost="NAN">
@@ -1877,8 +423,6 @@
     <td class="py-3 px-4">0.7/0.76</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">3721/3272</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="561" data-heat="267" data-conduct="NAN" data-cost="NAN">
@@ -1889,8 +433,6 @@
     <td class="py-3 px-4">0.94/0.96</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2512/2258</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="563" data-heat="267" data-conduct="NAN" data-cost="NAN">
@@ -1901,8 +443,6 @@
     <td class="py-3 px-4">0.94/0.97</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2479/2234</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="574" data-heat="509" data-conduct="NAN" data-cost="NAN">
@@ -1913,8 +453,6 @@
     <td class="py-3 px-4">1.09/1.1</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2590/2486</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="577" data-heat="504" data-conduct="NAN" data-cost="NAN">
@@ -1925,8 +463,6 @@
     <td class="py-3 px-4">1.1/1.11</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2550/2437</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="624" data-heat="344" data-conduct="NAN" data-cost="NAN">
@@ -1937,8 +473,6 @@
     <td class="py-3 px-4">0.59/0.75</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">4136/3251</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="639" data-heat="372" data-conduct="NAN" data-cost="NAN">
@@ -1949,8 +483,6 @@
     <td class="py-3 px-4">1.19/1.4</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">1650/1590</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="644" data-heat="404" data-conduct="NAN" data-cost="NAN">
@@ -1961,8 +493,6 @@
     <td class="py-3 px-4">1.09/1.14</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2650/2480</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="646" data-heat="416" data-conduct="NAN" data-cost="NAN">
@@ -1973,8 +503,6 @@
     <td class="py-3 px-4">1.07/1.14</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2677/2527</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="647" data-heat="420" data-conduct="NAN" data-cost="NAN">
@@ -1985,8 +513,6 @@
     <td class="py-3 px-4">1.77/1.15</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2659/2510</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="648" data-heat="321" data-conduct="NAN" data-cost="NAN">
@@ -1997,8 +523,6 @@
     <td class="py-3 px-4">1.15/0.52/0.63</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2510/5135/3932</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="650" data-heat="349" data-conduct="NAN" data-cost="NAN">
@@ -2009,8 +533,6 @@
     <td class="py-3 px-4">1.2/1.41</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">1637/1580</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="654" data-heat="404" data-conduct="NAN" data-cost="NAN">
@@ -2021,8 +543,6 @@
     <td class="py-3 px-4">1.08/1.17</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2593/2406</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="657" data-heat="393" data-conduct="NAN" data-cost="NAN">
@@ -2033,8 +553,6 @@
     <td class="py-3 px-4">1.11/1.17</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2589/2410</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="660" data-heat="397" data-conduct="NAN" data-cost="NAN">
@@ -2045,8 +563,6 @@
     <td class="py-3 px-4">1.09/1.18</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2553/2376</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="700" data-heat="151" data-conduct="NAN" data-cost="NAN">
@@ -2057,8 +573,6 @@
     <td class="py-3 px-4">0.54/0.66</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6889/6119</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="709" data-heat="246" data-conduct="NAN" data-cost="NAN">
@@ -2069,8 +583,6 @@
     <td class="py-3 px-4">0.64</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6165</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="726" data-heat="200" data-conduct="----" data-cost="NAN">
@@ -2081,8 +593,6 @@
     <td class="py-3 px-4">0.6/0.53</td>
     <td class="py-3 px-4">----</td>
     <td class="py-3 px-4">5353/6484</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="744" data-heat="146" data-conduct="NAN" data-cost="NAN">
@@ -2093,8 +603,6 @@
     <td class="py-3 px-4">0.54/0.66</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">5863/8056</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="803" data-heat="231" data-conduct="NAN" data-cost="NAN">
@@ -2105,8 +613,6 @@
     <td class="py-3 px-4">0.39/0.51</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7607/5830</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="812" data-heat="188" data-conduct="NAN" data-cost="NAN">
@@ -2117,8 +623,6 @@
     <td class="py-3 px-4">0.54/1.03</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">4954/6107</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="820" data-heat="100" data-conduct="NAN" data-cost="NAN">
@@ -2129,8 +633,6 @@
     <td class="py-3 px-4">0.64/0.49</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6116/6196</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="836" data-heat="170" data-conduct="NAN" data-cost="NAN">
@@ -2141,8 +643,6 @@
     <td class="py-3 px-4">0.51/0.45</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6810/7836</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="864" data-heat="150" data-conduct="NAN" data-cost="NAN">
@@ -2153,8 +653,6 @@
     <td class="py-3 px-4">0.64/0.56</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6971/7839</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="881" data-heat="271" data-conduct="NAN" data-cost="NAN">
@@ -2165,8 +663,6 @@
     <td class="py-3 px-4">0.49/0.51</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7506/6824</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="900" data-heat="154" data-conduct="NAN" data-cost="NAN">
@@ -2177,8 +673,6 @@
     <td class="py-3 px-4">0.7/0.64</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">8252/7241</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="903" data-heat="157" data-conduct="NAN" data-cost="NAN">
@@ -2189,8 +683,6 @@
     <td class="py-3 px-4">0.66/0.64</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">8285/7276</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="945" data-heat="1132" data-conduct="NAN" data-cost="NAN">
@@ -2201,8 +693,6 @@
     <td class="py-3 px-4">1.06/1.15</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2044/2049</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="948" data-heat="595" data-conduct="NAN" data-cost="NAN">
@@ -2213,8 +703,6 @@
     <td class="py-3 px-4">0.66/0.73</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">5321/5081</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="954" data-heat="274" data-conduct="NAN" data-cost="NAN">
@@ -2225,8 +713,6 @@
     <td class="py-3 px-4">1.07/0.74</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6667/5757</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="966" data-heat="391" data-conduct="NAN" data-cost="NAN">
@@ -2237,8 +723,6 @@
     <td class="py-3 px-4">0.68/0.7</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6345/5800</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="984" data-heat="250" data-conduct="NAN" data-cost="NAN">
@@ -2249,8 +733,6 @@
     <td class="py-3 px-4">0.48/0.56</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7566/6186</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1036" data-heat="288" data-conduct="NAN" data-cost="NAN">
@@ -2261,8 +743,6 @@
     <td class="py-3 px-4">0.52/0.56</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6645/5399</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1040" data-heat="184" data-conduct="NAN" data-cost="NAN">
@@ -2273,8 +753,6 @@
     <td class="py-3 px-4">1.05/0.82</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7246/6540</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1075" data-heat="212" data-conduct="NAN" data-cost="NAN">
@@ -2285,8 +763,6 @@
     <td class="py-3 px-4">0.46/0.5</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">8338/7883</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1085" data-heat="209" data-conduct="NAN" data-cost="NAN">
@@ -2297,8 +773,6 @@
     <td class="py-3 px-4">0.44/0.49</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">8360/7897</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1095" data-heat="371" data-conduct="NAN" data-cost="NAN">
@@ -2309,8 +783,6 @@
     <td class="py-3 px-4">0.6/0.7</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6635/5728</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1124" data-heat="229" data-conduct="NAN" data-cost="NAN">
@@ -2321,8 +793,6 @@
     <td class="py-3 px-4">0.54/0.57</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7660/7525</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1134" data-heat="500" data-conduct="NAN" data-cost="NAN">
@@ -2333,8 +803,6 @@
     <td class="py-3 px-4">1.11/0.71</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7040/6436</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1144" data-heat="974" data-conduct="NAN" data-cost="NAN">
@@ -2345,8 +813,6 @@
     <td class="py-3 px-4">0.67/0.91</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">4527/3584</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1151" data-heat="277" data-conduct="NAN" data-cost="NAN">
@@ -2357,8 +823,6 @@
     <td class="py-3 px-4">8.37/0.68</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">8065/7165</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1155" data-heat="545" data-conduct="NAN" data-cost="NAN">
@@ -2369,8 +833,6 @@
     <td class="py-3 px-4">0.98/0.94</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">4293/3405</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1155" data-heat="711" data-conduct="NAN" data-cost="NAN">
@@ -2381,8 +843,6 @@
     <td class="py-3 px-4">0.9/0.97</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">3969/3181</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1167" data-heat="277" data-conduct="NAN" data-cost="NAN">
@@ -2393,8 +853,6 @@
     <td class="py-3 px-4">0.47/0.53</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7702/7237</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1179" data-heat="374" data-conduct="NAN" data-cost="NAN">
@@ -2405,8 +863,6 @@
     <td class="py-3 px-4">1/0.7</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7314/6723</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1186" data-heat="731" data-conduct="NAN" data-cost="NAN">
@@ -2417,8 +873,6 @@
     <td class="py-3 px-4">0.89/0.86</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">4411/2626</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1196" data-heat="284" data-conduct="NAN" data-cost="NAN">
@@ -2429,8 +883,6 @@
     <td class="py-3 px-4">1.03</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">----</td>
-    <td class="py-3 px-4">----</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1198" data-heat="282" data-conduct="----" data-cost="NAN">
@@ -2441,8 +893,6 @@
     <td class="py-3 px-4">0.85/0.8/0.75</td>
     <td class="py-3 px-4">----</td>
     <td class="py-3 px-4">5961/6397/5496</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1203" data-heat="294" data-conduct="NAN" data-cost="NAN">
@@ -2453,8 +903,6 @@
     <td class="py-3 px-4">0.82/0.76</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6167/5231</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1204" data-heat="623" data-conduct="NAN" data-cost="NAN">
@@ -2465,8 +913,6 @@
     <td class="py-3 px-4">0.88/0.84</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">4901/3828</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1205" data-heat="682" data-conduct="NAN" data-cost="NAN">
@@ -2477,8 +923,6 @@
     <td class="py-3 px-4">0.9/0.86</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">4422/3614</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1234" data-heat="280" data-conduct="NAN" data-cost="NAN">
@@ -2489,8 +933,6 @@
     <td class="py-3 px-4">0.74/0.85</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7735/7297</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1235" data-heat="235" data-conduct="NAN" data-cost="NAN">
@@ -2501,8 +943,6 @@
     <td class="py-3 px-4">0.79/0.64</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6501/6104</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1240" data-heat="386" data-conduct="NAN" data-cost="NAN">
@@ -2513,8 +953,6 @@
     <td class="py-3 px-4">0.6/0.72</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7226/6484</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1240" data-heat="587" data-conduct="NAN" data-cost="NAN">
@@ -2525,8 +963,6 @@
     <td class="py-3 px-4">0.72/0.9</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">5692/4276</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1246" data-heat="235" data-conduct="NAN" data-cost="NAN">
@@ -2537,8 +973,6 @@
     <td class="py-3 px-4">0.78/0.87</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6156/5947</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1280" data-heat="315" data-conduct="NAN" data-cost="NAN">
@@ -2549,8 +983,6 @@
     <td class="py-3 px-4">1.03/0.93</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">5316/4370</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1323" data-heat="1458" data-conduct="NAN" data-cost="NAN">
@@ -2561,8 +993,6 @@
     <td class="py-3 px-4">0.88/0.93</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2989/3039</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1345" data-heat="263" data-conduct="NAN" data-cost="NAN">
@@ -2573,8 +1003,6 @@
     <td class="py-3 px-4">0.7/0.76</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7322/6727</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1368" data-heat="393" data-conduct="NAN" data-cost="NAN">
@@ -2585,8 +1013,6 @@
     <td class="py-3 px-4">0.7/0.77</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6899/6641</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1407" data-heat="1020" data-conduct="NAN" data-cost="NAN">
@@ -2597,8 +1023,6 @@
     <td class="py-3 px-4">0.78/0.89</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">4544/3949</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1414" data-heat="1788" data-conduct="NAN" data-cost="NAN">
@@ -2609,8 +1033,6 @@
     <td class="py-3 px-4">0.94/0.97</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">2289/2579</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1455" data-heat="298" data-conduct="NAN" data-cost="NAN">
@@ -2621,8 +1043,6 @@
     <td class="py-3 px-4">0.58/0.73</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">8230/7896</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1538" data-heat="247" data-conduct="NAN" data-cost="NAN">
@@ -2633,8 +1053,6 @@
     <td class="py-3 px-4">0.72/0.82</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">7291/7022</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1699" data-heat="408" data-conduct="NAN" data-cost="NAN">
@@ -2645,8 +1063,6 @@
     <td class="py-3 px-4">0.82/0.93</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6186/5459</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
 
 <tr class="hover:bg-gray-50 material-row" data-type="eutectic" data-temp="1907" data-heat="404" data-conduct="NAN" data-cost="NAN">
@@ -2657,9 +1073,8 @@
     <td class="py-3 px-4">0.75/0.96</td>
     <td class="py-3 px-4">NAN</td>
     <td class="py-3 px-4">6562/6136</td>
-    <td class="py-3 px-4">NAN</td>
-    <td class="py-3 px-4">NAN</td>
 </tr>
+
 
 
                       
