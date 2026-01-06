@@ -5678,194 +5678,152 @@
         </div>
     </footer>
 
-    <script>
-        const materialsList = document.getElementById('materials-list');
-        const resultCountSpan = document.getElementById('result-count');
-        const loadingDiv = document.getElementById('loading');
-        const filterBtn = document.getElementById('filter-btn');
-        const resetBtn = document.getElementById('reset-btn');
-        const clearAllBtn = document.getElementById('clear-all-btn');
+<script>
+    const materialsList = document.getElementById('materials-list');
+    const resultCountSpan = document.getElementById('result-count');
+    const loadingDiv = document.getElementById('loading');
+    const filterBtn = document.getElementById('filter-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const clearAllBtn = document.getElementById('clear-all-btn');
 
-        const typeFilter = document.getElementById('type-filter');
-        const tempMinInput = document.getElementById('temp-min');
-        const tempMaxInput = document.getElementById('temp-max');
-        const heatMinInput = document.getElementById('heat-min');
-        const heatMaxInput = document.getElementById('heat-max');
-        const conductMinInput = document.getElementById('conduct-min');
-        const conductMaxInput = document.getElementById('conduct-max');
-        const costMinInput = document.getElementById('cost-min');
-        const costMaxInput = document.getElementById('cost-max');
+    const typeFilter = document.getElementById('type-filter');
+    const tempMinInput = document.getElementById('temp-min');
+    const tempMaxInput = document.getElementById('temp-max');
+    const heatMinInput = document.getElementById('heat-min');
+    const heatMaxInput = document.getElementById('heat-max');
+    const conductMinInput = document.getElementById('conduct-min');
+    const conductMaxInput = document.getElementById('conduct-max');
+    const costMinInput = document.getElementById('cost-min');
+    const costMaxInput = document.getElementById('cost-max');
 
-        // Pagination elements
-        const paginationControls = document.getElementById('pagination-controls');
-        const prevPageBtn = document.getElementById('prev-page');
-        const nextPageBtn = document.getElementById('next-page');
-        const pageNumbersDiv = document.getElementById('page-numbers');
+    const paginationControls = document.getElementById('pagination-controls');
+    const prevPageBtn = document.getElementById('prev-page');
+    const nextPageBtn = document.getElementById('next-page');
+    const pageNumbersDiv = document.getElementById('page-numbers');
 
-        // REVERTED THIS LINE: Display 10 items per page
-        const itemsPerPage = 10;
-        let currentPage = 1;
-        let allMaterialRows = [];
-        let filteredMaterialRows = [];
+    const itemsPerPage = 10;
+    let currentPage = 1;
+    let allMaterialRows = [];
+    let filteredMaterialRows = [];
 
-        function parseTemperature(tempStr) {
-            if (typeof tempStr !== 'string') return parseFloat(tempStr);
-            const parts = tempStr.split('-');
-            if (parts.length === 2) {
-                return (parseFloat(parts[0]) + parseFloat(parts[1])) / 2;
-            }
-            return parseFloat(tempStr);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            allMaterialRows = Array.from(document.querySelectorAll('.material-row'));
-            applyFiltersAndPaginate();
-        });
-
-        function applyFiltersAndPaginate() {
-            loadingDiv.style.display = 'flex';
-
-            setTimeout(() => {
-                const typeFilterValue = typeFilter.value;
-                const tempMin = parseFloat(tempMinInput.value) || -Infinity;
-                const tempMax = parseFloat(tempMaxInput.value) || Infinity;
-                const heatMin = parseFloat(heatMinInput.value) || -Infinity;
-                const heatMax = parseFloat(heatMaxInput.value) || Infinity;
-                const conductMin = parseFloat(conductMinInput.value) || -Infinity;
-                const conductMax = parseFloat(conductMaxInput.value) || Infinity;
-                const costMin = parseFloat(costMinInput.value) || -Infinity;
-                const costMax = parseFloat(costMaxInput.value) || Infinity;
-
-                filteredMaterialRows = allMaterialRows.filter(row => {
-                    const rowType = row.dataset.type;
-                    const rowTemp = parseTemperature(row.dataset.temp);
-                    const rowHeat = parseFloat(row.dataset.heat);
-                    const rowConduct = parseFloat(row.dataset.conduct);
-                    const rowCost = parseFloat(row.dataset.cost);
-
-                    const typeMatch = typeFilterValue === 'all' || rowType === typeFilterValue;
-                    const tempMatch = rowTemp >= tempMin && rowTemp <= tempMax;
-                    const heatMatch = (isNaN(rowHeat) && heatMin === -Infinity && heatMax === Infinity) || (rowHeat >= heatMin && rowHeat <= heatMax);
-                    const conductMatch = (isNaN(rowConduct) && conductMin === -Infinity && conductMax === Infinity) || (rowConduct >= conductMin && rowConduct <= conductMax);
-                    const costMatch = (isNaN(rowCost) && costMin === -Infinity && costMax === Infinity) || (rowCost >= costMin && rowCost <= costMax);
-
-                    return typeMatch && tempMatch && heatMatch && conductMatch && costMatch;
-                });
-
-                currentPage = 1;
-                renderMaterials();
-                renderPaginationControls();
-                loadingDiv.style.display = 'none';
-            }, 100);
-        }
-
-        function renderMaterials() {
-            materialsList.innerHTML = '';
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const materialsToDisplay = filteredMaterialRows.slice(startIndex, endIndex);
-
-            materialsToDisplay.forEach(row => {
-                materialsList.appendChild(row.cloneNode(true));
-            });
-
-            resultCountSpan.textContent = `${filteredMaterialRows.length} materials found`;
-        }
-
-       function renderPaginationControls() {
-    const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
-    pageNumbersDiv.innerHTML = '';
-
-    if (totalPages <= 1) {
-        paginationControls.style.display = 'none';
-        return;
-    } else {
-        paginationControls.style.display = 'flex';
+    function parseTemperature(tempStr) {
+        return parseFloat(tempStr);
     }
 
-    prevPageBtn.disabled = currentPage === 1;
-    nextPageBtn.disabled = currentPage === totalPages;
-
-    const maxVisiblePages = 8; // pages per block
-    let pagesToShow = [];
-
-    // Determine current block of pages
-    const currentBlock = Math.floor((currentPage - 1) / maxVisiblePages);
-    const startPage = currentBlock * maxVisiblePages + 1;
-    let endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
-
-    // Add pages of the current block
-    for (let i = startPage; i <= endPage; i++) pagesToShow.push(i);
-
-    // Add ellipsis and last page if needed
-    if (endPage < totalPages) {
-        pagesToShow.push('...');
-        pagesToShow.push(totalPages);
-    }
-
-    // Render page buttons
-    pagesToShow.forEach(p => {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = p;
-        pageButton.classList.add('px-3', 'py-1', 'rounded');
-
-        if (p === '...') {
-            pageButton.disabled = true;
-            pageButton.classList.add('bg-gray-100', 'text-gray-500', 'cursor-default');
-        } else if (p === currentPage) {
-            pageButton.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-600');
-        } else {
-            pageButton.classList.add('bg-gray-200', 'text-gray-800', 'hover:bg-blue-100');
-            pageButton.addEventListener('click', () => {
-                currentPage = p;
-                renderMaterials();
-                renderPaginationControls();
-            });
-        }
-
-        pageNumbersDiv.appendChild(pageButton);
+    document.addEventListener('DOMContentLoaded', () => {
+        allMaterialRows = Array.from(document.querySelectorAll('.material-row'));
+        applyFiltersAndPaginate();
     });
-}
 
+    function applyFiltersAndPaginate() {
+        loadingDiv.style.display = 'flex';
 
+        setTimeout(() => {
+            const typeFilterValue = typeFilter.value.toLowerCase();
+            const tempMin = parseFloat(tempMinInput.value) || -Infinity;
+            const tempMax = parseFloat(tempMaxInput.value) || Infinity;
+            const heatMin = parseFloat(heatMinInput.value) || -Infinity;
+            const heatMax = parseFloat(heatMaxInput.value) || Infinity;
+            const conductMin = parseFloat(conductMinInput.value) || -Infinity;
+            const conductMax = parseFloat(conductMaxInput.value) || Infinity;
+            const costMin = parseFloat(costMinInput.value) || -Infinity;
+            const costMax = parseFloat(costMaxInput.value) || Infinity;
 
-        function resetFilters() {
-            typeFilter.value = 'all';
-            tempMinInput.value = '';
-            tempMaxInput.value = '';
-            heatMinInput.value = '';
-            heatMaxInput.value = '';
-            conductMinInput.value = '';
-            conductMaxInput.value = '';
-            costMinInput.value = '';
-            costMaxInput.value = '';
-            applyFiltersAndPaginate();
-        }
+            filteredMaterialRows = allMaterialRows.filter(row => {
+                const rowType = (row.dataset.type || '').toLowerCase();
+                const rowTemp = parseTemperature(row.dataset.temp);
+                const rowHeat = parseFloat(row.dataset.heat);
+                const rowConduct = parseFloat(row.dataset.conduct);
+                const rowCost = parseFloat(row.dataset.cost);
 
-        function clearAllFilters() {
-            resetFilters();
-        }
+                const typeMatch =
+                    typeFilterValue === 'all' || rowType === typeFilterValue;
 
-        filterBtn.addEventListener('click', applyFiltersAndPaginate);
-        resetBtn.addEventListener('click', resetFilters);
-        clearAllBtn.addEventListener('click', clearAllFilters);
+                const tempMatch = rowTemp >= tempMin && rowTemp <= tempMax;
+                const heatMatch = isNaN(rowHeat) || (rowHeat >= heatMin && rowHeat <= heatMax);
+                const conductMatch = isNaN(rowConduct) || (rowConduct >= conductMin && rowConduct <= conductMax);
+                const costMatch = isNaN(rowCost) || (rowCost >= costMin && rowCost <= costMax);
 
-        prevPageBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderMaterials();
-                renderPaginationControls();
-            }
+                return typeMatch && tempMatch && heatMatch && conductMatch && costMatch;
+            });
+
+            currentPage = 1;
+            renderMaterials();
+            renderPaginationControls();
+            loadingDiv.style.display = 'none';
+        }, 50);
+    }
+
+    function renderMaterials() {
+        materialsList.innerHTML = '';
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        filteredMaterialRows.slice(startIndex, endIndex).forEach(row => {
+            materialsList.appendChild(row.cloneNode(true));
         });
 
-        nextPageBtn.addEventListener('click', () => {
-            const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
+        resultCountSpan.textContent = `${filteredMaterialRows.length} materials found`;
+    }
+
+    function renderPaginationControls() {
+        const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
+        pageNumbersDiv.innerHTML = '';
+
+        paginationControls.style.display = totalPages > 1 ? 'flex' : 'none';
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage === totalPages;
+
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement('button');
+            btn.textContent = i;
+            btn.className = 'px-3 py-1 rounded ' +
+                (i === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200');
+
+            btn.onclick = () => {
+                currentPage = i;
                 renderMaterials();
                 renderPaginationControls();
-            }
-        });
-    </script>
+            };
+
+            pageNumbersDiv.appendChild(btn);
+        }
+    }
+
+    function resetFilters() {
+        typeFilter.value = 'all';
+        tempMinInput.value = '';
+        tempMaxInput.value = '';
+        heatMinInput.value = '';
+        heatMaxInput.value = '';
+        conductMinInput.value = '';
+        conductMaxInput.value = '';
+        costMinInput.value = '';
+        costMaxInput.value = '';
+        applyFiltersAndPaginate();
+    }
+
+    filterBtn.addEventListener('click', applyFiltersAndPaginate);
+    resetBtn.addEventListener('click', resetFilters);
+    clearAllBtn.addEventListener('click', resetFilters);
+
+    prevPageBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderMaterials();
+            renderPaginationControls();
+        }
+    });
+
+    nextPageBtn.addEventListener('click', () => {
+        const totalPages = Math.ceil(filteredMaterialRows.length / itemsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderMaterials();
+            renderPaginationControls();
+        }
+    });
+</script>
+
 </body>
 </html>
