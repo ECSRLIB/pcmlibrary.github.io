@@ -5743,6 +5743,14 @@
                 return typeMatch && tempMatch && heatMatch && conductMatch && costMatch;
             });
 
+            /* ===== ASCENDING SORT BY TEMPERATURE ===== */
+            filteredMaterialRows.sort((a, b) => {
+                const ta = parseTemperature(a.dataset.temp);
+                const tb = parseTemperature(b.dataset.temp);
+                return ta - tb;
+            });
+            /* ======================================== */
+
             currentPage = 1;
             renderMaterials();
             renderPaginationControls();
@@ -5862,6 +5870,7 @@
         }
     });
 </script>
+
 
 </body>
 </html>
