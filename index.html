@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PCM Library Database | ECSR Lab</title>
+    <meta name="description" content="Comprehensive Phase Change Materials (PCM) library database with thermophysical properties, maintained by the ECSR Laboratory." />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Work+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@300;500;700&family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <!-- SheetJS for direct XLSX parsing -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#ffffff",
+                        "on-surface": "#0f172a",
+                        "surface-variant": "#f1f5f9",
+                        "on-surface-variant": "#475569",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f0f9ff",
+                        "surface-container": "#e0f2fe",
+                        "surface-container-high": "#bae6fd",
+                        "surface-container-highest": "#7dd3fc",
+                        "primary": "#0369a1",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#e0f2fe",
+                        "primary-fixed": "#bae6fd",
+                        "secondary": "#0891b2",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#cffafe",
+                        "secondary-fixed": "#a5f3fc",
+                        "outline": "#94a3b8",
+                        "outline-variant": "#cbd5e1",
+                        "background": "#f8fafc"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader", "serif"],
+                        "body": ["Work Sans", "sans-serif"],
+                        "label": ["Space Grotesk", "sans-serif"],
+                        "mono": ["IBM Plex Mono", "monospace"],
+                        "display": ["Playfair Display", "serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+            vertical-align: middle;
+        }
+        .scroll-hide::-webkit-scrollbar { display: none; }
+        body { background-color: var(--color-background); }
+
+        /* Source badge */
+        .source-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 9px;
+            font-family: 'IBM Plex Mono', monospace;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .source-data1 { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+        .source-data2 { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
+        .source-data3 { background: #fdf4ff; color: #6b21a8; border: 1px solid #d8b4fe; }
+
+        /* Property chip */
+        .prop-chip {
+            display: flex;
+            flex-direction: column;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 8px 12px;
+            min-width: 0;
+        }
+        .prop-chip-label {
+            font-size: 9px;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .prop-chip-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: #0369a1;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Card strip */
+        .card-type-strip {
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            border-radius: 16px 0 0 16px;
+        }
+
+        /* Modal overlay transition */
+        #materialModal { transition: opacity 0.25s ease; }
+        #materialModal.opacity-0 { opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-primary overflow-x-hidden relative">
+
+    <!-- Persistent Video Background -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-20">
+            <source src="bg_video.mp4" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 bg-white/40 backdrop-blur-[2px]"></div>
+    </div>
+
+    <!-- Header / TopAppBar -->
+    <header class="bg-white text-primary flex justify-between items-center w-full px-8 py-4 sticky top-0 z-50 border-b border-surface-container-high shadow-sm shadow-primary/5">
+        <div class="flex items-center gap-6">
+            <span class="text-2xl font-serif text-primary font-bold tracking-tight">PCM Library Database</span>
+            <nav class="hidden md:flex items-center gap-8 ml-8">
+                <a class="text-[12px] font-mono tracking-widest uppercase text-primary border-b-2 border-primary pb-1" href="#">Database</a>
+                <a class="text-[12px] font-mono tracking-widest uppercase text-on-surface-variant hover:text-primary transition-colors duration-300" href="about.html">About ECSR Lab</a>
+                <!-- <a class="text-[12px] font-mono tracking-widest uppercase text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Research Papers</a> -->
+            </nav>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex items-center bg-surface-variant px-4 py-1.5 rounded-full border border-outline-variant/50 focus-within:border-primary transition-colors">
+                <span class="material-symbols-outlined text-sm mr-2 text-outline">search</span>
+                <input class="bg-transparent border-none text-sm focus:ring-0 placeholder:text-outline text-on-surface w-48 outline-none" placeholder="Search Materials..." type="text" id="searchInput" />
+            </div>
+            <div class="h-10 w-10 flex items-center justify-center bg-surface-container-high rounded-full overflow-hidden border border-outline-variant/30 hover:scale-105 transition-transform cursor-pointer shadow-sm">
+                <span class="font-display font-bold text-primary text-sm tracking-tighter">IITJ</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1400px] mx-auto px-6 lg:px-12 py-12">
+        <!-- Hero Section -->
+        <section class="relative mb-16 flex flex-col items-center text-center">
+            <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-gradient-to-br from-secondary-container to-primary-container rounded-full blur-[100px] pointer-events-none opacity-50"></div>
+            <h1 class="font-display text-5xl md:text-7xl text-primary mb-4 tracking-tight relative z-10 font-bold drop-shadow-sm">
+                PCM Library Database
+            </h1>
+            <p class="font-label uppercase tracking-[0.2em] text-secondary text-sm mb-12 font-medium">Comprehensive Phase Change Materials — Multi-Source Verified</p>
+            
+            <!-- Global Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-3xl z-10">
+                <div class="bg-white border border-outline-variant/40 p-5 rounded-xl shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300">
+                    <div class="text-primary font-mono text-2xl mb-1 font-semibold" id="stat-total">...</div>
+                    <div class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">Total Materials</div>
+                </div>
+                <!-- <div class="bg-white border border-outline-variant/40 p-5 rounded-xl shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300">
+                    <div class="text-primary font-mono text-2xl mb-1 font-semibold" id="stat-sheets">...</div>
+                    <div class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">Source Sheets</div>
+                </div> -->
+                <div class="bg-white border border-outline-variant/40 p-5 rounded-xl shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300">
+                    <div class="text-primary font-mono text-2xl mb-1 font-semibold"><span id="stat-min-t">..</span>°C</div>
+                    <div class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">Min Melt Temp</div>
+                </div>
+                <div class="bg-white border border-outline-variant/40 p-5 rounded-xl shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300">
+                    <div class="text-primary font-mono text-2xl mb-1 font-semibold"><span id="stat-max-t">..</span>°C</div>
+                    <div class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">Max Melt Temp</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Panel -->
+        <section class="mb-12 relative z-10">
+            <div class="bg-white p-8 rounded-2xl shadow-lg shadow-surface-container-highest/20 border border-surface-container-high relative overflow-hidden backdrop-blur-md">
+                <div class="flex items-center justify-between mb-8 border-b border-surface-variant pb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary">filter_list</span>
+                        <h2 class="font-label uppercase tracking-widest text-secondary text-sm font-bold">Refine Search Parameters</h2>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                    <!-- Material Type -->
+                    <div class="flex flex-col gap-3">
+                        <label class="font-label text-[11px] font-semibold tracking-widest uppercase text-on-surface-variant">Type Classification</label>
+                        <select id="filterType" class="bg-surface-variant border-none rounded-lg text-on-surface py-3 px-4 focus:ring-2 focus:ring-primary outline-none cursor-pointer">
+                            <option value="all">All Classifications</option>
+                        </select>
+                    </div>
+                    <!-- Temperature Target -->
+                    <div class="flex flex-col gap-3">
+                        <label class="font-label text-[11px] font-semibold tracking-widest uppercase text-on-surface-variant">Target Temp (°C)</label>
+                        <div class="flex items-center gap-2">
+                            <input id="filterTempMin" class="w-full bg-surface-variant rounded-lg border-none text-on-surface py-3 px-4 focus:ring-2 focus:ring-primary outline-none placeholder-outline" placeholder="Min" type="number"/>
+                            <span class="text-outline">–</span>
+                            <input id="filterTempMax" class="w-full bg-surface-variant rounded-lg border-none text-on-surface py-3 px-4 focus:ring-2 focus:ring-primary outline-none placeholder-outline" placeholder="Max" type="number"/>
+                        </div>
+                    </div>
+                    <!-- Latent Heat Target -->
+                    <div class="flex flex-col gap-3">
+                        <label class="font-label text-[11px] font-semibold tracking-widest uppercase text-on-surface-variant">Latent Heat (kJ/kg)</label>
+                        <div class="flex items-center gap-2">
+                            <input id="filterHeatMin" class="w-full bg-surface-variant rounded-lg border-none text-on-surface py-3 px-4 focus:ring-2 focus:ring-primary outline-none placeholder-outline" placeholder="Min" type="number"/>
+                            <span class="text-outline">–</span>
+                            <input id="filterHeatMax" class="w-full bg-surface-variant rounded-lg border-none text-on-surface py-3 px-4 focus:ring-2 focus:ring-primary outline-none placeholder-outline" placeholder="Max" type="number"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-4">
+                    <button id="btnResetFilters" class="px-8 py-3 rounded-lg text-outline border border-outline-variant font-label text-xs tracking-widest uppercase font-bold hover:bg-surface-variant transition-colors">
+                        Reset
+                    </button>
+                    <button id="btnApplyFilters" class="bg-gradient-to-r from-secondary to-primary px-10 py-3 rounded-lg text-white font-label text-xs tracking-widest uppercase font-bold hover:brightness-110 active:scale-95 transition-all shadow-md shadow-primary/30">
+                        Apply Filters
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="flex justify-center items-center py-20">
+            <div class="flex flex-col items-center gap-4">
+                <svg class="animate-spin h-10 w-10 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="font-mono text-secondary text-sm tracking-widest" id="loadingStatus">LOADING DATABASE...</p>
+            </div>
+        </div>
+
+        <!-- Materials Grid -->
+        <section class="mb-12">
+            <div class="flex justify-between items-center mb-6 hidden" id="gridHeader">
+                <h3 class="font-display text-2xl text-primary font-semibold">Results</h3>
+                <span id="resultsCount" class="font-mono text-sm text-on-surface-variant bg-surface-variant px-4 py-1.5 rounded-full border border-outline-variant/50">0 materials found</span>
+            </div>
+            <div id="materialsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+        
+        <!-- Pagination -->
+        <nav id="paginationControls" class="flex justify-center items-center gap-4 py-8 hidden">
+        </nav>
+    </main>
+
+    <!-- Modal -->
+    <div id="materialModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-on-surface/40 backdrop-blur-sm hidden opacity-0">
+        <div class="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl border border-surface-container-high relative">
+            <button id="modalClose" class="absolute top-6 right-6 z-20 text-on-surface-variant hover:text-primary transition-colors bg-white/80 backdrop-blur rounded-full p-1 border border-outline-variant/30">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+            
+            <div class="h-48 w-full relative overflow-hidden bg-surface-container-low flex items-center justify-center rounded-t-3xl">
+                <img id="modalImage" class="h-[90%] w-auto object-contain drop-shadow-md mix-blend-multiply hidden" src="" alt="Material Molecule" />
+                <div id="modalImageLoading" class="absolute inset-0 flex items-center justify-center bg-surface-container-low">
+                    <span class="material-symbols-outlined animate-spin text-primary opacity-50">science</span>
+                </div>
+            </div>
+            
+            <div class="p-8">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                    <span id="modalTypeBadge" class="px-3 py-1 bg-surface-container-high text-primary text-[10px] font-label font-bold tracking-widest uppercase rounded-md border border-primary/20">TYPE</span>
+                </div>
+                <h2 id="modalName" class="font-display text-3xl text-on-surface font-bold break-words mb-2">Material Name</h2>
+                
+                
+                <br>
+                
+                <h3 class="font-label text-xs uppercase tracking-widest text-outline mb-3">All Available Properties</h3>
+                <div id="modalPropsGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-surface-container-lowest border border-surface-container-high p-5 rounded-2xl">
+                    <!-- Dynamic props rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white w-full pt-16 pb-8 border-t border-surface-container mt-24">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex flex-col items-center md:items-start gap-2">
+                <span class="text-xl font-serif text-primary font-bold tracking-tight">PCM Library Database</span>
+                <p class="font-mono text-[11px] tracking-tight text-outline">© 2026 ECSR Laboratory. All research rights reserved.</p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-8 text-right">
+                <div>
+                    <p class="font-mono text-[10px] tracking-tight text-outline mb-1 uppercase font-bold text-right">Creator</p>
+                    <p class="font-mono text-[12px] tracking-tight text-primary font-bold">Sonu Singh (M.Tech)</p>
+                </div>
+                <div>
+                    <p class="font-mono text-[10px] tracking-tight text-outline mb-1 uppercase font-bold text-right">Supervised by</p>
+                    <p class="font-mono text-[12px] tracking-tight text-primary font-bold">Dr. Shobhana Singh</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Core App Logic -->
+    <script>
+    // =============================================================
+    //  CONFIGURATION
+    // =============================================================
+    const ITEMS_PER_PAGE = 24;
+
+    // =============================================================
+    //  HELPERS — value validity
+    // =============================================================
+
+    // Canonical "name" columns (checked in order, first non-empty wins)
+    const NAME_COLS = [
+        'name', 'pcm', 'pcm type', 'material', 'salt hydrate',
+        'chemical name', 'compound'
+    ];
+
+    // Canonical "type" (category) columns
+    const TYPE_COLS = ['type', 'category', 'pcm type'];
+
+    // Canonical "melting temperature" columns (normalised lower-case partial match)
+    const TEMP_SUBSTRINGS = ['melting temp', 'phase change temp', 'temperature', 'melt temp'];
+
+    // Canonical "latent heat" columns
+    const HEAT_SUBSTRINGS = ['heat of fusion', 'latent heat', 'heat capacity'];
+
+    // Strings that mean "no data" in source sheets
+    const NO_DATA_STRINGS = new Set([
+        'nan', 'n.a.', 'n/a', 'na', 'n.a', '-', '–', '—', '−',
+        'none', 'null', 'nil', 'nd', 'n.d.', 'not available', '?',
+    ]);
+
+    /**
+     * Returns true if a cell value is "valid" (not blank, NaN, or special-char only).
+     */
+    function isValid(val) {
+        if (val === null || val === undefined) return false;
+        const s = String(val).trim();
+        if (s === '') return false;
+        // Known "no data" strings (case-insensitive)
+        if (NO_DATA_STRINGS.has(s.toLowerCase())) return false;
+        // Composed only of ASCII/Unicode dashes, underscores, dots, spaces, etc.
+        if (/^[\-\u2013\u2014\u2212_\*\/\\~\.#@%^&+=|<>?!`'";\s]+$/.test(s)) return false;
+        return true;
+    }
+
+    /**
+     * Cleans and returns a display-ready string, or null if invalid.
+     */
+    function cleanVal(val) {
+        if (!isValid(val)) return null;
+        return String(val).trim();
+    }
+
+    /**
+     * Normalise a column header to lowercase-trimmed string.
+     */
+    function normKey(k) {
+        return String(k || '').toLowerCase().trim();
+    }
+
+    /**
+     * Cleans up a column label for display:
+     * - Strips SheetJS duplicate suffixes like _1, _2 … _99
+     * - Trims trailing/leading whitespace
+     */
+    function cleanLabel(label) {
+        return String(label).trim().replace(/_\d{1,2}$/, '');
+    }
+
+    /**
+     * Find the value from a row (object) whose key matches any substring in the list.
+     */
+    function findBySubstrings(row, substrings) {
+        for (const [k, v] of Object.entries(row)) {
+            const nk = normKey(k);
+            for (const sub of substrings) {
+                if (nk.includes(sub) && isValid(v)) return { key: k, value: v };
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Tries to extract PCM name from a row using known name columns.
+     */
+    function extractName(row) {
+        for (const col of NAME_COLS) {
+            for (const [k, v] of Object.entries(row)) {
+                if (normKey(k) === col && isValid(v)) return String(v).trim();
+            }
+        }
+        // fallback: first string-valued column
+        for (const [k, v] of Object.entries(row)) {
+            if (typeof v === 'string' && isValid(v) && v.trim().length > 1) return v.trim();
+        }
+        return null;
+    }
+
+    /**
+     * Tries to extract PCM type/category from a row.
+     */
+    function extractType(row, sheetName) {
+        for (const col of TYPE_COLS) {
+            for (const [k, v] of Object.entries(row)) {
+                if (normKey(k) === col && isValid(v)) return String(v).trim().toLowerCase();
+            }
+        }
+        // Infer from sheet name
+        const sn = sheetName.toLowerCase();
+        if (sn.includes('paraffin') && sn.includes('non')) return 'non-paraffin';
+        if (sn.includes('paraffin')) return 'organic';
+        if (sn.includes('salt')) return 'inorganic';
+        if (sn.includes('inorganic')) return 'inorganic';
+        if (sn.includes('organic')) return 'organic';
+        if (sn.includes('eutectic')) return 'eutectic';
+        if (sn.includes('metal')) return 'metallic';
+        if (sn.includes('solid')) return 'solid-solid';
+        if (sn.includes('high temp')) return 'high-temp';
+        return 'unknown';
+    }
+
+    /**
+     * Returns true if a column key is a valid, human-readable header.
+     * Rejects SheetJS auto-keys (__EMPTY, __EMPTY_1…), 'none', numeric keys, etc.
+     */
+    function isValidKey(k) {
+        if (!k) return false;
+        const nk = normKey(k);
+        if (!nk) return false;
+        if (nk === 'none') return false;
+        // SheetJS auto-generated empty-header keys
+        if (/^__empty(_\d+)?$/.test(nk)) return false;
+        // Pure numbers
+        if (/^\d+$/.test(nk)) return false;
+        // Single special chars or very short garbage
+        if (/^[\-_\.#@%^&*]+$/.test(nk)) return false;
+        return true;
+    }
+
+    /**
+     * Extracts all valid key-value pairs from a row as a flat object,
+     * skipping auto-generated/empty headers and invalid values.
+     */
+    function extractValidProps(row) {
+        const result = {};
+        for (const [k, v] of Object.entries(row)) {
+            if (!isValidKey(k)) continue;
+            const cv = cleanVal(v);
+            if (cv !== null) result[k] = cv;
+        }
+        return result;
+    }
+
+    /**
+     * Find melting temperature (numeric) from props object.
+     */
+    function extractMeltTemp(props) {
+        for (const [k, v] of Object.entries(props)) {
+            const nk = normKey(k);
+            for (const sub of TEMP_SUBSTRINGS) {
+                if (nk.includes(sub)) {
+                    const n = parseFloat(v);
+                    if (!isNaN(n)) return n;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Find latent heat (numeric) from props object.
+     */
+    function extractLatentHeat(props) {
+        for (const [k, v] of Object.entries(props)) {
+            const nk = normKey(k);
+            for (const sub of HEAT_SUBSTRINGS) {
+                if (nk.includes(sub)) {
+                    const n = parseFloat(v);
+                    if (!isNaN(n)) return n;
+                }
+            }
+        }
+        return null;
+    }
+
+    // =============================================================
+    //  EXCEL LOADING
+    // =============================================================
+
+    let materialsData  = [];   // final merged array
+    let filteredData   = [];
+    let currentPage    = 1;
+    let allTypes       = new Set();
+
+    /**
+     * Auto-detects the real header row in a worksheet by scanning the first
+     * MAX_SCAN rows and picking the one with the most valid string-valued cells.
+     * Returns { headerRow, skipRows } where skipRows = index of header row.
+     */
+    function detectHeaderRow(ws, MAX_SCAN = 8) {
+        // Read as array of arrays (no header processing)
+        const aoa = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null });
+        let bestScore = -1, bestIdx = 0;
+        for (let i = 0; i < Math.min(MAX_SCAN, aoa.length); i++) {
+            const row = aoa[i] || [];
+            // Score = count of non-null non-empty cells that look like text headers
+            const score = row.filter(c =>
+                c !== null && c !== undefined &&
+                typeof c === 'string' &&
+                c.trim().length > 1 &&
+                !/^[\-_\.]+$/.test(c.trim())
+            ).length;
+            if (score > bestScore) { bestScore = score; bestIdx = i; }
+        }
+        return bestIdx;
+    }
+
+    async function loadExcelFile(meta) {
+        const response = await fetch(meta.file);
+        if (!response.ok) throw new Error(`Cannot fetch ${meta.file}`);
+        const buf = await response.arrayBuffer();
+        const wb  = XLSX.read(buf, { type: 'array' });
+        const records = [];
+
+        for (const sheetName of wb.SheetNames) {
+            const ws = wb.Sheets[sheetName];
+
+            // Find which row is the real header
+            const headerRowIdx = detectHeaderRow(ws);
+
+            // Convert Excel hyperlinks to markdown before JSON extraction
+            for (const key in ws) {
+                if (key[0] === '!') continue;
+                const cell = ws[key];
+                if (cell && cell.l && cell.l.Target) {
+                    const url = cell.l.Target;
+                    const text = cell.v ? String(cell.v).trim() : url;
+                    if (text !== url) {
+                        cell.v = `[${text}](${url})`;
+                        cell.w = undefined; // clear formatted text so sheet_to_json uses new v
+                    } else {
+                        cell.v = url;
+                        cell.w = undefined;
+                    }
+                }
+            }
+
+            // Parse sheet using the detected header row
+            const raw = XLSX.utils.sheet_to_json(ws, {
+                defval: null,
+                range: headerRowIdx   // start reading from this row as headers
+            });
+
+            for (const row of raw) {
+                const name = extractName(row);
+                // Skip blank names or rows that echo the header text
+                if (!name) continue;
+                const nl = name.toLowerCase();
+                if (nl === 'name' || nl === 'pcm' || nl === 'pcm type' ||
+                    nl === 'material' || nl === 'salt hydrate') continue;
+
+                const props = extractValidProps(row);
+                const type  = extractType(row, sheetName);
+                const meltT = extractMeltTemp(props);
+                const latH  = extractLatentHeat(props);
+
+                // Remove name-column entries from props (shown in card title)
+                for (const col of NAME_COLS) {
+                    for (const k of Object.keys(props)) {
+                        if (cleanLabel(k).toLowerCase() === col || normKey(k) === col) delete props[k];
+                    }
+                }
+
+                // Also remove "type/category" columns from props display
+                for (const col of TYPE_COLS) {
+                    for (const k of Object.keys(props)) {
+                        if (cleanLabel(k).toLowerCase() === col || normKey(k) === col) delete props[k];
+                    }
+                }
+
+                if (Object.keys(props).length === 0 && meltT === null) continue;
+
+                records.push({
+                    _id:       `${meta.key}::${sheetName}::${name}`,
+                    _source:   meta.key,
+                    _priority: meta.priority,
+                    _sheet:    sheetName,
+                    name,
+                    type,
+                    meltingTemp: meltT,
+                    latentHeat:  latH,
+                    props,
+                });
+            }
+        }
+        return records;
+    }
+
+    /**
+     * Merges records from all sources.
+     * If the same material name appears in multiple sources, data1 wins
+     * (lower priority number = higher precedence).
+     * The winner keeps its own props; the losers contribute any MISSING props.
+     */
+    function mergeByName(allRecords) {
+        // Sort so that data1 (priority 1) comes first
+        allRecords.sort((a, b) => a._priority - b._priority);
+
+        const byName = new Map(); // lowercase-name → record
+
+        for (const rec of allRecords) {
+            const nameKey = rec.name.toLowerCase().trim();
+            if (!byName.has(nameKey)) {
+                byName.set(nameKey, { ...rec });
+            } else {
+                // Already exists — fill missing props from this lower-priority source
+                const existing = byName.get(nameKey);
+                for (const [k, v] of Object.entries(rec.props)) {
+                    // Only add if this key doesn't already exist in winner (by clean label name)
+                    const dupKey = Object.keys(existing.props).find(ek => cleanLabel(ek).toLowerCase() === cleanLabel(k).toLowerCase());
+                    if (!dupKey) existing.props[k] = v;
+                }
+                if (existing.meltingTemp === null && rec.meltingTemp !== null) existing.meltingTemp = rec.meltingTemp;
+                if (existing.latentHeat  === null && rec.latentHeat  !== null) existing.latentHeat  = rec.latentHeat;
+            }
+        }
+
+        return Array.from(byName.values());
+    }
+
+    async function init() {
+        const loadingStatus = document.getElementById('loadingStatus');
+        try {
+            loadingStatus.textContent = 'Loading database...';
+            
+            // Hardcoded list of files since directory listing is often disabled/redirected on local servers
+            const files = [
+                'data1.xlsx',
+                'data2.xlsx',
+                'data3.xlsx',
+                'pcm_data.xlsx',
+                'pcm_materials.xlsx'
+            ];
+            
+            // Sort data1 to the top for priority, others alphabetical
+            files.sort((a, b) => {
+                const la = a.toLowerCase(), lb = b.toLowerCase();
+                if (la.includes('data1')) return -1;
+                if (lb.includes('data1')) return 1;
+                return la.localeCompare(lb);
+            });
+
+            const EXCEL_FILES = files.map((fname, i) => ({
+                file: `./${fname}`, 
+                priority: i + 1, 
+                key: fname.replace('.xlsx', '') 
+            }));
+
+            let allRecords = [];
+            let totalSheets = 0;
+
+            for (const meta of EXCEL_FILES) {
+                loadingStatus.textContent = `Loading ${meta.file}...`;
+                const records = await loadExcelFile(meta);
+                allRecords = allRecords.concat(records);
+
+                const sheets = new Set(records.map(r => r._sheet));
+                totalSheets += sheets.size;
+            }
+
+            loadingStatus.textContent = 'Merging & deduplicating...';
+            materialsData = mergeByName(allRecords);
+
+            materialsData.forEach(m => {
+                if (m.type) allTypes.add(m.type);
+            });
+
+            buildFilterDropdowns();
+            filteredData = [...materialsData];
+
+            DOM.loading.classList.add('hidden');
+            DOM.gridHeader.classList.remove('hidden');
+
+            calculateStats(totalSheets);
+            applyFilters();
+
+        } catch (err) {
+            console.error(err);
+            DOM.loading.innerHTML = `<p class="text-red-500 font-bold px-8 text-center">Error loading database: ${err.message}<br/><span class="font-normal text-sm mt-2 block ">Make sure you are running this on a local server that allows directory listing (e.g. <code>npx http-server .</code>)</span></p>`;
+        }
+    }
+
+    function buildFilterDropdowns() {
+        const typeSelect  = document.getElementById('filterType');
+
+        const sortedTypes = Array.from(allTypes).sort();
+        sortedTypes.forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t; opt.textContent = t.charAt(0).toUpperCase() + t.slice(1);
+            typeSelect.appendChild(opt);
+        });
+    }
+
+    // =============================================================
+    //  DOM REFS
+    // =============================================================
+    const DOM = {
+        loading:      document.getElementById('loadingIndicator'),
+        gridHeader:   document.getElementById('gridHeader'),
+        grid:         document.getElementById('materialsGrid'),
+        pagination:   document.getElementById('paginationControls'),
+        resultsCount: document.getElementById('resultsCount'),
+        statTotal:    document.getElementById('stat-total'),
+        statSheets:   document.getElementById('stat-sheets'),
+        statMinT:     document.getElementById('stat-min-t'),
+        statMaxT:     document.getElementById('stat-max-t'),
+
+        search:       document.getElementById('searchInput'),
+        fType:        document.getElementById('filterType'),
+        fTMin:        document.getElementById('filterTempMin'),
+        fTMax:        document.getElementById('filterTempMax'),
+        fHMin:        document.getElementById('filterHeatMin'),
+        fHMax:        document.getElementById('filterHeatMax'),
+        btnApply:     document.getElementById('btnApplyFilters'),
+        btnReset:     document.getElementById('btnResetFilters'),
+
+        modal:        document.getElementById('materialModal'),
+        btnClose:     document.getElementById('modalClose'),
+        mdlImg:       document.getElementById('modalImage'),
+        mdlImgLoad:   document.getElementById('modalImageLoading'),
+        mdlName:      document.getElementById('modalName'),
+        mdlType:      document.getElementById('modalTypeBadge'),
+        mdlDesc:      document.getElementById('modalDesc'),
+        mdlProps:     document.getElementById('modalPropsGrid'),
+    };
+
+    // =============================================================
+    //  STATS
+    // =============================================================
+    function calculateStats(sheetCount) {
+        if (DOM.statTotal) DOM.statTotal.textContent  = materialsData.length.toLocaleString();
+        if (DOM.statSheets) DOM.statSheets.textContent = sheetCount;
+
+        let minT = Infinity, maxT = -Infinity;
+        materialsData.forEach(m => {
+            if (m.meltingTemp !== null && !isNaN(m.meltingTemp)) {
+                if (m.meltingTemp < minT) minT = m.meltingTemp;
+                if (m.meltingTemp > maxT) maxT = m.meltingTemp;
+            }
+        });
+        if (DOM.statMinT) DOM.statMinT.textContent = isFinite(minT) ? Math.round(minT) : '–';
+        if (DOM.statMaxT) DOM.statMaxT.textContent = isFinite(maxT) ? Math.round(maxT) : '–';
+    }
+
+    // =============================================================
+    //  FILTERING
+    // =============================================================
+    function applyFilters() {
+        const term   = DOM.search.value.toLowerCase().trim();
+        const fType  = DOM.fType.value;
+        const tMin   = parseFloat(DOM.fTMin.value);
+        const tMax   = parseFloat(DOM.fTMax.value);
+        const hMin   = parseFloat(DOM.fHMin.value);
+        const hMax   = parseFloat(DOM.fHMax.value);
+
+        filteredData = materialsData.filter(item => {
+            if (term && !item.name.toLowerCase().includes(term)) return false;
+            // Handle lowercase string type classification mapping safely
+            const itemType = (item.type || '').toLowerCase();
+            if (fType !== 'all') {
+                if (fType.toLowerCase() !== itemType) return false;
+            }
+
+            const pt = item.meltingTemp;
+            if (!isNaN(tMin) && (pt === null || pt < tMin)) return false;
+            if (!isNaN(tMax) && (pt === null || pt > tMax)) return false;
+
+            const ph = item.latentHeat;
+            if (!isNaN(hMin) && (ph === null || ph < hMin)) return false;
+            if (!isNaN(hMax) && (ph === null || ph > hMax)) return false;
+
+            return true;
+        });
+
+        currentPage = 1;
+        renderGrid();
+    }
+
+    function resetFilters() {
+        DOM.search.value = '';
+        DOM.fType.value  = 'all';
+        DOM.fTMin.value  = '';
+        DOM.fTMax.value  = '';
+        DOM.fHMin.value  = '';
+        DOM.fHMax.value  = '';
+        applyFilters();
+    }
+
+    DOM.btnApply.addEventListener('click', applyFilters);
+    DOM.btnReset.addEventListener('click', resetFilters);
+    DOM.search.addEventListener('input', () => setTimeout(applyFilters, 300));
+
+    // =============================================================
+    //  RENDERING
+    // =============================================================
+    function getTypeColor(type) {
+        const t = (type || '').toLowerCase();
+        if (t.includes('paraffin') && t.includes('non')) return { bg: 'bg-teal-100',   text: 'text-teal-700',   strip: '#0d9488' };
+        if (t.includes('paraffin') || t === 'organic')   return { bg: 'bg-green-100',  text: 'text-green-700',  strip: '#16a34a' };
+        if (t.includes('inorganic') || t.includes('salt'))return { bg: 'bg-blue-100',   text: 'text-blue-700',   strip: '#2563eb' };
+        if (t.includes('eutectic'))                       return { bg: 'bg-purple-100', text: 'text-purple-700', strip: '#7c3aed' };
+        if (t.includes('metallic') || t.includes('metal'))return { bg: 'bg-orange-100', text: 'text-orange-700', strip: '#ea580c' };
+        if (t.includes('solid'))                          return { bg: 'bg-yellow-100', text: 'text-yellow-700', strip: '#ca8a04' };
+        if (t.includes('high'))                           return { bg: 'bg-red-100',    text: 'text-red-700',    strip: '#dc2626' };
+        return { bg: 'bg-gray-100', text: 'text-gray-600', strip: '#94a3b8' };
+    }
+
+    function srcBadgeHtml(source) {
+        const cls = `source-${source}`;
+        return `<span class="source-badge ${cls}">${source.toUpperCase()}</span>`;
+    }
+
+    /**
+     * Pick the top 2 most useful property "chips" from props for the card face.
+     * Prefers melting temp + latent heat, then whatever is available.
+     */
+    function pickCardProps(item) {
+        const chips = [];
+
+        // Always show melt temp and latent heat at the card level if present
+        if (item.meltingTemp !== null) {
+            chips.push({ label: 'Melt Temp', value: `${item.meltingTemp} °C` });
+        }
+        if (item.latentHeat !== null) {
+            chips.push({ label: 'Latent Heat', value: `${item.latentHeat} kJ/kg` });
+        }
+
+        // Fill with other props (first 2 if need more)
+        if (chips.length < 2) {
+            const seenValues = new Set();
+            for (const [k, v] of Object.entries(item.props)) {
+                const nk = normKey(k);
+                const isMelt = TEMP_SUBSTRINGS.some(s => nk.includes(s));
+                const isHeat = HEAT_SUBSTRINGS.some(s => nk.includes(s));
+                if (!isMelt && !isHeat) {
+                    const strVal = String(v).toLowerCase().trim();
+                    if (strVal.length > 2 && seenValues.has(strVal)) continue;
+                    seenValues.add(strVal);
+                    chips.push({ label: cleanLabel(k), value: v });
+                    if (chips.length >= 2) break;
+                }
+            }
+        }
+
+        return chips.slice(0, 2);
+    }
+
+    function renderGrid() {
+        DOM.grid.innerHTML = '';
+        DOM.resultsCount.textContent = `${filteredData.length.toLocaleString()} materials found`;
+
+        const start    = (currentPage - 1) * ITEMS_PER_PAGE;
+        const pageData = filteredData.slice(start, start + ITEMS_PER_PAGE);
+
+        pageData.forEach(item => {
+            const colors = getTypeColor(item.type);
+            const chips  = pickCardProps(item);
+
+            const card = document.createElement('div');
+            card.className = `bg-white p-6 pl-8 rounded-2xl border border-surface-container-high shadow-sm group hover:-translate-y-1 hover:shadow-md transition-all duration-300 cursor-pointer relative overflow-hidden`;
+            card.onclick = () => openModal(item);
+
+            const chipsHtml = chips.map(c => `
+                <div class="prop-chip">
+                    <span class="prop-chip-label">${escHtml(c.label)}</span>
+                    <span class="prop-chip-value">${formatPropValue(c.value)}</span>
+                </div>
+            `).join('');
+
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <span class="px-2 py-0.5 ${colors.bg} ${colors.text} text-[10px] font-label font-bold tracking-widest uppercase rounded">
+                        ${escHtml(item.type || 'Unknown')}
+                    </span>
+                </div>
+                <h3 class="font-display text-lg text-on-surface mb-4 group-hover:text-primary transition-colors pr-2 break-words leading-tight" title="${escHtml(item.name)}">
+                    ${escHtml(item.name.length > 50 ? item.name.slice(0, 48) + '…' : item.name)}
+                </h3>
+                <div class="grid grid-cols-2 gap-2 mt-auto pb-4">
+                    ${chipsHtml}
+                </div>
+            `;
+            DOM.grid.appendChild(card);
+        });
+
+        renderPagination();
+    }
+
+    function escHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function formatPropValue(val) {
+        if (!val) return '';
+        let str = String(val);
+
+        // 1. Temporarily pull out markdown links so they aren't mangled by HTML escaping or raw URL auto-linking
+        const mdLinks = [];
+        str = str.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
+            mdLinks.push({ text, url });
+            return `__MD_LINK_${mdLinks.length - 1}__`;
+        });
+
+        // 2. Escape HTML for the remaining text
+        str = escHtml(str);
+
+        // 3. Auto-link raw URLs in the text
+        const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+|doi\.org\/[^\s]+|\b10\.\d{4,9}\/[-._;()/:a-z0-9]+)/ig;
+        str = str.replace(urlRegex, function(url) {
+            let href = url;
+            const lower = url.toLowerCase();
+            
+            if (lower.startsWith('www.') || lower.startsWith('doi.org/')) {
+                href = 'https://' + url;
+            } else if (lower.startsWith('10.')) {
+                href = 'https://doi.org/' + url;
+            }
+            
+            return `<a href="${href}" target="_blank" onclick="event.stopPropagation()" class="text-primary hover:text-blue-700 hover:underline transition-colors pointer-events-auto break-all font-mono text-[11px]">${url}</a>`;
+        });
+
+        // 4. Restore and convert markdown links to anchor tags
+        str = str.replace(/__MD_LINK_(\d+)__/g, (match, idx) => {
+            const link = mdLinks[idx];
+            let href = link.url;
+            const lower = href.toLowerCase();
+            
+            if (lower.startsWith('www.') || lower.startsWith('doi.org/')) {
+                href = 'https://' + href;
+            } else if (lower.startsWith('10.')) {
+                href = 'https://doi.org/' + href;
+            }
+            
+            return `<a href="${href}" target="_blank" onclick="event.stopPropagation()" class="text-primary hover:text-blue-700 hover:underline transition-colors pointer-events-auto break-words font-mono text-[11px] font-semibold">${escHtml(link.text)}</a>`;
+        });
+
+        return str;
+    }
+
+    function renderPagination() {
+        const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+        DOM.pagination.innerHTML = '';
+        if (totalPages <= 1) { DOM.pagination.classList.add('hidden'); return; }
+        DOM.pagination.classList.remove('hidden');
+        DOM.pagination.classList.add('flex');
+
+        const mk = (text, disabled, cb, active) => {
+            const b = document.createElement('button');
+            b.innerHTML = text;
+            if (disabled) {
+                b.className = 'w-10 h-10 rounded-full border border-surface-container flex items-center justify-center text-outline opacity-40 cursor-not-allowed';
+            } else if (active) {
+                b.className = 'px-4 py-2 bg-primary text-white border border-primary rounded-full font-mono text-sm font-bold shadow-sm';
+            } else {
+                const isIcon = text.includes('material-symbols');
+                b.className = isIcon
+                    ? 'w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-primary hover:bg-surface-variant transition-colors'
+                    : 'px-4 py-2 hover:bg-surface-variant text-on-surface-variant rounded-full font-mono text-sm font-semibold transition-colors';
+                b.onclick = cb;
+            }
+            return b;
+        };
+
+        DOM.pagination.appendChild(mk(`<span class="material-symbols-outlined">chevron_left</span>`, currentPage === 1, () => { currentPage--; renderGrid(); }));
+
+        const div = document.createElement('div');
+        div.className = 'flex gap-2 mx-2';
+        let sp = Math.max(1, currentPage - 2);
+        let ep = Math.min(totalPages, sp + 4);
+        if (ep - sp < 4) sp = Math.max(1, ep - 4);
+        for (let i = sp; i <= ep; i++) {
+            div.appendChild(mk(i.toString().padStart(2, '0'), false, () => { currentPage = i; renderGrid(); }, i === currentPage));
+        }
+        DOM.pagination.appendChild(div);
+        DOM.pagination.appendChild(mk(`<span class="material-symbols-outlined">chevron_right</span>`, currentPage === totalPages, () => { currentPage++; renderGrid(); }));
+    }
+
+    // =============================================================
+    //  MODAL
+    // =============================================================
+    async function openModal(item) {
+        const colors = getTypeColor(item.type);
+
+        DOM.mdlName.textContent = item.name;
+        DOM.mdlType.textContent = (item.type || 'Unknown') + ' classification';
+        DOM.mdlType.className   = `px-3 py-1 text-[10px] font-label font-bold tracking-widest uppercase rounded-lg border ${colors.bg} ${colors.text}`;
+
+        // Build dynamic props grid
+        DOM.mdlProps.innerHTML = '';
+        const allProps = { ...item.props };
+
+        // Inject melt temp + latent heat at top if they exist
+        if (item.meltingTemp !== null) {
+            const chip = makePropChip('Melting Temp', `${item.meltingTemp} °C`, 'thermostat');
+            DOM.mdlProps.prepend(chip);
+        }
+        if (item.latentHeat !== null) {
+            const chip = makePropChip('Latent Heat', `${item.latentHeat} kJ/kg`, 'local_fire_department');
+            DOM.mdlProps.appendChild(chip);
+        }
+
+        const seenLabels = new Set();
+        const seenValues = new Set();
+
+        for (const [k, v] of Object.entries(allProps)) {
+            // Skip if it's a temp or heat col (already shown)
+            const nk = normKey(k);
+            const isMelt = TEMP_SUBSTRINGS.some(s => nk.includes(s));
+            const isHeat = HEAT_SUBSTRINGS.some(s => nk.includes(s));
+            if (!isMelt && !isHeat) {
+                const labelStr = cleanLabel(k);
+                const lLower = labelStr.toLowerCase();
+                const strVal = String(v).toLowerCase().trim();
+
+                // Check for duplicate label or duplicate long value
+                if (!seenLabels.has(lLower) && !(strVal.length > 2 && seenValues.has(strVal))) {
+                    seenLabels.add(lLower);
+                    seenValues.add(strVal);
+                    DOM.mdlProps.appendChild(makePropChip(labelStr, v));
+                }
+            }
+        }
+
+        if (DOM.mdlProps.children.length === 0) {
+            DOM.mdlProps.innerHTML = `<p class="text-outline text-sm col-span-3 text-center py-4">No additional properties available.</p>`;
+        }
+
+        // Image / desc reset
+        DOM.mdlImg.src = ''; DOM.mdlImg.classList.add('hidden');
+        DOM.mdlImgLoad.innerHTML = `<span class="material-symbols-outlined animate-spin text-primary opacity-50 text-4xl">science</span>`;
+        DOM.mdlImgLoad.classList.remove('hidden');
+        // DOM.mdlDesc.innerHTML = `<span class="animate-pulse">Loading description from PubChem...</span>`;
+
+        // Show modal
+        DOM.modal.classList.remove('hidden');
+        setTimeout(() => DOM.modal.classList.remove('opacity-0'), 10);
+
+        // PubChem fetch
+        const safeName = encodeURIComponent(item.name.split(/[\s,(/]/)[0]);
+        // try {
+        //     const res = await fetch(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${safeName}/description/JSON`);
+        //     if (!res.ok) throw new Error();
+        //     const json = await res.json();
+        //     const infos = json?.InformationList?.Information;
+        //     const found = infos && infos.find(i => i.Description);
+        //     DOM.mdlDesc.textContent = found ? found.Description : 'No description available in PubChem for this compound.';
+        // } catch {
+        //     DOM.mdlDesc.innerHTML = `<em>Description unavailable — compound may be a mixture or proprietary material.</em>`;
+        // }
+
+        // Image
+        const imgUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${safeName}/PNG`;
+        const img = new Image();
+        img.onload = () => {
+            DOM.mdlImgLoad.classList.add('hidden');
+            DOM.mdlImg.src = imgUrl;
+            DOM.mdlImg.classList.remove('hidden');
+        };
+        img.onerror = () => {
+            DOM.mdlImgLoad.innerHTML = `<div class="text-center text-outline/50"><span class="material-symbols-outlined text-5xl block mb-2">science</span><span class="text-xs font-mono uppercase">Structure Unavailable</span></div>`;
+        };
+        img.src = imgUrl;
+    }
+
+    function makePropChip(label, value, icon) {
+        const div = document.createElement('div');
+        div.className = 'prop-chip';
+        div.innerHTML = `
+            ${icon ? `<span class="material-symbols-outlined text-secondary text-sm mb-1" style="font-size:16px;font-variation-settings:'FILL' 1">${icon}</span>` : ''}
+            <span class="prop-chip-label">${escHtml(label)}</span>
+            <span class="prop-chip-value">${formatPropValue(value)}</span>
+        `;
+        return div;
+    }
+
+    DOM.btnClose.addEventListener('click', () => {
+        DOM.modal.classList.add('opacity-0');
+        setTimeout(() => DOM.modal.classList.add('hidden'), 300);
+    });
+    DOM.modal.addEventListener('click', e => { if (e.target === DOM.modal) DOM.btnClose.click(); });
+
+    // =============================================================
+    //  BOOTSTRAP
+    // =============================================================
+    window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
